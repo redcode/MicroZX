@@ -4,8 +4,8 @@ Released under the terms of the [GNU General Public License v3](http://www.gnu.o
 
 ![alt tag](Screenshots/ZX Spectrum + 128K.png)
 ![alt tag](Screenshots/ZX Spectrum + 128K Spanish.png)
-![alt tag](Screenshots/Z Moiré Source.png)
-![alt tag](Screenshots/Z Moiré Run.png)
+![alt tag](Screenshots/Z Moire Source.png)
+![alt tag](Screenshots/Z Moire Run.png)
 ![alt tag](Screenshots/Batman Loading.png)
 ![alt tag](Screenshots/Batman In Game.png)
 ![alt tag](Screenshots/Avenger Loading.png)
