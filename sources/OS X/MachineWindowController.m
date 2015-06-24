@@ -198,9 +198,6 @@ static void *EmulationMain(MachineWindowController *controller)
 /*
 			NSMenu *machineMenu = [[NSMenu alloc] initWithTitle: @"Machine"];
 
-			[machineMenu addItemWithTitle: @"Power"		action: @selector(toggleMachinePower:) keyEquivalent: @"e" modifierMask: NSCommandKeyMask | NSAlternateKeyMask];
-			[machineMenu addItemWithTitle: @"Reset"		action: @selector(resetMachine:)       keyEquivalent: @"r" modifierMask: NSCommandKeyMask | NSAlternateKeyMask];
-			[machineMenu addItemWithTitle: @"Pause"		action: @selector(toggleMachinePause:) keyEquivalent: @"p" modifierMask: NSCommandKeyMask | NSAlternateKeyMask];
 			[machineMenu addSeparatorItem];
 			[machineMenu addItemWithTitle: @"Volume"	action: @selector(toggleMachinePause:) keyEquivalent: @""];
 			[machineMenu addSeparatorItem];
@@ -610,124 +607,6 @@ static void *EmulationMain(MachineWindowController *controller)
 
 
 
-#	pragma mark - IBAction
-
-
-	- (IBAction) saveDocument: (id) sender
-		{
-		}
-
-
-	- (IBAction) saveDocumentAs: (id) sender
-		{
-		NSSavePanel *panel = [NSSavePanel savePanel];
-
-		NSDateComponents *today = [[NSCalendar currentCalendar]
-			components:
-				NSEraCalendarUnit    | NSYearCalendarUnit   |
-				NSMonthCalendarUnit  | NSDayCalendarUnit    |
-				NSHourCalendarUnit   | NSMinuteCalendarUnit |
-				NSSecondCalendarUnit
-			fromDate: [NSDate date]];
-
-		panel.allowedFileTypes = [NSArray arrayWithObjects: @"z80", @"sna", nil];
-		panel.canSelectHiddenExtension = YES;
-
-		panel.nameFieldStringValue = STRING
-			(@"Snapshot (%04li-%02li-%02li %02li.%02li.%02li)",
-			 (long)[today year], (long)[today month],  (long)[today day],
-			 (long)[today hour], (long)[today minute], (long)[today second]);
-
-		[panel beginSheetModalForWindow: self.window completionHandler: ^(NSInteger result)
-			{
-			if (result == NSFileHandlingPanelOKButton)
-				{
-				NSString *path = panel.URL.path;
-				NSError *error;
-
-				if ([self saveSnapshotAtPath: path error: &error])
-					{
-					}
-
-				else [[NSAlert alertWithError: error] runModal];
-				}
-			}];
-		}
-
-
-	- (IBAction) copy: (id) sender
-		{
-		}
-
-
-	- (IBAction) zoomImageToActualSize: (id) sender	{[self setZoom: 1.0];}
-	- (IBAction) zoomImageX2:	    (id) sender {[self setZoom: 2.0];}
-	- (IBAction) zoomImageX3:	    (id) sender {[self setZoom: 3.0];}
-
-
-	- (IBAction) zoomImageToFit: (id) sender
-		{[self setZoom: self.window.screen.frame.size.height / (qreal)Q_ZX_SPECTRUM_SCREEN_HEIGHT];}
-
-
-	- (IBAction) zoomIn: (id) sender
-		{self.zoom = step_up(self.zoom, 0.5);}
-
-
-	- (IBAction) zoomOut: (id) sender
-		{
-		qreal factor = step_down(self.zoom, 0.5);
-
-		self.zoom = factor <= 1.0 ? 1.0 : factor;
-		}
-
-
-	- (IBAction) toggleLinearInterpolation: (NSMenuItem *) sender
-		{
-		BOOL enable = sender.state == NSOnState ? NSOffState : NSOnState;
-
-		sender.state = enable;
-		[_videoOutput setLinearInterpolation: enable];
-		}
-
-
-	- (IBAction) editWindowTitle: (id) sender
-		{
-		NSString *currentTitle = self.window.title;
-		NSString *placeHolder = [NSString stringWithUTF8String: _machineABI->model_name];
-
-		[titleTextField.cell setPlaceholderString: placeHolder];
-		[titleTextField setStringValue: [currentTitle isEqualToString: placeHolder] ? @"" : currentTitle];
-
-		[NSApp	beginSheet:	titleWindow
-			modalForWindow: [self window]
-			modalDelegate:	self
-			didEndSelector:	nil
-			contextInfo:	nil];
-		}
-
-
-	- (IBAction) editWindowTitleOK: (id) sender
-		{
-		NSString *title = [[titleTextField stringValue]
-			stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-
-		self.window.title = (title && ![title isEqualToString: @""])
-			? title
-			: [NSString stringWithUTF8String: _machineABI->model_name];
-
-		[NSApp endSheet: titleWindow];
-		[titleWindow orderOut: self];
-		}
-
-
-	- (IBAction) editWindowTitleCancel: (id) sender
-		{
-		[NSApp endSheet: titleWindow];
-		[titleWindow orderOut: self];
-		}
-
-
-
 #	pragma mark - NSAnimationDelegate Protocol
 
 
@@ -797,7 +676,154 @@ static void *EmulationMain(MachineWindowController *controller)
 		}
 
 
-#	pragma mark - IBAction
+#	pragma mark - IBAction: Main Menu (File)
+
+
+	- (IBAction) saveDocument: (id) sender
+		{
+		}
+
+
+	- (IBAction) saveDocumentAs: (id) sender
+		{
+		NSSavePanel *panel = [NSSavePanel savePanel];
+
+		NSDateComponents *today = [[NSCalendar currentCalendar]
+			components:
+				NSEraCalendarUnit    | NSYearCalendarUnit   |
+				NSMonthCalendarUnit  | NSDayCalendarUnit    |
+				NSHourCalendarUnit   | NSMinuteCalendarUnit |
+				NSSecondCalendarUnit
+			fromDate: [NSDate date]];
+
+		panel.allowedFileTypes = [NSArray arrayWithObjects: @"z80", @"sna", nil];
+		panel.canSelectHiddenExtension = YES;
+
+		panel.nameFieldStringValue = STRING
+			(@"Snapshot (%04li-%02li-%02li %02li.%02li.%02li)",
+			 (long)[today year], (long)[today month],  (long)[today day],
+			 (long)[today hour], (long)[today minute], (long)[today second]);
+
+		[panel beginSheetModalForWindow: self.window completionHandler: ^(NSInteger result)
+			{
+			if (result == NSFileHandlingPanelOKButton)
+				{
+				NSString *path = panel.URL.path;
+				NSError *error;
+
+				if ([self saveSnapshotAtPath: path error: &error])
+					{
+					}
+
+				else [[NSAlert alertWithError: error] runModal];
+				}
+			}];
+		}
+
+
+#	pragma mark - IBAction: Main Menu (Edit)
+
+
+	- (IBAction) copy: (id) sender
+		{
+		}
+
+
+#	pragma mark - IBAction: Main Menu (Machine)
+
+
+	- (IBAction) power: (id) sender
+		{
+		}
+
+
+	- (IBAction) pause: (id) sender
+		{
+		}
+
+
+	- (IBAction) reset: (id) sender
+		{
+		}
+
+
+#	pragma mark - IBAction: Main Menu (View)
+
+
+	- (IBAction) zoomIn: (id) sender
+		{self.zoom = step_up(self.zoom, 0.5);}
+
+
+	- (IBAction) zoomOut: (id) sender
+		{
+		qreal factor = step_down(self.zoom, 0.5);
+
+		self.zoom = factor <= 1.0 ? 1.0 : factor;
+		}
+
+
+	- (IBAction) zoomToFit: (id) sender
+		{[self setZoom: self.window.screen.frame.size.height / (qreal)Q_ZX_SPECTRUM_SCREEN_HEIGHT];}
+
+
+	- (IBAction) zoomTo1x: (id) sender {[self setZoom: 1.0];}
+	- (IBAction) zoomTo2x: (id) sender {[self setZoom: 2.0];}
+	- (IBAction) zoomTo3x: (id) sender {[self setZoom: 3.0];}
+
+
+	- (IBAction) smooth: (NSMenuItem *) sender
+		{
+		BOOL enable = sender.state == NSOnState ? NSOffState : NSOnState;
+
+		sender.state = enable;
+		[_videoOutput setLinearInterpolation: enable];
+		}
+
+
+#	pragma mark - IBAction: Main Menu (Window)
+
+
+	- (IBAction) editWindowTitle: (id) sender
+		{
+		NSString *currentTitle = self.window.title;
+		NSString *placeHolder = [NSString stringWithUTF8String: _machineABI->model_name];
+
+		[titleTextField.cell setPlaceholderString: placeHolder];
+		[titleTextField setStringValue: [currentTitle isEqualToString: placeHolder] ? @"" : currentTitle];
+
+		[NSApp	beginSheet:	titleWindow
+			modalForWindow: [self window]
+			modalDelegate:	self
+			didEndSelector:	nil
+			contextInfo:	nil];
+		}
+
+
+#	pragma mark - IBAction: Window Title Editor
+
+
+	- (IBAction) editWindowTitleOK: (id) sender
+		{
+		NSString *title = [[titleTextField stringValue]
+			stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+		self.window.title = (title && ![title isEqualToString: @""])
+			? title
+			: [NSString stringWithUTF8String: _machineABI->model_name];
+
+		[NSApp endSheet: titleWindow];
+		[titleWindow orderOut: self];
+		}
+
+
+	- (IBAction) editWindowTitleCancel: (id) sender
+		{
+		[NSApp endSheet: titleWindow];
+		[titleWindow orderOut: self];
+		}
+
+
+
 
 
 	- (IBAction) toggleKeyboard: (id) sender

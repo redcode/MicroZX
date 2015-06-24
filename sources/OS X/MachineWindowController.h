@@ -96,12 +96,39 @@
 	- (void) start;
 	- (void) stop;
 
-	//---------------.
-	// Menu: Machine |
-	//---------------'
-	- (IBAction) toggleMachinePower:	(id) sender;
-	- (IBAction) resetMachine:		(id) sender;
-	- (IBAction) toggleMachinePause:	(id) sender;
+	//--------------------.
+	// Main Menu: Machine |
+	//--------------------'
+	- (IBAction) power: (id) sender;
+	- (IBAction) pause: (id) sender;
+	- (IBAction) reset: (id) sender;
+
+	//-----------------.
+	// Main Menu: Edit |
+	//-----------------'
+	- (IBAction) copy: (id) sender;
+
+	//-----------------.
+	// Main Menu: View |
+	//-----------------'
+	- (IBAction) zoomIn:	(id) sender;
+	- (IBAction) zoomOut:	(id) sender;
+	- (IBAction) zoomToFit: (id) sender;
+	- (IBAction) zoomTo1x:	(id) sender;
+	- (IBAction) zoomTo2x:	(id) sender;
+	- (IBAction) zoomTo3x:	(id) sender;
+	- (IBAction) smooth:	(id) sender;
+
+	//-------------------.
+	// Main Menu: Window |
+	//-------------------'
+	- (IBAction) editWindowTitle: (id) sender;
+
+
+
+
+
+
 	- (IBAction) toggleKeyboard:		(id) sender;
 	- (IBAction) toggleTapeRecorder:	(id) sender;
 	- (IBAction) toggleDebugger:		(id) sender;

@@ -340,16 +340,35 @@
                         <items>
                             <menuItem title="Power" keyEquivalent="p" id="Hts-RA-4gs">
                                 <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                <connections>
+                                    <action selector="power:" target="-1" id="y8i-ny-1xJ"/>
+                                </connections>
                             </menuItem>
                             <menuItem title="Pause" id="XUb-ky-BRL">
                                 <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="pause:" target="-1" id="xSL-Dv-7lm"/>
+                                </connections>
                             </menuItem>
                             <menuItem title="Reset" keyEquivalent="r" id="aXe-Q0-wXB">
                                 <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                <connections>
+                                    <action selector="reset:" target="-1" id="cpH-Lp-Akq"/>
+                                </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="fAR-qY-XW1"/>
                             <menuItem title="Audio" id="R9z-Gd-dlS">
                                 <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                            <menuItem title="Video" id="Tqk-ih-thU">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Video" id="uxi-M8-cvc">
+                                    <items>
+                                        <menuItem title="VSync" state="on" id="dn3-bx-A4C">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                    </items>
+                                </menu>
                             </menuItem>
                             <menuItem title="Frameskip" id="TUR-Tz-OZP">
                                 <modifierMask key="keyEquivalentModifierMask"/>
@@ -394,15 +413,43 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="View" id="STC-7t-E3h">
                         <items>
-                            <menuItem title="Zoom In" keyEquivalent="+" id="zrn-fz-E46"/>
-                            <menuItem title="Zoom Out" keyEquivalent="-" id="bRW-2X-Mcg"/>
-                            <menuItem title="Zoom to Fit" keyEquivalent="9" id="nPX-JK-Vq9"/>
+                            <menuItem title="Zoom In" keyEquivalent="+" id="zrn-fz-E46">
+                                <connections>
+                                    <action selector="zoomIn:" target="-1" id="NcF-7p-gPc"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Zoom Out" keyEquivalent="-" id="bRW-2X-Mcg">
+                                <connections>
+                                    <action selector="zoomOut:" target="-1" id="XLQ-m5-DQT"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Zoom to Fit" keyEquivalent="9" id="nPX-JK-Vq9">
+                                <connections>
+                                    <action selector="zoomToFit:" target="-1" id="AaX-zf-pqW"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="XNj-ua-oJp"/>
-                            <menuItem title="1x" keyEquivalent="1" id="S08-s3-hiZ"/>
-                            <menuItem title="2x" keyEquivalent="2" id="Ahu-eH-Mim"/>
-                            <menuItem title="3x" keyEquivalent="3" id="vDL-io-CId"/>
+                            <menuItem title="1x" keyEquivalent="1" id="S08-s3-hiZ">
+                                <connections>
+                                    <action selector="zoomTo1x:" target="-1" id="SZb-Cj-qnp"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="2x" keyEquivalent="2" id="Ahu-eH-Mim">
+                                <connections>
+                                    <action selector="zoomTo2x:" target="-1" id="Ril-x2-MZl"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="3x" keyEquivalent="3" id="vDL-io-CId">
+                                <connections>
+                                    <action selector="zoomTo3x:" target="-1" id="C8h-xW-eb4"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="yYR-Ly-UNh"/>
-                            <menuItem title="Smooth" state="on" keyEquivalent="l" id="M8J-zk-fua"/>
+                            <menuItem title="Smooth" state="on" keyEquivalent="l" id="M8J-zk-fua">
+                                <connections>
+                                    <action selector="smooth:" target="-1" id="Bgf-Ut-t6P"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="Video Effects" id="Irr-Qc-mnm">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Video Effects" id="1q0-CJ-SP7">
@@ -412,9 +459,6 @@
                                         </menuItem>
                                     </items>
                                 </menu>
-                            </menuItem>
-                            <menuItem title="GUI" id="3ug-BD-6uP">
-                                <modifierMask key="keyEquivalentModifierMask"/>
                             </menuItem>
                         </items>
                     </menu>
