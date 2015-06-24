@@ -1,13 +1,11 @@
-//
-//  Machine.h
-//  μZX (OS X)
-//
-//  Created by Manuel on 24/6/15.
-//  Copyright (c) 2015 redcode. All rights reserved.
-//
+/*	_________  ___
+  _____ \_   /\  \/  /	μZX - common/Machine.h
+ |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
+ |   ____________/\__\	Released under the terms of the GNU General Public License v3.
+ |_*/
 
-#ifndef ___ZX__OS_X___Machine__
-#define ___ZX__OS_X___Machine__
+#ifndef __mZX_common_Machine_H
+#define __mZX_common_Machine_H
 
 #include <stdio.h>
 

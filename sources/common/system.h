@@ -1,34 +1,26 @@
-#ifndef mZX_system_h
-#define mZX_system_h
+/* QSystem API - time.c
+	      __	   __
+  _______ ___/ /______ ___/ /__
+ / __/ -_) _  / __/ _ \ _  / -_)
+/_/  \__/\_,_/\__/\___/_,_/\__/
+Copyright © 2006-2014 Manuel Sainz de Baranda y Goñi.
+Released under the terms of the GNU General Public License v3. */
+
+#ifndef __QSystem_time_H__
+#define __QSystem_time_H__
 
 #include <Q/types/base.h>
-#include <pthread/pthread.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-/*
-typedef QSystemThread
+Q_C_SYMBOLS_BEGIN
 
-QStatus q_system_thread_create(QSystemThread *object,)
-			pthread_attr_t threadAttributes;
-			pthread_attr_init(&threadAttributes);
-			pthread_create(&_thread, &threadAttributes, (void *(*)(void *))EmulationMain, self);
-			pthread_attr_destroy(&threadAttributes);
+#define Q_SYSTEM_API
 
+Q_SYSTEM_API void    q_initialize_ticks (void);
 
+Q_SYSTEM_API quint64 q_ticks		(void);
 
-void*	q_system_thread_join(QSystemThread *thread);
-*/
+Q_SYSTEM_API void    q_wait		(quint64 time);
 
-void	q_initialize_ticks  (void);
+Q_C_SYMBOLS_END
 
-quint64 q_ticks		    (void);
-
-void	q_wait		    (quint64 time);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
+#endif /* __QSystem_time_H__ */
