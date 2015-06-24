@@ -195,35 +195,7 @@ static void *EmulationMain(MachineWindowController *controller)
 			| Create auxiliary controls |
 			'--------------------------*/
 			[NSBundle loadNibNamed: @"Title Sheet" owner: self];
-/*
-			NSMenu *machineMenu = [[NSMenu alloc] initWithTitle: @"Machine"];
 
-			[machineMenu addSeparatorItem];
-			[machineMenu addItemWithTitle: @"Volume"	action: @selector(toggleMachinePause:) keyEquivalent: @""];
-			[machineMenu addSeparatorItem];
-			[machineMenu addItemWithTitle: @"Keyboard"	action: @selector(toggleKeyboard:)     keyEquivalent: @"k" modifierMask: NSCommandKeyMask];
-			[machineMenu addItemWithTitle: @"Tape Recorder" action: @selector(toggleTapeRecorder:) keyEquivalent: @"t" modifierMask: NSCommandKeyMask];
-			[machineMenu addItemWithTitle: @"Debugger"	action: @selector(toggleTapeRecorder:) keyEquivalent: @"d" modifierMask: NSCommandKeyMask];
-
-			NSMenu *viewMenu = [[NSMenu alloc] initWithTitle: @"View"];
-
-			[viewMenu addItemWithTitle: @"Actual Size" action: @selector(zoomImageToActualSize:) keyEquivalent: @"0" modifierMask: NSCommandKeyMask];
-			[viewMenu addItemWithTitle: @"Zoom x2"	   action: @selector(zoomImageX2:)	     keyEquivalent: @"2" modifierMask: NSCommandKeyMask];
-			[viewMenu addItemWithTitle: @"Zoom x3"	   action: @selector(zoomImageX3:)	     keyEquivalent: @"3" modifierMask: NSCommandKeyMask];
-			[viewMenu addItemWithTitle: @"Zoom to Fit" action: @selector(zoomImageToFit:)	     keyEquivalent: @"9" modifierMask: NSCommandKeyMask];
-			[viewMenu addItemWithTitle: @"Zoom In"	   action: @selector(zoomIn:)		     keyEquivalent: @"+" modifierMask: NSCommandKeyMask];
-			[viewMenu addItemWithTitle: @"Zoom Out"	   action: @selector(zoomOut:)		     keyEquivalent: @"-" modifierMask: NSCommandKeyMask];
-			[viewMenu addSeparatorItem];
-			[viewMenu addItemWithTitle: @"Smooth" action: @selector(toggleLinearInterpolation:) keyEquivalent: @"l" modifierMask: NSCommandKeyMask state: NSOnState];
-
-			customMenus = [[NSArray alloc] initWithObjects:
-				[NSMenuItem itemWithSubmenu: machineMenu],
-				[NSMenuItem itemWithSubmenu: viewMenu],
-				nil];
-
-			[machineMenu release];
-			[viewMenu release];
-*/
 			/*--------------------------------------.
 			| Create the machine and its components |
 			'--------------------------------------*/

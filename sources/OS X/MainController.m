@@ -77,12 +77,6 @@
 			name:	     NSWindowDidBecomeMainNotification
 			object:	     nil];
 
-		/*[notificationCenter
-			addObserver: self
-			selector:    @selector(windowDidResignKey:)
-			name:	     NSWindowDidResignMainNotification
-			object:	     nil];*/
-
 		[self newDefaultMachine: nil];
 		}
 
@@ -95,11 +89,6 @@
 			removeObserver: self
 			name:		NSWindowDidBecomeMainNotification
 			object:		nil];
-
-		/*[notificationCenter
-			removeObserver: self
-			name:		NSWindowDidResignMainNotification
-			object:		nil];*/
 
 		[_machineControllers release];
 		}
@@ -122,16 +111,6 @@
 			}
 		}
 
-/*
-	- (void) windowDidResignKey: (NSNotification *) notification
-		{
-		NSLog(@"windowDidResignKey");
-		NSMenu *mainMenu = [NSApp mainMenu];
-
-		for (NSMenuItem *item in _currentWindowMenus) [mainMenu removeItem: item];
-		_currentWindowMenus = nil;
-		}
-*/
 
 	- (void) machineWindowWillClose: (NSNotification *) notification
 		{
