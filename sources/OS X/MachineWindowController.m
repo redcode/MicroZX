@@ -780,6 +780,56 @@ static void *EmulationMain(MachineWindowController *controller)
 		}
 
 
+	- (IBAction) keyboard: (id) sender
+		{
+		}
+
+
+	- (IBAction) tapeRecorder: (NSMenuItem *) sender
+		{
+		if (_tapeRecorderController)
+			{
+			sender.state = NSOffState;
+			[_tapeRecorderController removeOutput: self];
+			[_tapeRecorderController release];
+			_tapeRecorderController = nil;
+			ring_buffer_destroy(_audioInputRing);
+			free(_audioInputBuffer);
+			_audioInputRing = NULL;
+			}
+
+		else	{
+			sender.state = NSOnState;
+			_audioInputBuffer = malloc(882);
+			_audioInputRing = ring_buffer_new(3, 882);
+			_tapeRecorderController = [[TapeRecorderController alloc] init];
+			[_tapeRecorderController setFrameSize: 882 count: 4];
+			[_tapeRecorderController addOutput: self action: @selector(submitAudioFrame:)];
+			[_tapeRecorderController.window makeKeyAndOrderFront: self];
+			}
+		}
+
+
+	- (IBAction) debugger: (id) sender
+		{
+		}
+
+
+	- (IBAction) CPU: (id) sender
+		{
+		}
+
+
+	- (IBAction) ULA: (id) sender
+		{
+		}
+
+
+	- (IBAction) PSG: (id) sender
+		{
+		}
+
+
 #	pragma mark - IBAction: Main Menu (Window)
 
 
@@ -828,33 +878,6 @@ static void *EmulationMain(MachineWindowController *controller)
 
 	- (IBAction) toggleKeyboard: (id) sender
 		{
-		}
-
-
-	- (IBAction) toggleTapeRecorder: (NSMenuItem *) sender
-		{
-		//_attachInputBuffer = YES;
-
-		if (_tapeRecorderController)
-			{
-			sender.state = NSOffState;
-			[_tapeRecorderController removeOutput: self];
-			[_tapeRecorderController release];
-			_tapeRecorderController = nil;
-			ring_buffer_destroy(_audioInputRing);
-			free(_audioInputBuffer);
-			_audioInputRing = NULL;
-			}
-
-		else	{
-			sender.state = NSOnState;
-			_audioInputBuffer = malloc(882);
-			_audioInputRing = ring_buffer_new(3, 882);
-			_tapeRecorderController = [[TapeRecorderController alloc] init];
-			[_tapeRecorderController setFrameSize: 882 count: 4];
-			[_tapeRecorderController addOutput: self action: @selector(submitAudioFrame:)];
-			[_tapeRecorderController.window makeKeyAndOrderFront: self];
-			}
 		}
 
 

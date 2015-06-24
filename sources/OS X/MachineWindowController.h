@@ -111,19 +111,24 @@
 	//-----------------.
 	// Main Menu: View |
 	//-----------------'
-	- (IBAction) zoomIn:	(id) sender;
-	- (IBAction) zoomOut:	(id) sender;
-	- (IBAction) zoomToFit: (id) sender;
-	- (IBAction) zoomTo1x:	(id) sender;
-	- (IBAction) zoomTo2x:	(id) sender;
-	- (IBAction) zoomTo3x:	(id) sender;
-	- (IBAction) smooth:	(id) sender;
+	- (IBAction) zoomIn:	   (id) sender;
+	- (IBAction) zoomOut:	   (id) sender;
+	- (IBAction) zoomToFit:	   (id) sender;
+	- (IBAction) zoomTo1x:	   (id) sender;
+	- (IBAction) zoomTo2x:	   (id) sender;
+	- (IBAction) zoomTo3x:	   (id) sender;
+	- (IBAction) smooth:	   (id) sender;
+	- (IBAction) keyboard:	   (id) sender;
+	- (IBAction) tapeRecorder: (id) sender;
+	- (IBAction) debugger:	   (id) sender;
+	- (IBAction) CPU:	   (id) sender;
+	- (IBAction) ULA:	   (id) sender;
+	- (IBAction) PSG:	   (id) sender;
 
 	//-------------------.
 	// Main Menu: Window |
 	//-------------------'
 	- (IBAction) editWindowTitle: (id) sender;
-
 
 
 

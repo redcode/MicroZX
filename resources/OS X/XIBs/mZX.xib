@@ -460,6 +460,50 @@
                                     </items>
                                 </menu>
                             </menuItem>
+                            <menuItem isSeparatorItem="YES" id="6hI-01-Dgv"/>
+                            <menuItem title="Keyboard" id="S2G-p6-TEK">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="keyboard:" target="-1" id="cwt-56-nJQ"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Tape Recorder" id="U4u-5K-pMQ">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="tapeRecorder:" target="-1" id="v7R-je-19y"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Developer" id="qBG-8J-1KP">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Developer" id="8PD-J3-Cht">
+                                    <items>
+                                        <menuItem title="Debugger" id="qHO-VH-HxW">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="debugger:" target="-1" id="hOq-aQ-lgM"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="CPU" id="nCG-hf-DGX">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="CPU:" target="-1" id="pzZ-ql-TtL"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="ULA" id="bAt-Nj-pK8">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="ULA:" target="-1" id="pG0-cP-HZz"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="PSG" id="e4l-g5-0IJ">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="PSG:" target="-1" id="U2v-bl-NF4"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>
