@@ -31,6 +31,19 @@
 #include <Q/macros/color.h>
 
 
+Q_INLINE qreal step_down(qreal n, qreal step_size)
+	{
+	qreal factor = n / step_size;
+	qreal step = floor(factor);
+
+	return step < factor ? step * step_size : step * step_size - step_size;
+	}
+
+
+Q_INLINE qreal step_up(qreal n, qreal step_size)
+	{return floor(n / step_size) * step_size + step_size;}
+
+
 static void *EmulationMain(MachineWindowController *controller)
 	{
 	quint64 frames_per_second = 50;
@@ -114,7 +127,7 @@ static void *EmulationMain(MachineWindowController *controller)
 		}
 
 
-	- (CGFloat) currentZoom
+	- (CGFloat) zoom
 		{
 		return _flags.isFullScreen
 			? _videoOutput.contentSize.x / (CGFloat)Q_ZX_SPECTRUM_SCREEN_WIDTH
@@ -577,6 +590,10 @@ static void *EmulationMain(MachineWindowController *controller)
 #	pragma mark - Full Screen Tracking Area Listeners
 
 
+	- (void) mouseUp: (NSEvent *) event
+		{if (event.clickCount == 2) [self.window toggleFullScreen: self];}
+
+
 	- (void) mouseEntered: (NSEvent *) event
 		{[self startHidePointerTimer];}
 
@@ -653,15 +670,14 @@ static void *EmulationMain(MachineWindowController *controller)
 
 
 	- (IBAction) zoomIn: (id) sender
-		{
-		[self setZoom: floor([self currentZoom] / 0.5) * 0.5 + 0.5];
-		}
+		{self.zoom = step_up(self.zoom, 0.5);}
+
 
 	- (IBAction) zoomOut: (id) sender
 		{
-		CGFloat factor = floor([self currentZoom] / 0.5) * 0.5 - 0.5;
+		qreal factor = step_down(self.zoom, 0.5);
 
-		[self setZoom: factor <= 1.0 ? 1.0 : factor];
+		self.zoom = factor <= 1.0 ? 1.0 : factor;
 		}
 
 
