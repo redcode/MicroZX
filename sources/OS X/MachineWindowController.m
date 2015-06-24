@@ -195,7 +195,7 @@ static void *EmulationMain(MachineWindowController *controller)
 			| Create auxiliary controls |
 			'--------------------------*/
 			[NSBundle loadNibNamed: @"Title Sheet" owner: self];
-
+/*
 			NSMenu *machineMenu = [[NSMenu alloc] initWithTitle: @"Machine"];
 
 			[machineMenu addItemWithTitle: @"Power"		action: @selector(toggleMachinePower:) keyEquivalent: @"e" modifierMask: NSCommandKeyMask | NSAlternateKeyMask];
@@ -226,7 +226,7 @@ static void *EmulationMain(MachineWindowController *controller)
 
 			[machineMenu release];
 			[viewMenu release];
-
+*/
 			/*--------------------------------------.
 			| Create the machine and its components |
 			'--------------------------------------*/

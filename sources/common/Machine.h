@@ -9,11 +9,13 @@
 
 #include <Q/types/base.h>
 #include <pthread.h>
+#include "MachineABI.h"
 
 typedef struct {
-	pthread_t thread;
+	pthread_t   thread;
+	MachineABI* abi;
+	qboolean    must_stop;
 } Machine;
-
 
 void machine_initialize	    (Machine *object);
 
