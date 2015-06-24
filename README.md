@@ -2,16 +2,16 @@
 Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.  
 Released under the terms of the [GNU General Public License v3](http://www.gnu.org/copyleft/gpl.html).
 
-![alt tag](Screenshots/ZX Spectrum + 128K.png)
-![alt tag](Screenshots/ZX Spectrum + 128K Spanish.png)
-![alt tag](Screenshots/Z Moire Source.png)
-![alt tag](Screenshots/Z Moire Run.png)
-![alt tag](Screenshots/Batman Loading.png)
-![alt tag](Screenshots/Batman In Game.png)
-![alt tag](Screenshots/Avenger Loading.png)
-![alt tag](Screenshots/Avenger In Game.png)
-![alt tag](Screenshots/Hydrofool Loading.png)
-![alt tag](Screenshots/Hydrofool In Game.png)
+![alt tag](screenshots/ZX Spectrum + 128K.png)
+![alt tag](screenshots/ZX Spectrum + 128K Spanish.png)
+![alt tag](screenshots/Z Moire Source.png)
+![alt tag](screenshots/Z Moire Run.png)
+![alt tag](screenshots/Batman Loading.png)
+![alt tag](screenshots/Batman In Game.png)
+![alt tag](screenshots/Avenger Loading.png)
+![alt tag](screenshots/Avenger In Game.png)
+![alt tag](screenshots/Hydrofool Loading.png)
+![alt tag](screenshots/Hydrofool In Game.png)
 ### What is μZX?
 μZX is a ZX Spectrum emulator. It is in an early stage of development but it works.
 

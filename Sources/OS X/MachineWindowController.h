@@ -1,7 +1,7 @@
 /*	_________  ___
-  _____ \_   /\  \/  /	μZX - OS X/MachineController.h
- |  |  |_/  /__>    <	Copyright © 2013 RedCode Software.
- |   ____________/\__\	All rights reserved.
+  _____ \_   /\  \/  /	μZX - OS X/MachineWindowController.h
+ |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
+ |   ____________/\__\	Released under the terms of the GNU General Public License v3.
  |_*/
 
 #import <Foundation/Foundation.h>
@@ -16,7 +16,7 @@
 #import <pthread.h>
 #import "ALOutputPlayer.h"
 
-@interface MachineController : NSWindowController <NSWindowDelegate, NSAnimationDelegate> {
+@interface MachineWindowController : NSWindowController <NSWindowDelegate, NSAnimationDelegate> {
 
 	//-------------.
 	// XIB objects |

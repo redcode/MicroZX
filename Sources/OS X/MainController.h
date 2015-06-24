@@ -1,7 +1,7 @@
 /*	_________  ___
   _____ \_   /\  \/  /	μZX - OS X/MainController.h
- |  |  |_/  /__>    <	Copyright © 2013 RedCode Software.
- |   ____________/\__\	All rights reserved.
+ |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
+ |   ____________/\__\	Released under the terms of the GNU General Public License v3.
  |_*/
 
 #import <Cocoa/Cocoa.h>

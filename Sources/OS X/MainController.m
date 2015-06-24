@@ -5,7 +5,7 @@
  |_*/
 
 #import "MainController.h"
-#import "MachineController.h"
+#import "MachineWindowController.h"
 #import "MachineABI.h"
 
 /*static const char* machineNames[] = {
@@ -34,7 +34,7 @@
 
 	- (void) newMachineWithABI: (MachineABI *) ABI
 		{
-		MachineController *controller = [[MachineController alloc] initWithMachineABI: ABI];
+		MachineWindowController *controller = [[MachineWindowController alloc] initWithMachineABI: ABI];
 
 		[_machineControllers addObject: controller];
 		[controller release];
@@ -136,7 +136,7 @@
 	- (void) machineWindowWillClose: (NSNotification *) notification
 		{
 		NSWindow *window = notification.object;
-		MachineController *controller = window.windowController;
+		MachineWindowController *controller = window.windowController;
 
 		[[NSNotificationCenter defaultCenter]
 			removeObserver: self

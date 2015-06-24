@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		645DAEA31B3B213D00C9AB10 /* Machine.c in Sources */ = {isa = PBXBuildFile; fileRef = 645DAEA11B3B213D00C9AB10 /* Machine.c */; };
 		64F5DDAA1A28E03C00D29077 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DDA91A28E03C00D29077 /* Images.xcassets */; };
 		64F5DE081A28E83A00D29077 /* RingBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DDFF1A28E83A00D29077 /* RingBuffer.c */; };
 		64F5DE091A28E83A00D29077 /* system.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE021A28E83A00D29077 /* system.c */; };
@@ -19,7 +20,7 @@
 		64F5DE171A28E90F00D29077 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64F5DE161A28E90F00D29077 /* QuartzCore.framework */; };
 		64F5DE1E1A28E93600D29077 /* mZX.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DE181A28E93600D29077 /* mZX.xib */; };
 		64F5DE1F1A28E93600D29077 /* TapeRecorder.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DE191A28E93600D29077 /* TapeRecorder.xib */; };
-		64F5DE201A28E93600D29077 /* Machine.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DE1A1A28E93600D29077 /* Machine.xib */; };
+		64F5DE201A28E93600D29077 /* MachineWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DE1A1A28E93600D29077 /* MachineWindow.xib */; };
 		64F5DE211A28E93600D29077 /* Title Sheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DE1B1A28E93600D29077 /* Title Sheet.xib */; };
 		64F5DE221A28E93600D29077 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DE1C1A28E93600D29077 /* Preferences.xib */; };
 		64F5DE231A28E93600D29077 /* Z80 Debugger.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DE1D1A28E93600D29077 /* Z80 Debugger.xib */; };
@@ -29,7 +30,7 @@
 		64F5DE301A28E99000D29077 /* NSMenuItem+CocoPlus.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE2C1A28E99000D29077 /* NSMenuItem+CocoPlus.m */; };
 		64F5DE481A28E9B100D29077 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE331A28E9B100D29077 /* main.m */; };
 		64F5DE491A28E9B100D29077 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE351A28E9B100D29077 /* MainController.m */; };
-		64F5DE4A1A28E9B100D29077 /* MachineController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE371A28E9B100D29077 /* MachineController.m */; };
+		64F5DE4A1A28E9B100D29077 /* MachineWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE371A28E9B100D29077 /* MachineWindowController.m */; };
 		64F5DE4B1A28E9B100D29077 /* TapeRecorderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE391A28E9B100D29077 /* TapeRecorderController.m */; };
 		64F5DE4C1A28E9B100D29077 /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE3B1A28E9B100D29077 /* PreferencesController.m */; };
 		64F5DE4D1A28E9B100D29077 /* DevicePanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE3D1A28E9B100D29077 /* DevicePanel.m */; };
@@ -61,6 +62,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		645DAEA11B3B213D00C9AB10 /* Machine.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Machine.c; sourceTree = "<group>"; };
+		645DAEA21B3B213D00C9AB10 /* Machine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Machine.h; sourceTree = "<group>"; };
 		64F5DD9F1A28E03C00D29077 /* μZX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "μZX.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		64F5DDA31A28E03C00D29077 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		64F5DDA91A28E03C00D29077 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -84,7 +87,7 @@
 		64F5DE161A28E90F00D29077 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		64F5DE181A28E93600D29077 /* mZX.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = mZX.xib; sourceTree = "<group>"; };
 		64F5DE191A28E93600D29077 /* TapeRecorder.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TapeRecorder.xib; sourceTree = "<group>"; };
-		64F5DE1A1A28E93600D29077 /* Machine.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Machine.xib; sourceTree = "<group>"; };
+		64F5DE1A1A28E93600D29077 /* MachineWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MachineWindow.xib; sourceTree = "<group>"; };
 		64F5DE1B1A28E93600D29077 /* Title Sheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Title Sheet.xib"; sourceTree = "<group>"; };
 		64F5DE1C1A28E93600D29077 /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		64F5DE1D1A28E93600D29077 /* Z80 Debugger.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Z80 Debugger.xib"; sourceTree = "<group>"; };
@@ -101,8 +104,8 @@
 		64F5DE331A28E9B100D29077 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		64F5DE341A28E9B100D29077 /* MainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainController.h; sourceTree = "<group>"; };
 		64F5DE351A28E9B100D29077 /* MainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainController.m; sourceTree = "<group>"; };
-		64F5DE361A28E9B100D29077 /* MachineController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MachineController.h; sourceTree = "<group>"; };
-		64F5DE371A28E9B100D29077 /* MachineController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MachineController.m; sourceTree = "<group>"; };
+		64F5DE361A28E9B100D29077 /* MachineWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MachineWindowController.h; sourceTree = "<group>"; };
+		64F5DE371A28E9B100D29077 /* MachineWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MachineWindowController.m; sourceTree = "<group>"; };
 		64F5DE381A28E9B100D29077 /* TapeRecorderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TapeRecorderController.h; sourceTree = "<group>"; };
 		64F5DE391A28E9B100D29077 /* TapeRecorderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TapeRecorderController.m; sourceTree = "<group>"; };
 		64F5DE3A1A28E9B100D29077 /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
@@ -185,7 +188,8 @@
 				64F5DDF61A28E69900D29077 /* Common */,
 				64F5DDF51A28E68E00D29077 /* OS X */,
 			);
-			path = Resources;
+			name = Resources;
+			path = ../../resources;
 			sourceTree = "<group>";
 		};
 		64F5DDEE1A28E54B00D29077 /* Sources */ = {
@@ -194,7 +198,8 @@
 				64F5DDF31A28E5EC00D29077 /* Common */,
 				64F5DDF41A28E5F200D29077 /* OS X */,
 			);
-			path = Sources;
+			name = Sources;
+			path = ../../sources;
 			sourceTree = "<group>";
 		};
 		64F5DDEF1A28E56100D29077 /* Property Lists */ = {
@@ -228,7 +233,7 @@
 			children = (
 				64F5DE181A28E93600D29077 /* mZX.xib */,
 				64F5DE191A28E93600D29077 /* TapeRecorder.xib */,
-				64F5DE1A1A28E93600D29077 /* Machine.xib */,
+				64F5DE1A1A28E93600D29077 /* MachineWindow.xib */,
 				64F5DE1B1A28E93600D29077 /* Title Sheet.xib */,
 				64F5DE1C1A28E93600D29077 /* Preferences.xib */,
 				64F5DE1D1A28E93600D29077 /* Z80 Debugger.xib */,
@@ -254,8 +259,11 @@
 				64F5DE051A28E83A00D29077 /* GLOutput.h */,
 				64F5DE061A28E83A00D29077 /* GLOutput.c */,
 				64F5DE071A28E83A00D29077 /* GLOutputShader.c */,
+				645DAEA11B3B213D00C9AB10 /* Machine.c */,
+				645DAEA21B3B213D00C9AB10 /* Machine.h */,
 			);
-			path = Common;
+			name = Common;
+			path = common;
 			sourceTree = "<group>";
 		};
 		64F5DDF41A28E5F200D29077 /* OS X */ = {
@@ -266,8 +274,8 @@
 				64F5DE331A28E9B100D29077 /* main.m */,
 				64F5DE341A28E9B100D29077 /* MainController.h */,
 				64F5DE351A28E9B100D29077 /* MainController.m */,
-				64F5DE361A28E9B100D29077 /* MachineController.h */,
-				64F5DE371A28E9B100D29077 /* MachineController.m */,
+				64F5DE361A28E9B100D29077 /* MachineWindowController.h */,
+				64F5DE371A28E9B100D29077 /* MachineWindowController.m */,
 				64F5DE381A28E9B100D29077 /* TapeRecorderController.h */,
 				64F5DE391A28E9B100D29077 /* TapeRecorderController.m */,
 				64F5DE3A1A28E9B100D29077 /* PreferencesController.h */,
@@ -457,7 +465,7 @@
 				64F5DE1E1A28E93600D29077 /* mZX.xib in Resources */,
 				64F5DE1F1A28E93600D29077 /* TapeRecorder.xib in Resources */,
 				64F5DEB41A28EB6600D29077 /* ROMs in Resources */,
-				64F5DE201A28E93600D29077 /* Machine.xib in Resources */,
+				64F5DE201A28E93600D29077 /* MachineWindow.xib in Resources */,
 				64F5DE7D1A28EB3900D29077 /* SABR.vsh in Resources */,
 				64F5DE771A28EB2600D29077 /* Keyboard.pdf in Resources */,
 				64F5DE211A28E93600D29077 /* Title Sheet.xib in Resources */,
@@ -480,7 +488,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/Resources/OS X/Property Lists/Info.plist\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/Resources/OS X/Property Lists/Info.plist\"";
+			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/../../resources/OS X/Property Lists/Info.plist\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/../../resources/OS X/Property Lists/Info.plist\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -496,6 +504,7 @@
 				64F5DE4C1A28E9B100D29077 /* PreferencesController.m in Sources */,
 				64F5DE671A28EA5100D29077 /* SIT.c in Sources */,
 				64F5DEB71A28EC7000D29077 /* ALOutput.c in Sources */,
+				645DAEA31B3B213D00C9AB10 /* Machine.c in Sources */,
 				64F5DE511A28E9B100D29077 /* TapeRecorderWindow.m in Sources */,
 				64F5DE0B1A28E83A00D29077 /* GLOutput.c in Sources */,
 				64F5DE0C1A28E83A00D29077 /* GLOutputShader.c in Sources */,
@@ -504,7 +513,7 @@
 				64F5DE661A28EA5100D29077 /* ACH.c in Sources */,
 				64F5DE641A28EA5100D29077 /* PLUSD.c in Sources */,
 				64F5DE2E1A28E99000D29077 /* NSView+RedCode.m in Sources */,
-				64F5DE4A1A28E9B100D29077 /* MachineController.m in Sources */,
+				64F5DE4A1A28E9B100D29077 /* MachineWindowController.m in Sources */,
 				64F5DE4D1A28E9B100D29077 /* DevicePanel.m in Sources */,
 				64F5DE091A28E83A00D29077 /* system.c in Sources */,
 				64F5DE711A28EA5F00D29077 /* Z80.c in Sources */,
@@ -615,8 +624,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Sources/OS X/Prefix.pch";
-				INFOPLIST_FILE = "Resources/OS X/Property Lists/Info.plist";
+				GCC_PREFIX_HEADER = "../../sources/OS X/Prefix.pch";
+				INFOPLIST_FILE = "../../resources/OS X/Property Lists/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -628,8 +637,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Sources/OS X/Prefix.pch";
-				INFOPLIST_FILE = "Resources/OS X/Property Lists/Info.plist";
+				GCC_PREFIX_HEADER = "../../sources/OS X/Prefix.pch";
+				INFOPLIST_FILE = "../../resources/OS X/Property Lists/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

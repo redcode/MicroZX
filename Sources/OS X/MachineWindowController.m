@@ -1,10 +1,10 @@
 /*	_________  ___
-  _____ \_   /\  \/  /	μZX - OS X/MachineController.m
- |  |  |_/  /__>    <	Copyright © 2014 Manuel Sainz de Baranda y Goñi.
- |   ____________/\__\	All rights reserved.
+  _____ \_   /\  \/  /	μZX - OS X/MachineWindowController.m
+ |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
+ |   ____________/\__\	Released under the terms of the GNU General Public License v3.
  |_*/
 
-#import "MachineController.h"
+#import "MachineWindowController.h"
 #import "geometry.h"
 #import "KeyCodes.h"
 #import <Q/hardware/machine/platform/computer/ZX Spectrum.h>
@@ -31,7 +31,7 @@
 #include <Q/macros/color.h>
 
 
-static void *EmulationMain(MachineController *controller)
+static void *EmulationMain(MachineWindowController *controller)
 	{
 	quint64 frames_per_second = 50;
 	quint64 frame_ticks	  = 1000000000 / frames_per_second;
@@ -79,7 +79,7 @@ static void *EmulationMain(MachineController *controller)
 	}
 
 
-@implementation MachineController
+@implementation MachineWindowController
 
 
 #	pragma mark - Helpers
@@ -174,7 +174,7 @@ static void *EmulationMain(MachineController *controller)
 
 	- (id) initWithMachineABI: (MachineABI *) machineABI
 		{
-		if ((self = [super initWithWindowNibName: @"Machine"]))
+		if ((self = [super initWithWindowNibName: @"MachineWindow"]))
 			{
 			_smooth = YES;
 
