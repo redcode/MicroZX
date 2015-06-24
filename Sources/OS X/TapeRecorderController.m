@@ -55,7 +55,7 @@ void *tape_recorder_play(TapeRecorder *object)
 		{
 		((void (*)(id,SEL, quint8 *))_tapeRecorder.output_method)(_tapeRecorder.output, _tapeRecorder.output_selector, _tapeRecorder.samples + _tapeRecorder.frame_size * _tapeRecorder.frame_index);
 		_tapeRecorder.frame_index++;
-		NSLog(@"playFrame");
+		//NSLog(@"playFrame");
 		}
 
 

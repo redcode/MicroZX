@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		64F5DDAA1A28E03C00D29077 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DDA91A28E03C00D29077 /* Images.xcassets */; };
-		64F5DDFB1A28E82800D29077 /* ACMEMachine.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DDFA1A28E82800D29077 /* ACMEMachine.c */; };
 		64F5DE081A28E83A00D29077 /* RingBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DDFF1A28E83A00D29077 /* RingBuffer.c */; };
 		64F5DE091A28E83A00D29077 /* system.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE021A28E83A00D29077 /* system.c */; };
 		64F5DE0B1A28E83A00D29077 /* GLOutput.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE061A28E83A00D29077 /* GLOutput.c */; };
@@ -66,8 +65,6 @@
 		64F5DDA31A28E03C00D29077 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		64F5DDA91A28E03C00D29077 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		64F5DDF81A28E82800D29077 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
-		64F5DDF91A28E82800D29077 /* ACMEMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMEMachine.h; sourceTree = "<group>"; };
-		64F5DDFA1A28E82800D29077 /* ACMEMachine.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ACMEMachine.c; sourceTree = "<group>"; };
 		64F5DDFC1A28E83A00D29077 /* MachineABI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MachineABI.h; sourceTree = "<group>"; };
 		64F5DDFD1A28E83A00D29077 /* geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geometry.h; sourceTree = "<group>"; };
 		64F5DDFE1A28E83A00D29077 /* OpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGL.h; sourceTree = "<group>"; };
@@ -245,8 +242,6 @@
 				64F5DE541A28EA0000D29077 /* Codecs */,
 				64F5DE531A28E9F900D29077 /* Emulators */,
 				64F5DDF81A28E82800D29077 /* types.h */,
-				64F5DDF91A28E82800D29077 /* ACMEMachine.h */,
-				64F5DDFA1A28E82800D29077 /* ACMEMachine.c */,
 				64F5DDFC1A28E83A00D29077 /* MachineABI.h */,
 				64F5DDFD1A28E83A00D29077 /* geometry.h */,
 				64F5DDFE1A28E83A00D29077 /* OpenGL.h */,
@@ -501,7 +496,6 @@
 				64F5DE4C1A28E9B100D29077 /* PreferencesController.m in Sources */,
 				64F5DE671A28EA5100D29077 /* SIT.c in Sources */,
 				64F5DEB71A28EC7000D29077 /* ALOutput.c in Sources */,
-				64F5DDFB1A28E82800D29077 /* ACMEMachine.c in Sources */,
 				64F5DE511A28E9B100D29077 /* TapeRecorderWindow.m in Sources */,
 				64F5DE0B1A28E83A00D29077 /* GLOutput.c in Sources */,
 				64F5DE0C1A28E83A00D29077 /* GLOutputShader.c in Sources */,
