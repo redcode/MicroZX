@@ -1,14 +1,11 @@
-/* ACME - GLOutput.h
-  ____    ____    ___ ___     ___
- / __ \  / ___\  / __` __`\  / __`\
-/\ \/  \/\ \__/_/\ \/\ \/\ \/\  __/
-\ \__/\_\ \_____\ \_\ \_\ \_\ \____\
- \/_/\/_/\/_____/\/_/\/_/\/_/\/____/
-Copyright © 2013-2014 Manuel Sainz de Baranda y Goñi.
-Released under the terms of the GNU General Public License v3. */
+/*	_________  ___
+  _____ \_   /\  \/  /	common/GLOutput.h
+ |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
+ |   ____________/\__\	Released under the terms of the GNU General Public License v3.
+ |_*/
 
-#ifndef __ACME_GLOutput_H__
-#define __ACME_GLOutput_H__
+#ifndef __mZX_common_GLOutput_H
+#define __mZX_common_GLOutput_H
 
 #include <Q/types/mathematics.h>
 #include <Q/types/buffering.h>
@@ -58,9 +55,7 @@ typedef struct {
 
 #define GL_OUTPUT(p) ((GLOutput *)(p))
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+Q_C_SYMBOLS_BEGIN
 
 void gl_output_initialize	  (GLOutput*	   object,
 				   OpenGLContext   context);
@@ -92,8 +87,6 @@ void gl_output_draw		  (GLOutput*	   object,
 
 void gl_output_set_linear_interpolation(GLOutput *object, qboolean value);
 
-#ifdef __cplusplus
-}
-#endif
+Q_C_SYMBOLS_END
 
-#endif /* __ACME_GLOutput_H__ */
+#endif /* __mZX_common_GLOutput_H */

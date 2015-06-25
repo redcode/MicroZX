@@ -1,5 +1,5 @@
 /*	_________  ___
-  _____ \_   /\  \/  /	μZX - OS X/MainController.h
+  _____ \_   /\  \/  /	OS X/MainController.m
  |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
  |   ____________/\__\	Released under the terms of the GNU General Public License v3.
  |_*/
@@ -19,14 +19,14 @@
 		{
 		MachineWindowController *controller = [[MachineWindowController alloc] initWithMachineABI: ABI];
 
-		[_machineControllers addObject: controller];
+		[_machineWindowControllers addObject: controller];
 		[controller release];
 
 		NSWindow *window = controller.window;
 
 		[[NSNotificationCenter defaultCenter]
 			addObserver: self
-			selector:    @selector(machineWindowWillClose:)
+			selector:    @selector(windowWillClose:)
 			name:	     NSWindowWillCloseNotification
 			object:	     window];
 
@@ -39,7 +39,7 @@
 
 	- (void) applicationDidFinishLaunching: (NSNotification *) aNotification
 		{
-		_machineControllers = [[NSMutableArray alloc] init];
+		_machineWindowControllers = [[NSMutableArray alloc] init];
 
 		NSUInteger i = 0;
 
@@ -61,14 +61,14 @@
 			name:		NSWindowDidBecomeMainNotification
 			object:		nil];
 
-		[_machineControllers release];
+		[_machineWindowControllers release];
 		}
 
 
 #	pragma mark - Callbacks
 
 
-	- (void) machineWindowWillClose: (NSNotification *) notification
+	- (void) windowWillClose: (NSNotification *) notification
 		{
 		NSWindow *window = notification.object;
 		MachineWindowController *controller = window.windowController;
@@ -78,11 +78,36 @@
 			name:		NSWindowWillCloseNotification
 			object:		window];
 
-		[_machineControllers removeObject: controller];
+		if ([controller isKindOfClass: MachineWindowController.class])
+			[_machineWindowControllers removeObject: controller];
+
+		else	{
+			[_preferencesWindowController release];
+			_preferencesWindowController = nil;
+			}
 		}
 
 
 #	pragma mark - IBAction
+
+
+	- (IBAction) preferences: (id) sender
+		{
+		if (!_preferencesWindowController)
+			{
+			NSWindow *window = (_preferencesWindowController = [[PreferencesWindowController alloc] init]).window;
+
+			[[NSNotificationCenter defaultCenter]
+				addObserver: self
+				selector:    @selector(windowWillClose:)
+				name:	     NSWindowWillCloseNotification
+				object:	     window];
+
+			[window makeKeyAndOrderFront: self];
+			}
+
+		else [_preferencesWindowController.window makeKeyAndOrderFront: self];
+		}
 
 
 	- (IBAction) openDocument: (id) sender

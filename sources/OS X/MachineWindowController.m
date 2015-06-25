@@ -1,5 +1,5 @@
 /*	_________  ___
-  _____ \_   /\  \/  /	μZX - OS X/MachineWindowController.m
+  _____ \_   /\  \/  /	OS X/MachineWindowController.m
  |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
  |   ____________/\__\	Released under the terms of the GNU General Public License v3.
  |_*/

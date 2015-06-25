@@ -1,11 +1,8 @@
-/* ACME - GLOutput.c
-  ____    ____    ___ ___     ___
- / __ \  / ___\  / __` __`\  / __`\
-/\ \/  \/\ \__/_/\ \/\ \/\ \/\  __/
-\ \__/\_\ \_____\ \_\ \_\ \_\ \____\
- \/_/\/_/\/_____/\/_/\/_/\/_/\/____/
-Copyright © 2013-2014 Manuel Sainz de Baranda y Goñi.
-Released under the terms of the GNU General Public License v3. */
+/*	_________  ___
+  _____ \_   /\  \/  /	common/GLOutput.c
+ |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
+ |   ____________/\__\	Released under the terms of the GNU General Public License v3.
+ |_*/
 
 #include "GLOutput.h"
 #include <Q/functions/base/Q2DValue.h>

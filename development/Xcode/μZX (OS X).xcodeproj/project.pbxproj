@@ -22,7 +22,7 @@
 		64F5DE1F1A28E93600D29077 /* TapeRecorder.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DE191A28E93600D29077 /* TapeRecorder.xib */; };
 		64F5DE201A28E93600D29077 /* MachineWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DE1A1A28E93600D29077 /* MachineWindow.xib */; };
 		64F5DE211A28E93600D29077 /* Title Sheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DE1B1A28E93600D29077 /* Title Sheet.xib */; };
-		64F5DE221A28E93600D29077 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DE1C1A28E93600D29077 /* Preferences.xib */; };
+		64F5DE221A28E93600D29077 /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DE1C1A28E93600D29077 /* PreferencesWindow.xib */; };
 		64F5DE231A28E93600D29077 /* Z80 Debugger.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DE1D1A28E93600D29077 /* Z80 Debugger.xib */; };
 		64F5DE2D1A28E99000D29077 /* NSWindow+RedCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE261A28E99000D29077 /* NSWindow+RedCode.m */; };
 		64F5DE2E1A28E99000D29077 /* NSView+RedCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE281A28E99000D29077 /* NSView+RedCode.m */; };
@@ -32,8 +32,7 @@
 		64F5DE491A28E9B100D29077 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE351A28E9B100D29077 /* MainController.m */; };
 		64F5DE4A1A28E9B100D29077 /* MachineWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE371A28E9B100D29077 /* MachineWindowController.m */; };
 		64F5DE4B1A28E9B100D29077 /* TapeRecorderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE391A28E9B100D29077 /* TapeRecorderController.m */; };
-		64F5DE4C1A28E9B100D29077 /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE3B1A28E9B100D29077 /* PreferencesController.m */; };
-		64F5DE4D1A28E9B100D29077 /* DevicePanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE3D1A28E9B100D29077 /* DevicePanel.m */; };
+		64F5DE4C1A28E9B100D29077 /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE3B1A28E9B100D29077 /* PreferencesWindowController.m */; };
 		64F5DE4E1A28E9B100D29077 /* GLOutputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE3F1A28E9B100D29077 /* GLOutputView.m */; };
 		64F5DE4F1A28E9B100D29077 /* CoreAudioOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE411A28E9B100D29077 /* CoreAudioOutput.m */; };
 		64F5DE511A28E9B100D29077 /* TapeRecorderWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE451A28E9B100D29077 /* TapeRecorderWindow.m */; };
@@ -67,7 +66,6 @@
 		64F5DD9F1A28E03C00D29077 /* μZX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "μZX.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		64F5DDA31A28E03C00D29077 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		64F5DDA91A28E03C00D29077 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		64F5DDF81A28E82800D29077 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
 		64F5DDFC1A28E83A00D29077 /* MachineABI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MachineABI.h; sourceTree = "<group>"; };
 		64F5DDFD1A28E83A00D29077 /* geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geometry.h; sourceTree = "<group>"; };
 		64F5DDFE1A28E83A00D29077 /* OpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGL.h; sourceTree = "<group>"; };
@@ -85,7 +83,7 @@
 		64F5DE191A28E93600D29077 /* TapeRecorder.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TapeRecorder.xib; sourceTree = "<group>"; };
 		64F5DE1A1A28E93600D29077 /* MachineWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MachineWindow.xib; sourceTree = "<group>"; };
 		64F5DE1B1A28E93600D29077 /* Title Sheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Title Sheet.xib"; sourceTree = "<group>"; };
-		64F5DE1C1A28E93600D29077 /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
+		64F5DE1C1A28E93600D29077 /* PreferencesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreferencesWindow.xib; sourceTree = "<group>"; };
 		64F5DE1D1A28E93600D29077 /* Z80 Debugger.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Z80 Debugger.xib"; sourceTree = "<group>"; };
 		64F5DE251A28E99000D29077 /* NSWindow+RedCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWindow+RedCode.h"; sourceTree = "<group>"; };
 		64F5DE261A28E99000D29077 /* NSWindow+RedCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSWindow+RedCode.m"; sourceTree = "<group>"; };
@@ -104,10 +102,8 @@
 		64F5DE371A28E9B100D29077 /* MachineWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MachineWindowController.m; sourceTree = "<group>"; };
 		64F5DE381A28E9B100D29077 /* TapeRecorderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TapeRecorderController.h; sourceTree = "<group>"; };
 		64F5DE391A28E9B100D29077 /* TapeRecorderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TapeRecorderController.m; sourceTree = "<group>"; };
-		64F5DE3A1A28E9B100D29077 /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
-		64F5DE3B1A28E9B100D29077 /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
-		64F5DE3C1A28E9B100D29077 /* DevicePanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DevicePanel.h; sourceTree = "<group>"; };
-		64F5DE3D1A28E9B100D29077 /* DevicePanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DevicePanel.m; sourceTree = "<group>"; };
+		64F5DE3A1A28E9B100D29077 /* PreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesWindowController.h; sourceTree = "<group>"; };
+		64F5DE3B1A28E9B100D29077 /* PreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesWindowController.m; sourceTree = "<group>"; };
 		64F5DE3E1A28E9B100D29077 /* GLOutputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLOutputView.h; sourceTree = "<group>"; };
 		64F5DE3F1A28E9B100D29077 /* GLOutputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLOutputView.m; sourceTree = "<group>"; };
 		64F5DE401A28E9B100D29077 /* CoreAudioOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreAudioOutput.h; sourceTree = "<group>"; };
@@ -229,7 +225,7 @@
 				64F5DE191A28E93600D29077 /* TapeRecorder.xib */,
 				64F5DE1A1A28E93600D29077 /* MachineWindow.xib */,
 				64F5DE1B1A28E93600D29077 /* Title Sheet.xib */,
-				64F5DE1C1A28E93600D29077 /* Preferences.xib */,
+				64F5DE1C1A28E93600D29077 /* PreferencesWindow.xib */,
 				64F5DE1D1A28E93600D29077 /* Z80 Debugger.xib */,
 			);
 			path = XIBs;
@@ -240,7 +236,6 @@
 			children = (
 				64F5DE541A28EA0000D29077 /* Codecs */,
 				64F5DE531A28E9F900D29077 /* Emulators */,
-				64F5DDF81A28E82800D29077 /* types.h */,
 				645DAEA41B3B2C5400C9AB10 /* system.h */,
 				645DAEA51B3B2C5400C9AB10 /* system.c */,
 				64F5DDFD1A28E83A00D29077 /* geometry.h */,
@@ -269,10 +264,8 @@
 				64F5DE371A28E9B100D29077 /* MachineWindowController.m */,
 				64F5DE3E1A28E9B100D29077 /* GLOutputView.h */,
 				64F5DE3F1A28E9B100D29077 /* GLOutputView.m */,
-				64F5DE3A1A28E9B100D29077 /* PreferencesController.h */,
-				64F5DE3B1A28E9B100D29077 /* PreferencesController.m */,
-				64F5DE3C1A28E9B100D29077 /* DevicePanel.h */,
-				64F5DE3D1A28E9B100D29077 /* DevicePanel.m */,
+				64F5DE3A1A28E9B100D29077 /* PreferencesWindowController.h */,
+				64F5DE3B1A28E9B100D29077 /* PreferencesWindowController.m */,
 				64F5DE401A28E9B100D29077 /* CoreAudioOutput.h */,
 				64F5DE411A28E9B100D29077 /* CoreAudioOutput.m */,
 				64F5DE381A28E9B100D29077 /* TapeRecorderController.h */,
@@ -451,7 +444,7 @@
 				64F5DE791A28EB2600D29077 /* Tape.pdf in Resources */,
 				64F5DE781A28EB2600D29077 /* Debugger.pdf in Resources */,
 				64F5DE231A28E93600D29077 /* Z80 Debugger.xib in Resources */,
-				64F5DE221A28E93600D29077 /* Preferences.xib in Resources */,
+				64F5DE221A28E93600D29077 /* PreferencesWindow.xib in Resources */,
 				64F5DE1E1A28E93600D29077 /* mZX.xib in Resources */,
 				64F5DE1F1A28E93600D29077 /* TapeRecorder.xib in Resources */,
 				64F5DEB41A28EB6600D29077 /* ROMs in Resources */,
@@ -492,7 +485,7 @@
 				645DAEA91B3C750C00C9AB10 /* Machine.c in Sources */,
 				64F5DE631A28EA5100D29077 /* FRZ.c in Sources */,
 				64F5DE621A28EA5100D29077 /* 89C.c in Sources */,
-				64F5DE4C1A28E9B100D29077 /* PreferencesController.m in Sources */,
+				64F5DE4C1A28E9B100D29077 /* PreferencesWindowController.m in Sources */,
 				64F5DE671A28EA5100D29077 /* SIT.c in Sources */,
 				64F5DE511A28E9B100D29077 /* TapeRecorderWindow.m in Sources */,
 				645DAEA61B3B2C5400C9AB10 /* system.c in Sources */,
@@ -503,7 +496,6 @@
 				64F5DE641A28EA5100D29077 /* PLUSD.c in Sources */,
 				64F5DE2E1A28E99000D29077 /* NSView+RedCode.m in Sources */,
 				64F5DE4A1A28E9B100D29077 /* MachineWindowController.m in Sources */,
-				64F5DE4D1A28E9B100D29077 /* DevicePanel.m in Sources */,
 				64F5DE711A28EA5F00D29077 /* Z80.c in Sources */,
 				64F5DE2F1A28E99000D29077 /* NSMenu+CocoPlus.m in Sources */,
 				64F5DE4E1A28E9B100D29077 /* GLOutputView.m in Sources */,

@@ -1,16 +1,12 @@
-/* ACME - TapeRecorderController.m
-  ____    ____    ___ ___     ___
- / __ \  / ___\  / __` __`\  / __`\
-/\ \/  \/\ \__/_/\ \/\ \/\ \/\  __/
-\ \__/\_\ \_____\ \_\ \_\ \_\ \____\
- \/_/\/_/\/_____/\/_/\/_/\/_/\/____/
-Copyright © 2014 Manuel Sainz de Baranda y Goñi <manuel@redcodesoftware.com>
-Released under the terms of the GNU General Public License v3. */
+/*	_________  ___
+  _____ \_   /\  \/  /	OS X/TapeRecorderController.m
+ |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
+ |   ____________/\__\	Released under the terms of the GNU General Public License v3.
+ |_*/
 
 #import "TapeRecorderController.h"
 #import <Q/formats/storage medium image/audio/TZX.h>
 #import <CoreAudio/CoreAudio.h>
-#import "DevicePanel.h"
 #import <time.h>
 
 
@@ -112,10 +108,10 @@ void *tape_recorder_play(TapeRecorder *object)
 			{
 			[NSBundle loadNibNamed: @"TapeRecorder" owner: self];
 			NSSize contentSize = contentView.bounds.size;
-			NSWindow *window = [[DevicePanel alloc] initWithContentRect: NSMakeRect(100.0, 100.0, contentSize.width, contentSize.height)];
+		//	NSWindow *window = [[DevicePanel alloc] initWithContentRect: NSMakeRect(100.0, 100.0, contentSize.width, contentSize.height)];
 
-			window.contentView = contentView;
-			[window orderFront: self];
+		//	window.contentView = contentView;
+		//	[window orderFront: self];
 			}
 
 		return self;

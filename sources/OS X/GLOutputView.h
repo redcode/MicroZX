@@ -1,11 +1,8 @@
-/* ACME - GLOutput.h
-  ____    ____    ___ ___     ___
- / __ \  / ___\  / __` __`\  / __`\
-/\ \/  \/\ \__/_/\ \/\ \/\ \/\  __/
-\ \__/\_\ \_____\ \_\ \_\ \_\ \____\
- \/_/\/_/\/_____/\/_/\/_/\/_/\/____/
-Copyright © 2013-2014 Manuel Sainz de Baranda y Goñi.
-Released under the terms of the GNU General Public License v3. */
+/*	_________  ___
+  _____ \_   /\  \/  /	OS X/GLOutputView.h
+ |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
+ |   ____________/\__\	Released under the terms of the GNU General Public License v3.
+ |_*/
 
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/QuartzCore.h>
@@ -24,7 +21,6 @@ Released under the terms of the GNU General Public License v3. */
 		BOOL active	       :1;
 	} _flags;
 }
-
 	@property (nonatomic, readonly) GLOutput*      GLOutput;
 	@property (nonatomic, readonly) QTripleBuffer* buffer;
 	@property (nonatomic, assign)	Q2D	       contentSize;
@@ -38,5 +34,4 @@ Released under the terms of the GNU General Public License v3. */
 	- (void) stop;
 
 	- (void) setLinearInterpolation: (BOOL) value;
-
 @end

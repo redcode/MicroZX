@@ -1,5 +1,5 @@
 /*	_________  ___
-  _____ \_   /\  \/  /	μZX - common/Machine.h
+  _____ \_   /\  \/  /	common/Machine.h
  |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
  |   ____________/\__\	Released under the terms of the GNU General Public License v3.
  |_*/
@@ -14,17 +14,19 @@
 #include "MachineABI.h"
 
 typedef struct {
-	pthread_t      thread;
-	ZXSpectrum*    context;
-	MachineABI*    abi;
-	QTripleBuffer* video_output_buffer;
-	QRingBuffer*   audio_output_buffer;
-	QRingBuffer*   audio_input_buffer;
-	qboolean       must_stop;
+	pthread_t	  thread;
+	ZXSpectrum*	  context;
+	MachineABI*	  abi;
+	QTripleBuffer*	  video_output_buffer;
+	QRingBuffer*	  audio_output_buffer;
+	QRingBuffer*	  audio_input_buffer;
+	volatile qboolean must_stop;
 
 	struct {quint8 running :1;
 	} flags;
 } Machine;
+
+Q_C_SYMBOLS_BEGIN
 
 void machine_initialize		    (Machine*	    object,
 				     MachineABI*    abi,
@@ -52,5 +54,7 @@ void machine_keyboard_input	    (Machine*	    object,
 
 void machine_set_audio_input_buffer (Machine*	    object,
 				     QRingBuffer*   audio_input_buffer);
+
+Q_C_SYMBOLS_END
 
 #endif /* __mZX_common_Machine_H */

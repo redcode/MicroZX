@@ -1,5 +1,5 @@
 /*	_________  ___
-  _____ \_   /\  \/  /	μZX - common/MainController.h
+  _____ \_   /\  \/  /	common/Machine.c
  |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
  |   ____________/\__\	Released under the terms of the GNU General Public License v3.
  |_*/
@@ -12,6 +12,9 @@
 #include <stdlib.h>
 
 
+/*---------------------.
+| Emulation main loop. |
+'---------------------*/
 static void *emulate(Machine *object)
 	{
 	quint64 frames_per_second = 50;
@@ -50,9 +53,7 @@ static void *emulate(Machine *object)
 		//----------------------------------------.
 		// Schedule next iteration time and wait. |
 		//----------------------------------------'
-		if ((delta = next_frame_tick - q_ticks()) <= frame_ticks)
-			q_wait(delta);
-
+		if ((delta = next_frame_tick - q_ticks()) <= frame_ticks) q_wait(delta);
 		//else printf("delta => %lu, next => %lu\n", delta, next_frame_tick);
 		}
 

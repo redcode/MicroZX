@@ -1,14 +1,11 @@
-/* ACME - OpenGL.h
-  ____    ____    ___ ___     ___
- / __ \  / ___\  / __` __`\  / __`\
-/\ \/  \/\ \__/_/\ \/\ \/\ \/\  __/
-\ \__/\_\ \_____\ \_\ \_\ \_\ \____\
- \/_/\/_/\/_____/\/_/\/_/\/_/\/____/
-Copyright © 2013-2014 Manuel Sainz de Baranda y Goñi.
-Released under the terms of the GNU General Public License v3. */
+/*	_________  ___
+  _____ \_   /\  \/  /	common/OpenGL.h
+ |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
+ |   ____________/\__\	Released under the terms of the GNU General Public License v3.
+ |_*/
 
-#ifndef __ACME_OpenGL_H__
-#define __ACME_OpenGL_H__
+#ifndef __mZX_common_OpenGL_H
+#define __mZX_common_OpenGL_H
 
 #include <Q/inspection/OS.h>
 
@@ -27,4 +24,4 @@ Released under the terms of the GNU General Public License v3. */
 #endif
 
 
-#endif /* __ACME_OpenGL_H__ */
+#endif /* __mZX_common_OpenGL_H */

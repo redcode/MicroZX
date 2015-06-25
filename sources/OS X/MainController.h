@@ -1,17 +1,18 @@
 /*	_________  ___
-  _____ \_   /\  \/  /	μZX - OS X/MainController.h
+  _____ \_   /\  \/  /	OS X/MainController.h
  |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
  |   ____________/\__\	Released under the terms of the GNU General Public License v3.
  |_*/
 
-#import <Cocoa/Cocoa.h>
+#import "PreferencesWindowController.h"
 
 @interface MainController : NSObject <NSApplicationDelegate> {
 	IBOutlet NSMenu* machinesMenu;
 
-	NSMutableArray*  _machineControllers;
+	PreferencesWindowController* _preferencesWindowController;
+	NSMutableArray*		     _machineWindowControllers;
 }
-
+	- (IBAction) preferences:	(id) sender;
 	- (IBAction) newDefaultMachine: (id) sender;
 	- (IBAction) newMachine:	(id) sender;
 @end

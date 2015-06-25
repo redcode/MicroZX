@@ -1,11 +1,11 @@
 /*	_________  ___
-  _____ \_   /\  \/  /	mZX - Common/geometry.h
- |  |  |_/  /__>    <	Copyright © 2013 RedCode Software.
- |   ____________/\__\	All rights reserved.
+  _____ \_   /\  \/  /	OS X/geometry.h
+ |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
+ |   ____________/\__\	Released under the terms of the GNU General Public License v3.
  |_*/
 
-#ifndef _Mines_geometry_h
-#define _Mines_geometry_h
+#ifndef __mZX_OS_X_geometry_H
+#define __mZX_OS_X_geometry_H
 
 #include <Cocoa/Cocoa.h>
 #import <Q/functions/base/Q2DValue.h>
@@ -90,4 +90,4 @@ static inline bool SizeContains(CGSize a, CGSize b)
 	{return (b.width <= a.width && b.height <= a.height);}
 
 
-#endif
+#endif /* __mZX_OS_X_geometry_H */
