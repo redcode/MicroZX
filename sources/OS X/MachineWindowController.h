@@ -28,10 +28,12 @@
 	//-----------.
 	// Emulation |
 	//-----------'
-	ZXSpectrum*		_machine;
-	MachineABI*		_machineABI;
-	void*			_memory;
-	pthread_t		_thread;
+	Machine			_machine;
+
+	//ZXSpectrum*		_machine;
+	//MachineABI*		_machineABI;
+	//void*			_memory;
+	//pthread_t		_thread;
 
 	//----------.
 	// Geometry |
@@ -41,8 +43,8 @@
 	//-------------.
 	// I/O Buffers |
 	//-------------'
-	QTripleBuffer*		_videoOutputBuffer;
-	QRingBuffer*		_audioOutputBuffer;
+	//QTripleBuffer*		_videoOutputBuffer;
+	//QRingBuffer*		_audioOutputBuffer;
 	QTripleBuffer*		_keyboardBuffer;
 	Q64Bit*			_keyboard;
 	Q64Bit			_keyboardState;

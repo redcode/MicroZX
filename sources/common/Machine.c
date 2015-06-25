@@ -5,13 +5,14 @@
  |_*/
 
 #include "Machine.h"
-#include <Q/functions/buffering/QTripleBuffer.h>
-#include <Q/functions/buffering/QRingBuffer.h>
 #include "system.h"
 #include "Z80.h"
+#include <Q/functions/buffering/QTripleBuffer.h>
+#include <Q/functions/buffering/QRingBuffer.h>
+#include <stdlib.h>
 
 
-static void emulate(Machine *object)
+static void *emulate(Machine *object)
 	{
 	quint64 frames_per_second = 50;
 	quint64 frame_ticks	  = 1000000000 / frames_per_second;
@@ -66,6 +67,10 @@ void machine_initialize(
 	QRingBuffer*   audio_output_buffer
 )
 	{
+	object->abi		    = abi;
+	object->video_output_buffer = video_output_buffer;
+	object->audio_output_buffer = audio_output_buffer;
+
 	/*--------------------------------------.
 	| Create the machine and its components |
 	'--------------------------------------*/
@@ -79,76 +84,16 @@ void machine_initialize(
 	context->cpu_cycles    = &context->cpu->cycles;
 	context->memory	       = calloc(1, abi->memory_size);
 
-	object->abi	       = abi;
-
-
-	/*-----------------------------------.
-	| Create needed Input/Output objects |
-	'-----------------------------------*/
-	_videoOutput = [[GLOutputView alloc] initWithFrame:
-		NSMakeRect(0.0, 0.0, (CGFloat)Q_ZX_SPECTRUM_SCREEN_WIDTH, (CGFloat)Q_ZX_SPECTRUM_SCREEN_HEIGHT)];
-
-	[_videoOutput
-		setResolution: q_2d_value(SIZE)(Q_ZX_SPECTRUM_SCREEN_WIDTH, Q_ZX_SPECTRUM_SCREEN_HEIGHT)
-		format:	       0];
-
-			_videoOutput.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-			_audioOutput = [[CoreAudioOutput alloc] init];
-			//_audioOutput = [[ALOutputPlayer alloc] init];
-
-			_videoOutputBuffer = _videoOutput.buffer;
-			_audioOutputBuffer = _audioOutput.buffer;
-
-			_machine->video_output_buffer = q_triple_buffer_production_buffer(_videoOutputBuffer);
-			_machine->audio_output_buffer = q_ring_buffer_production_buffer(_audioOutputBuffer);
-
-			_keyboardBuffer = malloc(sizeof(QTripleBuffer));
-			q_triple_buffer_initialize(_keyboardBuffer, malloc(sizeof(quint64) * 3), sizeof(quint64));
-			_keyboard = q_triple_buffer_production_buffer(_keyboardBuffer);
-			memset(_keyboardBuffer->buffers[0], 0xFF, sizeof(quint64) * 3);
-
-			/*-----------------.
-			| Load needed ROMs |
-			'-----------------*/
-			qsize index = machineABI->rom_count;
-			NSBundle *bundle = [NSBundle mainBundle];
-			ROM *rom;
-
-			while (index)
-				{
-				rom = &_machineABI->roms[--index];
-
-				NSData *ROM = [NSData dataWithContentsOfFile: [bundle
-					pathForResource: [NSString stringWithUTF8String: rom->file_name]
-					ofType:		 @"rom"
-					inDirectory:	 @"ROMs"]];
-
-				memcpy(_machine->memory + rom->base_address, [ROM bytes], rom->size);
-				}
-
-			machineABI->initialize(_machine);
-
-			_keyboardState.value_uint64 = Q_UINT64(0xFFFFFFFFFFFFFFFF);
-
-			/*NSData *data = [NSData dataWithContentsOfFile: @"/Users/manuel/Desktop/Batman.sna"];
-			QSNAv48K *sna = (QSNAv48K *)[data bytes];
-
-			sna_v48k_decode(sna, &_machine->state, &_machine->cpu->state, _machine->memory);*/
-			//_machine->border_color = Q_RGBA32(FF, 00, 00, 00);*/
-
-			_attachInputBuffer = NO;
-
-			[_audioOutput start];
-
-			pthread_attr_t threadAttributes;
-			pthread_attr_init(&threadAttributes);
-			pthread_create(&_thread, &threadAttributes, (void *(*)(void *))EmulationMain, self);
-			pthread_attr_destroy(&threadAttributes);
+	context->video_output_buffer = q_triple_buffer_production_buffer(video_output_buffer);
+	context->audio_output_buffer = q_ring_buffer_production_buffer	(audio_output_buffer);
+	abi->initialize(context);
 	}
 
 
 void machine_finalize(Machine *object)
 	{
+	free(object->context->memory);
+	free(object->context->cpu);
 	}
 
 
@@ -169,11 +114,27 @@ void machine_power(Machine *object, qboolean state)
 
 void machine_start(Machine *object)
 	{
+	if (!object->flags.running)
+		{
+		object->flags.running = TRUE;
+		object->must_stop = FALSE;
+
+		pthread_attr_t attributes;
+		pthread_attr_init(&attributes);
+		pthread_create(&object->thread, &attributes, (void *(*)(void *))emulate, object);
+		pthread_attr_destroy(&attributes);
+		}
 	}
 
 
 void machine_stop(Machine *object)
 	{
+	if (object->flags.running)
+		{
+		object->must_stop = TRUE;
+		pthread_join(object->thread, NULL);
+		object->flags.running = FALSE;
+		}
 	}
 
 

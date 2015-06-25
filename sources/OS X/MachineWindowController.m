@@ -43,7 +43,7 @@ Q_INLINE qreal step_down(qreal n, qreal step_size)
 Q_INLINE qreal step_up(qreal n, qreal step_size)
 	{return floor(n / step_size) * step_size + step_size;}
 
-
+/*
 static void *EmulationMain(MachineWindowController *controller)
 	{
 	quint64 frames_per_second = 50;
@@ -89,7 +89,7 @@ static void *EmulationMain(MachineWindowController *controller)
 		}
 
 	return NULL;
-	}
+	}*/
 
 
 @implementation MachineWindowController
@@ -184,23 +184,9 @@ static void *EmulationMain(MachineWindowController *controller)
 			'--------------------------*/
 			[NSBundle loadNibNamed: @"Title Sheet" owner: self];
 
-			/*--------------------------------------.
-			| Create the machine and its components |
-			'--------------------------------------*/
-			_machine		      = malloc(machineABI->context_size);
-			_machine->cpu_abi.run	      = (void *)z80_run;
-			_machine->cpu_abi.irq	      = (void *)z80_irq;
-			_machine->cpu_abi.reset	      = (void *)z80_reset;
-			_machine->cpu_abi.power	      = (void *)z80_power;
-			_machine->cpu		      = malloc(sizeof(Z80));
-			_machine->cpu_cycles	      = &_machine->cpu->cycles;
-			_machine->memory	      = calloc(1, machineABI->memory_size);
-
-			_machineABI = machineABI;
-
-			/*-----------------------------------.
-			| Create needed Input/Output objects |
-			'-----------------------------------*/
+			/*----------------------------.
+			| Create video output object. |
+			'----------------------------*/
 			_videoOutput = [[GLOutputView alloc] initWithFrame:
 				NSMakeRect(0.0, 0.0, (CGFloat)Q_ZX_SPECTRUM_SCREEN_WIDTH, (CGFloat)Q_ZX_SPECTRUM_SCREEN_HEIGHT)];
 
@@ -209,14 +195,14 @@ static void *EmulationMain(MachineWindowController *controller)
 				format:	       0];
 
 			_videoOutput.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+
+			/*----------------------------.
+			| Create audio output object. |
+			'----------------------------*/
 			_audioOutput = [[CoreAudioOutput alloc] init];
 			//_audioOutput = [[ALOutputPlayer alloc] init];
 
-			_videoOutputBuffer = _videoOutput.buffer;
-			_audioOutputBuffer = _audioOutput.buffer;
-
-			_machine->video_output_buffer = q_triple_buffer_production_buffer(_videoOutputBuffer);
-			_machine->audio_output_buffer = q_ring_buffer_production_buffer(_audioOutputBuffer);
+			machine_initialize(&_machine, machineABI, _videoOutput.buffer, _audioOutput.buffer);
 
 			_keyboardBuffer = malloc(sizeof(QTripleBuffer));
 			q_triple_buffer_initialize(_keyboardBuffer, malloc(sizeof(quint64) * 3), sizeof(quint64));
@@ -232,17 +218,17 @@ static void *EmulationMain(MachineWindowController *controller)
 
 			while (index)
 				{
-				rom = &_machineABI->roms[--index];
+				rom = &machineABI->roms[--index];
 
 				NSData *ROM = [NSData dataWithContentsOfFile: [bundle
 					pathForResource: [NSString stringWithUTF8String: rom->file_name]
 					ofType:		 @"rom"
 					inDirectory:	 @"ROMs"]];
 
-				memcpy(_machine->memory + rom->base_address, [ROM bytes], rom->size);
+				memcpy(_machine.context->memory + rom->base_address, [ROM bytes], rom->size);
 				}
 
-			machineABI->initialize(_machine);
+			//machineABI->initialize(_machine);
 
 			_keyboardState.value_uint64 = Q_UINT64(0xFFFFFFFFFFFFFFFF);
 
@@ -254,22 +240,11 @@ static void *EmulationMain(MachineWindowController *controller)
 
 			_attachInputBuffer = NO;
 
-			[_audioOutput start];
 
-			pthread_attr_t threadAttributes;
-			pthread_attr_init(&threadAttributes);
-			pthread_create(&_thread, &threadAttributes, (void *(*)(void *))EmulationMain, self);
-			pthread_attr_destroy(&threadAttributes);
+			//machine_start(&_machine);
 			}
 
 		return self;
-		}
-
-
-	- (void) stop
-		{
-		_mustStop = YES;
-		pthread_join(_thread, NULL);
 		}
 
 
@@ -279,18 +254,15 @@ static void *EmulationMain(MachineWindowController *controller)
 	- (void) dealloc
 		{
 		[_videoOutput stop];
-		[self stop];
+		[_audioOutput stop];
+		machine_stop(&_machine);
 		[titleWindow release];
 		[_tapeRecorderController release];
 		[_pointerVisibilityTimer invalidate];
-
 		[_videoOutput release];
 		[_audioOutput release];
 		[_fullScreenWindow release];
-		free(_machine->cpu);
-		free(_machine->memory);
-		//free(_machine->audio_input_buffer);
-		free(_machine);
+		machine_finalize(&_machine);
 		free(_keyboardBuffer->buffers[0]);
 		free(_keyboardBuffer);
 		[super dealloc];
@@ -310,12 +282,14 @@ static void *EmulationMain(MachineWindowController *controller)
 			[window setCollectionBehavior: [window collectionBehavior] | NSWindowCollectionBehaviorFullScreenPrimary];
 
 		_minimumWindowSize = q_2d_add(MACHINE_SCREEN_SIZE, NSSizeToQ(window.borderSize));
-		window.title = [NSString stringWithUTF8String: _machineABI->model_name];
+		window.title = [NSString stringWithUTF8String: _machine.abi->model_name];
 		[window.contentView addSubview: _videoOutput];
 		[window setContentAspectRatio: contentSize];
 		[window setContentMinSize: contentSize];
-		[_videoOutput start];
 
+		[_videoOutput start];
+		[_audioOutput start];
+		machine_start(&_machine);
 		}
 
 
@@ -693,28 +667,38 @@ static void *EmulationMain(MachineWindowController *controller)
 
 	- (IBAction) power: (NSMenuItem *) sender
 		{
-		if (sender.state == NSOnState)
+		if (_machine.flags.running)
 			{
-			_machineABI->power(_machine, OFF);
+			machine_stop(&_machine);
+			[_videoOutput stop];
 			sender.state = NSOffState;
 			}
 
-		if (sender.state == NSOffState)
-			{
-			_machineABI->power(_machine, ON);
+		else	{
 			sender.state = NSOnState;
+			[_videoOutput start];
+			machine_start(&_machine);
 			}
 		}
 
 
 	- (IBAction) pause: (id) sender
 		{
+		if (_machine.flags.running) machine_stop(&_machine);
+		else machine_start(&_machine);
 		}
 
 
 	- (IBAction) reset: (id) sender
 		{
-		_machineABI->reset(_machine);
+		if (_machine.flags.running)
+			{
+			machine_stop(&_machine);
+			machine_reset(&_machine);
+			machine_stop(&_machine);
+			}
+
+		else machine_reset(&_machine);
 		}
 
 
@@ -807,7 +791,7 @@ static void *EmulationMain(MachineWindowController *controller)
 	- (IBAction) editWindowTitle: (id) sender
 		{
 		NSString *currentTitle = self.window.title;
-		NSString *placeHolder = [NSString stringWithUTF8String: _machineABI->model_name];
+		NSString *placeHolder = [NSString stringWithUTF8String: _machine.abi->model_name];
 
 		[titleTextField.cell setPlaceholderString: placeHolder];
 		[titleTextField setStringValue: [currentTitle isEqualToString: placeHolder] ? @"" : currentTitle];
@@ -830,7 +814,7 @@ static void *EmulationMain(MachineWindowController *controller)
 
 		self.window.title = (title && ![title isEqualToString: @""])
 			? title
-			: [NSString stringWithUTF8String: _machineABI->model_name];
+			: [NSString stringWithUTF8String: _machine.abi->model_name];
 
 		[NSApp endSheet: titleWindow];
 		[titleWindow orderOut: self];

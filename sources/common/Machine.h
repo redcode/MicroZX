@@ -21,6 +21,9 @@ typedef struct {
 	QRingBuffer*   audio_output_buffer;
 	QRingBuffer*   audio_input_buffer;
 	qboolean       must_stop;
+
+	struct {quint8 running :1;
+	} flags;
 } Machine;
 
 void machine_initialize		    (Machine*	    object,
