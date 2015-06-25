@@ -7,16 +7,11 @@
 #import <Cocoa/Cocoa.h>
 
 @interface MainController : NSObject <NSApplicationDelegate> {
+	IBOutlet NSMenu* machinesMenu;
 
-	IBOutlet NSMenu*	machinesMenu;
-	IBOutlet NSMenuItem*	machineVolumeMenuItem;
-	IBOutlet NSView*	machineVolumeView;
-
-	NSMutableArray*		_machineControllers;
-	NSArray*		_currentWindowMenus;
+	NSMutableArray*  _machineControllers;
 }
 
-	- (IBAction) newDefaultMachine: (NSMenuItem *) sender;
-	- (IBAction) newMachine: (NSMenuItem *) sender;
-
+	- (IBAction) newDefaultMachine: (id) sender;
+	- (IBAction) newMachine:	(id) sender;
 @end

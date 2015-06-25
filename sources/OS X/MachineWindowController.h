@@ -5,7 +5,7 @@
  |_*/
 
 #import <Foundation/Foundation.h>
-#import "MachineABI.h"
+#import "Machine.h"
 #import "GLOutputView.h"
 #import "CoreAudioOutput.h"
 #import "TapeRecorderController.h"
@@ -20,9 +20,8 @@
 	//-------------.
 	// XIB objects |
 	//-------------'
-	IBOutlet NSWindow*	titleWindow;
-	IBOutlet NSTextField*	titleTextField;
-	IBOutlet NSArray*	customMenus;
+	IBOutlet NSWindow*    titleWindow;
+	IBOutlet NSTextField* titleTextField;
 
 	@public
 
@@ -122,14 +121,4 @@
 	// Main Menu: Window |
 	//-------------------'
 	- (IBAction) editWindowTitle: (id) sender;
-
-
-
-
-
-	- (IBAction) toggleKeyboard:		(id) sender;
-	- (IBAction) toggleTapeRecorder:	(id) sender;
-	- (IBAction) toggleDebugger:		(id) sender;
-	- (IBAction) toggleVideoRecording:	(id) sender;
-
 @end

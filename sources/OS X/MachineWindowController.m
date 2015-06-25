@@ -194,9 +194,8 @@ static void *EmulationMain(MachineWindowController *controller)
 			_machine->cpu_abi.power	      = (void *)z80_power;
 			_machine->cpu		      = malloc(sizeof(Z80));
 			_machine->cpu_cycles	      = &_machine->cpu->cycles;
-			_machine->memory	      = malloc(machineABI->memory_size);
+			_machine->memory	      = calloc(1, machineABI->memory_size);
 
-			memset(_machine->memory, 0, machineABI->memory_size);
 			_machineABI = machineABI;
 
 			/*-----------------------------------.

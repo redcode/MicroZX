@@ -1,29 +1,12 @@
 /*	_________  ___
   _____ \_   /\  \/  /	μZX - OS X/MainController.h
- |  |  |_/  /__>    <	Copyright © 2014 Manuel Sainz de Baranda y Goñi.
- |   ____________/\__\	All rights reserved.
+ |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
+ |   ____________/\__\	Released under the terms of the GNU General Public License v3.
  |_*/
 
 #import "MainController.h"
 #import "MachineWindowController.h"
 #import "MachineABI.h"
-
-/*static const char* machineNames[] = {
-	"ZX Spectrum 16K (Issue 1)",
-	"ZX Spectrum 48K (Issue 2)",
-	"ZX Spectrum 48K (Issue 3)",
-	"ZX Spectrum +",
-	"ZX Spectrum + 128K",
-	"ZX Spectrum + 128K (ES)",
-	"ZX Spectrum +2",
-	"ZX Spectrum +2 (ES)",
-	"ZX Spectrum +2 (FR)",
-	"ZX Spectrum +2A",
-	"ZX Spectrum +2A (ES)",
-	"ZX Spectrum +3",
-	"ZX Spectrum +3 (ES)",
-	"Inves Spectrum +"
-};*/
 
 
 @implementation MainController
@@ -51,7 +34,6 @@
 		}
 
 
-
 #	pragma mark - NSApplicationDelegate
 
 
@@ -64,18 +46,7 @@
 		for (; i < machine_abi_count; i++) [machinesMenu
 			addItemWithTitle: [NSString stringWithUTF8String: machine_abi_table[i].model_name]
 			action:		  @selector(newMachine:)
-			keyEquivalent:	  @""
-		];
-
-		machineVolumeMenuItem.view = machineVolumeView;
-
-		NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-
-		[notificationCenter
-			addObserver: self
-			selector:    @selector(windowDidBecomeKey:)
-			name:	     NSWindowDidBecomeMainNotification
-			object:	     nil];
+			keyEquivalent:	  @""];
 
 		[self newDefaultMachine: nil];
 		}
@@ -97,21 +68,6 @@
 #	pragma mark - Callbacks
 
 
-	- (void) windowDidBecomeKey: (NSNotification *) notification
-		{
-		id controller = [notification.object windowController];
-
-		if (controller && [controller respondsToSelector: @selector(customMenus)])
-			{
-			NSMenu *mainMenu = [NSApp mainMenu];
-			NSUInteger index = 3;
-
-			_currentWindowMenus = [controller customMenus];
-			for (NSMenuItem *item in _currentWindowMenus) [mainMenu insertItem: item atIndex: index++];
-			}
-		}
-
-
 	- (void) machineWindowWillClose: (NSNotification *) notification
 		{
 		NSWindow *window = notification.object;
@@ -122,10 +78,6 @@
 			name:		NSWindowWillCloseNotification
 			object:		window];
 
-
-		NSLog(@"window closed => %@, controller retain count => %lu", controller.window.title, controller.retainCount);
-
-		[controller stop];
 		[_machineControllers removeObject: controller];
 		}
 

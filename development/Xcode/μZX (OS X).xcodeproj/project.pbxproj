@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		645DAEA31B3B213D00C9AB10 /* Machine.c in Sources */ = {isa = PBXBuildFile; fileRef = 645DAEA11B3B213D00C9AB10 /* Machine.c */; };
 		645DAEA61B3B2C5400C9AB10 /* system.c in Sources */ = {isa = PBXBuildFile; fileRef = 645DAEA51B3B2C5400C9AB10 /* system.c */; };
 		64F5DDAA1A28E03C00D29077 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DDA91A28E03C00D29077 /* Images.xcassets */; };
 		64F5DE081A28E83A00D29077 /* RingBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DDFF1A28E83A00D29077 /* RingBuffer.c */; };
@@ -57,11 +56,10 @@
 		64F5DE7D1A28EB3900D29077 /* SABR.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DE7B1A28EB3900D29077 /* SABR.vsh */; };
 		64F5DEB41A28EB6600D29077 /* ROMs in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DEB31A28EB6600D29077 /* ROMs */; };
 		64F5DEB61A28EC5200D29077 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64F5DEB51A28EC5200D29077 /* OpenAL.framework */; };
-		64F5DEB71A28EC7000D29077 /* ALOutput.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE041A28E83A00D29077 /* ALOutput.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		645DAEA11B3B213D00C9AB10 /* Machine.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Machine.c; sourceTree = "<group>"; };
+		645DAEA11B3B213D00C9AB10 /* Machine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Machine.m; sourceTree = "<group>"; };
 		645DAEA21B3B213D00C9AB10 /* Machine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Machine.h; sourceTree = "<group>"; };
 		645DAEA41B3B2C5400C9AB10 /* system.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = system.h; sourceTree = "<group>"; };
 		645DAEA51B3B2C5400C9AB10 /* system.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = system.c; sourceTree = "<group>"; };
@@ -74,8 +72,6 @@
 		64F5DDFE1A28E83A00D29077 /* OpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGL.h; sourceTree = "<group>"; };
 		64F5DDFF1A28E83A00D29077 /* RingBuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = RingBuffer.c; sourceTree = "<group>"; };
 		64F5DE001A28E83A00D29077 /* RingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingBuffer.h; sourceTree = "<group>"; };
-		64F5DE031A28E83A00D29077 /* ALOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALOutput.h; sourceTree = "<group>"; };
-		64F5DE041A28E83A00D29077 /* ALOutput.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ALOutput.c; sourceTree = "<group>"; };
 		64F5DE051A28E83A00D29077 /* GLOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLOutput.h; sourceTree = "<group>"; };
 		64F5DE061A28E83A00D29077 /* GLOutput.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLOutput.c; sourceTree = "<group>"; };
 		64F5DE071A28E83A00D29077 /* GLOutputShader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLOutputShader.c; sourceTree = "<group>"; };
@@ -246,18 +242,15 @@
 				64F5DDF81A28E82800D29077 /* types.h */,
 				645DAEA41B3B2C5400C9AB10 /* system.h */,
 				645DAEA51B3B2C5400C9AB10 /* system.c */,
-				64F5DDFC1A28E83A00D29077 /* MachineABI.h */,
 				64F5DDFD1A28E83A00D29077 /* geometry.h */,
 				64F5DDFE1A28E83A00D29077 /* OpenGL.h */,
 				64F5DDFF1A28E83A00D29077 /* RingBuffer.c */,
 				64F5DE001A28E83A00D29077 /* RingBuffer.h */,
-				64F5DE031A28E83A00D29077 /* ALOutput.h */,
-				64F5DE041A28E83A00D29077 /* ALOutput.c */,
 				64F5DE051A28E83A00D29077 /* GLOutput.h */,
 				64F5DE061A28E83A00D29077 /* GLOutput.c */,
 				64F5DE071A28E83A00D29077 /* GLOutputShader.c */,
-				645DAEA11B3B213D00C9AB10 /* Machine.c */,
 				645DAEA21B3B213D00C9AB10 /* Machine.h */,
+				645DAEA11B3B213D00C9AB10 /* Machine.m */,
 			);
 			name = Common;
 			path = common;
@@ -273,16 +266,16 @@
 				64F5DE351A28E9B100D29077 /* MainController.m */,
 				64F5DE361A28E9B100D29077 /* MachineWindowController.h */,
 				64F5DE371A28E9B100D29077 /* MachineWindowController.m */,
-				64F5DE381A28E9B100D29077 /* TapeRecorderController.h */,
-				64F5DE391A28E9B100D29077 /* TapeRecorderController.m */,
+				64F5DE3E1A28E9B100D29077 /* GLOutputView.h */,
+				64F5DE3F1A28E9B100D29077 /* GLOutputView.m */,
 				64F5DE3A1A28E9B100D29077 /* PreferencesController.h */,
 				64F5DE3B1A28E9B100D29077 /* PreferencesController.m */,
 				64F5DE3C1A28E9B100D29077 /* DevicePanel.h */,
 				64F5DE3D1A28E9B100D29077 /* DevicePanel.m */,
-				64F5DE3E1A28E9B100D29077 /* GLOutputView.h */,
-				64F5DE3F1A28E9B100D29077 /* GLOutputView.m */,
 				64F5DE401A28E9B100D29077 /* CoreAudioOutput.h */,
 				64F5DE411A28E9B100D29077 /* CoreAudioOutput.m */,
+				64F5DE381A28E9B100D29077 /* TapeRecorderController.h */,
+				64F5DE391A28E9B100D29077 /* TapeRecorderController.m */,
 				64F5DE441A28E9B100D29077 /* TapeRecorderWindow.h */,
 				64F5DE451A28E9B100D29077 /* TapeRecorderWindow.m */,
 				64F5DE461A28E9B100D29077 /* Window.h */,
@@ -344,12 +337,13 @@
 		64F5DE531A28E9F900D29077 /* Emulators */ = {
 			isa = PBXGroup;
 			children = (
-				64F5DE6B1A28EA5F00D29077 /* Z80.c */,
+				64F5DDFC1A28E83A00D29077 /* MachineABI.h */,
 				64F5DE6C1A28EA5F00D29077 /* Z80.h */,
-				64F5DE6D1A28EA5F00D29077 /* ZX Spectrum.c */,
+				64F5DE6B1A28EA5F00D29077 /* Z80.c */,
 				64F5DE6E1A28EA5F00D29077 /* ZX Spectrum.h */,
-				64F5DE6F1A28EA5F00D29077 /* AY-3-891x.c */,
+				64F5DE6D1A28EA5F00D29077 /* ZX Spectrum.c */,
 				64F5DE701A28EA5F00D29077 /* AY-3-891x.h */,
+				64F5DE6F1A28EA5F00D29077 /* AY-3-891x.c */,
 			);
 			path = Emulators;
 			sourceTree = "<group>";
@@ -498,8 +492,6 @@
 				64F5DE621A28EA5100D29077 /* 89C.c in Sources */,
 				64F5DE4C1A28E9B100D29077 /* PreferencesController.m in Sources */,
 				64F5DE671A28EA5100D29077 /* SIT.c in Sources */,
-				64F5DEB71A28EC7000D29077 /* ALOutput.c in Sources */,
-				645DAEA31B3B213D00C9AB10 /* Machine.c in Sources */,
 				64F5DE511A28E9B100D29077 /* TapeRecorderWindow.m in Sources */,
 				645DAEA61B3B2C5400C9AB10 /* system.c in Sources */,
 				64F5DE0B1A28E83A00D29077 /* GLOutput.c in Sources */,

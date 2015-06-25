@@ -559,29 +559,9 @@
         </menu>
         <customObject id="494" customClass="MainController">
             <connections>
-                <outlet property="machineVolumeView" destination="566" id="571"/>
                 <outlet property="machinesMenu" destination="535" id="537"/>
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
-        <customView id="566">
-            <rect key="frame" x="0.0" y="0.0" width="204" height="28"/>
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-            <subviews>
-                <slider verticalHuggingPriority="750" id="567">
-                    <rect key="frame" x="84" y="7" width="100" height="12"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                    <sliderCell key="cell" controlSize="mini" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="568"/>
-                </slider>
-                <button id="578">
-                    <rect key="frame" x="17" y="5" width="61" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="check" title="Sound" bezelStyle="regularSquare" imagePosition="left" controlSize="small" state="on" inset="2" id="579">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="smallSystem"/>
-                    </buttonCell>
-                </button>
-            </subviews>
-        </customView>
     </objects>
 </document>

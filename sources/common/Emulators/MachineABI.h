@@ -11,25 +11,23 @@ Copyright © 2013 RedCode Software. All rights reserved. */
 #include <Q/types/generic functions.h>
 
 typedef struct {
-	QString*	file_name;
-	qsize		base_address;
-	qsize		size;
+	QString* file_name;
+	qsize	 base_address;
+	qsize	 size;
 } ROM;
 
 typedef struct {
-
-	QString*	model_name;
-	qsize		context_size;
-	qsize		context_cpu_context_offset;
-	qsize		memory_size;
-	qsize		rom_count;
-	ROM*		roms;
-	QDo		initialize;
-	QSwitch		power;
-	QDo		reset;
-	QDo		run_one_frame;
-	QDo		run_one_scanline;
-
+	QString* model_name;
+	qsize	 context_size;
+	qsize	 context_cpu_context_offset;
+	qsize	 memory_size;
+	qsize	 rom_count;
+	ROM*	 roms;
+	QDo	 initialize;
+	QSwitch	 power;
+	QDo	 reset;
+	QDo	 run_one_frame;
+	QDo	 run_one_scanline;
 } MachineABI;
 
 extern MachineABI machine_abi_table[];
