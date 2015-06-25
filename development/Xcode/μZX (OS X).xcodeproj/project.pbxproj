@@ -36,7 +36,6 @@
 		64F5DE4D1A28E9B100D29077 /* DevicePanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE3D1A28E9B100D29077 /* DevicePanel.m */; };
 		64F5DE4E1A28E9B100D29077 /* GLOutputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE3F1A28E9B100D29077 /* GLOutputView.m */; };
 		64F5DE4F1A28E9B100D29077 /* CoreAudioOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE411A28E9B100D29077 /* CoreAudioOutput.m */; };
-		64F5DE501A28E9B100D29077 /* ALOutputPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE431A28E9B100D29077 /* ALOutputPlayer.m */; };
 		64F5DE511A28E9B100D29077 /* TapeRecorderWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE451A28E9B100D29077 /* TapeRecorderWindow.m */; };
 		64F5DE521A28E9B100D29077 /* Window.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE471A28E9B100D29077 /* Window.m */; };
 		64F5DE621A28EA5100D29077 /* 89C.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE581A28EA5100D29077 /* 89C.c */; };
@@ -116,8 +115,6 @@
 		64F5DE3F1A28E9B100D29077 /* GLOutputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLOutputView.m; sourceTree = "<group>"; };
 		64F5DE401A28E9B100D29077 /* CoreAudioOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreAudioOutput.h; sourceTree = "<group>"; };
 		64F5DE411A28E9B100D29077 /* CoreAudioOutput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreAudioOutput.m; sourceTree = "<group>"; };
-		64F5DE421A28E9B100D29077 /* ALOutputPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALOutputPlayer.h; sourceTree = "<group>"; };
-		64F5DE431A28E9B100D29077 /* ALOutputPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALOutputPlayer.m; sourceTree = "<group>"; };
 		64F5DE441A28E9B100D29077 /* TapeRecorderWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TapeRecorderWindow.h; sourceTree = "<group>"; };
 		64F5DE451A28E9B100D29077 /* TapeRecorderWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TapeRecorderWindow.m; sourceTree = "<group>"; };
 		64F5DE461A28E9B100D29077 /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
@@ -286,8 +283,6 @@
 				64F5DE3F1A28E9B100D29077 /* GLOutputView.m */,
 				64F5DE401A28E9B100D29077 /* CoreAudioOutput.h */,
 				64F5DE411A28E9B100D29077 /* CoreAudioOutput.m */,
-				64F5DE421A28E9B100D29077 /* ALOutputPlayer.h */,
-				64F5DE431A28E9B100D29077 /* ALOutputPlayer.m */,
 				64F5DE441A28E9B100D29077 /* TapeRecorderWindow.h */,
 				64F5DE451A28E9B100D29077 /* TapeRecorderWindow.m */,
 				64F5DE461A28E9B100D29077 /* Window.h */,
@@ -509,7 +504,6 @@
 				645DAEA61B3B2C5400C9AB10 /* system.c in Sources */,
 				64F5DE0B1A28E83A00D29077 /* GLOutput.c in Sources */,
 				64F5DE0C1A28E83A00D29077 /* GLOutputShader.c in Sources */,
-				64F5DE501A28E9B100D29077 /* ALOutputPlayer.m in Sources */,
 				64F5DE491A28E9B100D29077 /* MainController.m in Sources */,
 				64F5DE661A28EA5100D29077 /* ACH.c in Sources */,
 				64F5DE641A28EA5100D29077 /* PLUSD.c in Sources */,

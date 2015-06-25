@@ -14,7 +14,6 @@
 #import "RingBuffer.h"
 #import <Q/types/buffering.h>
 #import <pthread.h>
-#import "ALOutputPlayer.h"
 
 @interface MachineWindowController : NSWindowController <NSWindowDelegate, NSAnimationDelegate> {
 
@@ -52,7 +51,6 @@
 	BOOL			_smooth;
 	GLOutputView*		_videoOutput;
 	CoreAudioOutput*	_audioOutput;
-	//ALOutputPlayer*		_audioOutput;
 	BOOL			_keyboardInput;
 	RingBuffer*		_audioInputRing;
 	quint8*			_audioInputBuffer;
@@ -86,11 +84,6 @@
 	quint8*	_tapeSamples;
 	BOOL	_attachInputBuffer;
 }
-
-	@property (nonatomic, readonly) NSArray *customMenus;
-
-	//@property (nonatomic, readonly) NSMenu* menu;
-
 	- (id) initWithMachineABI: (MachineABI *) machineABI;
 
 	- (void) start;

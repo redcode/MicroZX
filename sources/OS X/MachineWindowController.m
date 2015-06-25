@@ -170,19 +170,7 @@ static void *EmulationMain(MachineWindowController *controller)
 		}
 
 
-#	pragma mark - Accessors
-
-
-	@synthesize customMenus;
-
-
 #	pragma mark - Life cycle
-
-
-	- (id) retain
-		{
-		return [super retain];
-		}
 
 
 	- (id) initWithMachineABI: (MachineABI *) machineABI
@@ -332,7 +320,8 @@ static void *EmulationMain(MachineWindowController *controller)
 		}
 
 
-#	pragma mark - Input Control
+#	pragma mark - Overwritten: Input Control
+
 
 #	define KEY_DOWN(line, bit) _keyboardState.array_uint8[line] &= ~(1 << bit)
 #	define KEY_UP(	line, bit) _keyboardState.array_uint8[line] |=  (1 << bit)
@@ -499,6 +488,28 @@ static void *EmulationMain(MachineWindowController *controller)
 		}
 
 
+#	pragma mark - Overwritten: Full Screen Tracking Area Listeners
+
+
+	- (void) mouseUp: (NSEvent *) event
+		{if (event.clickCount == 2) [self.window toggleFullScreen: self];}
+
+
+	- (void) mouseEntered: (NSEvent *) event
+		{[self startHidePointerTimer];}
+
+
+	- (void) mouseExited: (NSEvent *) event
+		{
+		[_pointerVisibilityTimer invalidate];
+		_pointerVisibilityTimer = nil;
+		}
+
+
+	- (void) mouseMoved: (NSEvent *) event
+		{[self startHidePointerTimer];}
+
+
 #	pragma mark - NSWindowDelegate
 
 
@@ -554,29 +565,6 @@ static void *EmulationMain(MachineWindowController *controller)
 		_videoOutput.scaling = Q_SCALING_EXPAND;
 		[NSCursor unhide];
 		}
-
-
-#	pragma mark - Full Screen Tracking Area Listeners
-
-
-	- (void) mouseUp: (NSEvent *) event
-		{if (event.clickCount == 2) [self.window toggleFullScreen: self];}
-
-
-	- (void) mouseEntered: (NSEvent *) event
-		{[self startHidePointerTimer];}
-
-
-	- (void) mouseExited: (NSEvent *) event
-		{
-		[_pointerVisibilityTimer invalidate];
-		_pointerVisibilityTimer = nil;
-		}
-
-
-	- (void) mouseMoved: (NSEvent *) event
-		{[self startHidePointerTimer];}
-
 
 
 #	pragma mark - NSAnimationDelegate Protocol
@@ -704,8 +692,19 @@ static void *EmulationMain(MachineWindowController *controller)
 #	pragma mark - IBAction: Main Menu (Machine)
 
 
-	- (IBAction) power: (id) sender
+	- (IBAction) power: (NSMenuItem *) sender
 		{
+		if (sender.state == NSOnState)
+			{
+			_machineABI->power(_machine, OFF);
+			sender.state = NSOffState;
+			}
+
+		if (sender.state == NSOffState)
+			{
+			_machineABI->power(_machine, ON);
+			sender.state = NSOnState;
+			}
 		}
 
 
@@ -716,6 +715,7 @@ static void *EmulationMain(MachineWindowController *controller)
 
 	- (IBAction) reset: (id) sender
 		{
+		_machineABI->reset(_machine);
 		}
 
 
@@ -842,65 +842,6 @@ static void *EmulationMain(MachineWindowController *controller)
 		{
 		[NSApp endSheet: titleWindow];
 		[titleWindow orderOut: self];
-		}
-
-
-
-
-
-	- (IBAction) toggleKeyboard: (id) sender
-		{
-		}
-
-
-	- (IBAction) toggleDebugger: (id) sender
-		{
-		}
-
-
-	- (IBAction) toggleVideoRecording: (id) sender
-		{
-		}
-
-
-#	pragma mark - Public
-
-
-	- (void) toggleMachinePower: (NSMenuItem *) sender
-		{
-		if (sender.state == NSOnState)
-			{
-			_machineABI->power(_machine, OFF);
-			sender.state = NSOffState;
-			}
-
-		if (sender.state == NSOffState)
-			{
-			_machineABI->power(_machine, ON);
-			sender.state = NSOnState;
-			}
-		}
-
-
-	- (void) start
-		{
-		}
-
-
-	- (void) resetMachine: (id) sender
-		{
-		_machineABI->reset(_machine);
-		}
-
-
-	- (void) toggleMachinePause: (id) sender
-		{
-		}
-
-
-	- (void) emulateMachineFrame
-		{
-		_machineABI->run_one_frame(_machine);
 		}
 
 
