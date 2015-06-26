@@ -41,8 +41,8 @@ static void *emulate(Machine *object)
 		//----------------.
 		// Consume input. |
 		//----------------'
-		//if ((keyboard = q_triple_buffer_consume(controller->_keyboardBuffer)) != NULL)
-		//	{controller->_machine->state.keyboard.value_uint64 = *keyboard;}
+		if ((keyboard = q_triple_buffer_consume(object->keyboard_input_buffer)) != NULL)
+			{object->context->state.keyboard.value_uint64 = *keyboard;}
 
 		/*if (object->audio_input_buffer != NULL)
 			{

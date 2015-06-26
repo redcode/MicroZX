@@ -321,7 +321,7 @@ static quint8 zx_spectrum_cpu_in(ZXSpectrum *object, quint16 port)
 		/*---------.
 		| Keyboard |
 		'---------*/
-		value = 0xBF;
+		value = 0xFF;
 		if (!(port & (1 <<  8))) value &= object->state.keyboard.array_uint8[0];
 		if (!(port & (1 <<  9))) value &= object->state.keyboard.array_uint8[1];
 		if (!(port & (1 << 10))) value &= object->state.keyboard.array_uint8[2];

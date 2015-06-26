@@ -23,16 +23,30 @@
 #import <Q/functions/geometry/QRectangle.h>
 #import <Q/macros/casting.h>
 
-
-
 #define kScreenZoomIncrement	1.5
 #define MACHINE_SCREEN_SIZE	q_2d((qreal)Q_ZX_SPECTRUM_SCREEN_WIDTH, (qreal)Q_ZX_SPECTRUM_SCREEN_HEIGHT)
 #define NS_MACHINE_SCREEN_SIZE	NSMakeSize(Q_ZX_SPECTRUM_SCREEN_WIDTH, Q_ZX_SPECTRUM_SCREEN_HEIGHT)
 #include <Q/macros/color.h>
 
-
-
-
+quint8 const keymap[256] = {
+/* 0 1 2 3 4 5 6 7 8 9 A B C D E F */
+/* 0 */
+/* 1 */
+/* 2 */
+/* 3 */
+/* 4 */
+/* 5 */
+/* 6 */
+/* 7 */
+/* 8 */
+/* 9 */
+/* A */
+/* B */
+/* C */
+/* D */
+/* E */
+/* F */
+};
 
 
 Q_INLINE qreal step_down(qreal n, qreal step_size)
@@ -206,12 +220,14 @@ static void *EmulationMain(MachineWindowController *controller)
 			_audioOutput = [[CoreAudioOutput alloc] init];
 			//_audioOutput = [[ALOutputPlayer alloc] init];
 
-			machine_initialize(&_machine, machineABI, _videoOutput.buffer, _audioOutput.buffer);
 
 			_keyboardBuffer = malloc(sizeof(QTripleBuffer));
 			q_triple_buffer_initialize(_keyboardBuffer, malloc(sizeof(quint64) * 3), sizeof(quint64));
 			_keyboard = q_triple_buffer_production_buffer(_keyboardBuffer);
 			memset(_keyboardBuffer->buffers[0], 0xFF, sizeof(quint64) * 3);
+
+			machine_initialize(&_machine, machineABI, _videoOutput.buffer, _audioOutput.buffer);
+			_machine.keyboard_input_buffer = _keyboardBuffer;
 
 			/*-----------------.
 			| Load needed ROMs |

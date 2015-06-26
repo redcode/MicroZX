@@ -20,6 +20,7 @@ typedef struct {
 	QTripleBuffer*	  video_output_buffer;
 	QRingBuffer*	  audio_output_buffer;
 	QRingBuffer*	  audio_input_buffer;
+	QTripleBuffer*	  keyboard_input_buffer;
 	volatile qboolean must_stop;
 
 	struct {quint8 running :1;
