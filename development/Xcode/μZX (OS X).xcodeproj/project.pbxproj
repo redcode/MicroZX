@@ -46,9 +46,9 @@
 		64F5DE681A28EA5100D29077 /* SNP.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE5F1A28EA5100D29077 /* SNP.c */; };
 		64F5DE691A28EA5100D29077 /* ZX.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE601A28EA5100D29077 /* ZX.c */; };
 		64F5DE6A1A28EA5100D29077 /* PRG.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE611A28EA5100D29077 /* PRG.c */; };
-		64F5DE711A28EA5F00D29077 /* Z80.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE6B1A28EA5F00D29077 /* Z80.c */; settings = {COMPILER_FLAGS = "-DZ80_PREFIX=z80_ -DZ80_USE_PUBLIC_SYMBOLS -DZ80_LOCAL_HEADER=Z80.h"; }; };
-		64F5DE721A28EA5F00D29077 /* ZX Spectrum.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE6D1A28EA5F00D29077 /* ZX Spectrum.c */; };
-		64F5DE731A28EA5F00D29077 /* AY-3-891x.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE6F1A28EA5F00D29077 /* AY-3-891x.c */; settings = {COMPILER_FLAGS = "-DAY_3_891X_PREFIX=ay_3_891x_ -DAY_3_891X_USE_PUBLIC_SYMBOLS -DAY_3_891X_LOCAL_HEADER=AY-3-891x.h"; }; };
+		64F5DE711A28EA5F00D29077 /* Z80.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE6B1A28EA5F00D29077 /* Z80.c */; settings = {COMPILER_FLAGS = "-DEMULATION_CPU_Z80_NO_SLOTS"; }; };
+		64F5DE721A28EA5F00D29077 /* ZX Spectrum.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE6D1A28EA5F00D29077 /* ZX Spectrum.c */; settings = {COMPILER_FLAGS = "-DEMULATION_CPU_Z80_NO_SLOTS"; }; };
+		64F5DE731A28EA5F00D29077 /* AY-3-891x.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE6F1A28EA5F00D29077 /* AY-3-891x.c */; };
 		64F5DE771A28EB2600D29077 /* Keyboard.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DE741A28EB2600D29077 /* Keyboard.pdf */; };
 		64F5DE781A28EB2600D29077 /* Debugger.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DE751A28EB2600D29077 /* Debugger.pdf */; };
 		64F5DE791A28EB2600D29077 /* Tape.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DE761A28EB2600D29077 /* Tape.pdf */; };

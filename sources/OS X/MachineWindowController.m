@@ -31,6 +31,10 @@
 #include <Q/macros/color.h>
 
 
+
+
+
+
 Q_INLINE qreal step_down(qreal n, qreal step_size)
 	{
 	qreal factor = n / step_size;

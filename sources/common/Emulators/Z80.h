@@ -34,6 +34,7 @@ typedef struct {
 	quint8	  r7;
 	Q32Bit	  data;
 
+#	ifdef EMULATION_CPU_Z80_NO_SLOTS
 		void* cb_context;
 
 		struct {Q16BitAddressRead8Bit  read;
@@ -43,6 +44,15 @@ typedef struct {
 			QRead32Bit	       int_data;
 			QSwitch		       halt;
 		} cb;
+#	else
+		struct {QSlot(Q16BitAddressRead8Bit ) read;
+			QSlot(Q16BitAddressWrite8Bit) write;
+			QSlot(Q16BitAddressRead8Bit ) in;
+			QSlot(Q16BitAddressWrite8Bit) out;
+			QSlot(QRead32Bit	    ) int_data;
+			QSlot(QSwitch		    ) halt;
+		} cb;
+#	endif
 } Z80;
 
 Q_C_SYMBOLS_BEGIN

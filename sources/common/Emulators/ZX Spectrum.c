@@ -420,12 +420,7 @@ static void cpu_halt(ZXSpectrum *object)
 	}
 
 
-
-
-
-#include "Z80.h"
-
-#define  CPU(object) ((Z80 *)(object))
+#define CPU(object) ((Z80 *)(object))
 
 static void zx_spectrum_initialize(ZXSpectrum *object)
 	{

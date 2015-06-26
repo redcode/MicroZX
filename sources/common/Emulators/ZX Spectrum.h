@@ -7,6 +7,7 @@
 Copyright © 2011 RedCode Software.
 Released under the terms of the GNU General Public License v2. */
 
+#define USE_STATIC_EMULATION_CPU_Z80
 #include "Z80.h"
 #include <ACME/types/basics.h>
 #include <Q/hardware/machine/platform/computer/ZX Spectrum.h>

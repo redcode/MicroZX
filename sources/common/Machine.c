@@ -12,9 +12,9 @@
 #include <stdlib.h>
 
 
-/*---------------------.
-| Emulation main loop. |
-'---------------------*/
+/*--------------------------------.
+| Emulation thread main function. |
+'--------------------------------*/
 static void *emulate(Machine *object)
 	{
 	quint64 frames_per_second = 50;

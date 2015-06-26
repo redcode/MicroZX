@@ -7,7 +7,6 @@
 Copyright © 2014 Manuel Sainz de Baranda y Goñi.
 Released under the terms of the GNU General Public License v3. */
 
-
 #include <Q/hardware/PSG/General Instrument/AY-3-891x.h>
 #include <Q/types/generic functions.h>
 
@@ -26,14 +25,10 @@ typedef struct {
 	} cb;
 } AY3891x;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+Q_C_SYMBOLS_BEGIN
 
 
 
-#ifdef __cplusplus
-}
-#endif
+Q_C_SYMBOLS_END
 
 #endif /* __modules_emulation_PSG_AY_3_891x_H__ */

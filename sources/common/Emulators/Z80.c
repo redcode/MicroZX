@@ -7,12 +7,7 @@
 Copyright © 1999-2015 Manuel Sainz de Baranda y Goñi.
 Released under the terms of the GNU General Public License v3. */
 
-#define MODULE_NAME   Z80
-#define MODULE_PREFIX z80_
-#define MODULE_HEADER <modules/emulation/CPU/Z80.h>
-#define BUILDING_CPU_Z80
-
-#include <Q/configuration/module.h>
+#include "Z80.h"
 #include <Q/macros/value.h>
 
 typedef quint8 (* Instruction)(Z80 *object);
@@ -27,12 +22,12 @@ typedef quint8 (* Instruction)(Z80 *object);
 
 /* MARK: - Macros & Functions: Callback */
 
-#ifdef BUILDING_MODULE
-#	define CB_ACTION(name) object->cb.name.action
-#	define CB_OBJECT(name) object->cb.name.object
-#else
+#ifdef EMULATION_CPU_Z80_NO_SLOTS
 #	define CB_ACTION(name) object->cb.name
 #	define CB_OBJECT(name) object->cb_context
+#else
+#	define CB_ACTION(name) object->cb.name.action
+#	define CB_OBJECT(name) object->cb.name.object
 #endif
 
 #define READ_8(address)		CB_ACTION(read	  )(CB_OBJECT(read    ), (address)	   )
@@ -154,7 +149,7 @@ Q_INLINE void write_16bit(Z80 *object, quint16 address, quint16 value)
 
 /* MARK: - P/V Flag Computation */
 
-Q_PRIVATE const quint8 pf_parity_table[256] = {
+Q_PRIVATE quint8 const pf_parity_table[256] = {
 /*	0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F */
 /* 0 */ 4, 0, 0, 4, 0, 4, 4, 0, 0, 4, 4, 0, 4, 0, 0, 4,
 /* 1 */ 0, 4, 4, 0, 4, 0, 0, 4, 4, 0, 0, 4, 0, 4, 4, 0,
@@ -216,7 +211,7 @@ VF(sbc, 16, 32, -, -32768, 32767)
    '----------'   | 111 = a |   | 111 = a   |   | 111 = a   |
 		  '---------'   '-----------'   '----------*/
 
-Q_PRIVATE const quint8 x_y_table[8] = {
+Q_PRIVATE quint8 const x_y_table[8] = {
 	O(state.Q_Z80_STATE_MEMBER_B),
 	O(state.Q_Z80_STATE_MEMBER_C),
 	O(state.Q_Z80_STATE_MEMBER_D),
@@ -227,7 +222,7 @@ Q_PRIVATE const quint8 x_y_table[8] = {
 	O(state.Q_Z80_STATE_MEMBER_A)
 };
 
-Q_PRIVATE const quint8 j_k_p_q_table[8] = {
+Q_PRIVATE quint8 const j_k_p_q_table[8] = {
 	O(state.Q_Z80_STATE_MEMBER_B),
 	O(state.Q_Z80_STATE_MEMBER_C),
 	O(state.Q_Z80_STATE_MEMBER_D),
@@ -262,21 +257,21 @@ R_8(_____kkk , j_k_p_q_table, 1,  7,	 )
 		  | 11 = sp |	| 11 = af |   | 11 = sp |
 		  '---------'	'---------'   '--------*/
 
-Q_PRIVATE const quint8 s_table[4] = {
+Q_PRIVATE quint8 const s_table[4] = {
 	O(state.Q_Z80_STATE_MEMBER_BC),
 	O(state.Q_Z80_STATE_MEMBER_DE),
 	O(state.Q_Z80_STATE_MEMBER_HL),
 	O(state.Q_Z80_STATE_MEMBER_SP)
 };
 
-Q_PRIVATE const quint8 t_table[4] = {
+Q_PRIVATE quint8 const t_table[4] = {
 	O(state.Q_Z80_STATE_MEMBER_BC),
 	O(state.Q_Z80_STATE_MEMBER_DE),
 	O(state.Q_Z80_STATE_MEMBER_HL),
 	O(state.Q_Z80_STATE_MEMBER_AF)
 };
 
-Q_PRIVATE const quint8 w_table[4] = {
+Q_PRIVATE quint8 const w_table[4] = {
 	O(state.Q_Z80_STATE_MEMBER_BC),
 	O(state.Q_Z80_STATE_MEMBER_DE),
 	O(xy			     ),
@@ -307,7 +302,7 @@ R_16(__tt____ , t_table, 0)
 		  | 111 = m  |
 		  '---------*/
 
-Q_PRIVATE const quint8 z_table[8] = {ZF, ZF, CF, CF, PF, PF, SF, SF};
+Q_PRIVATE quint8 const z_table[8] = {ZF, ZF, CF, CF, PF, PF, SF, SF};
 
 Q_INLINE qboolean __zzz___(Z80 *object)
 	{
@@ -542,6 +537,9 @@ Q_PRIVATE quint8 __ggg___(Z80 *object, quint8 offset, quint8 value)
 		c = value & CF;
 		value >>= 1;
 		break;
+
+		/* Uncoment to Avoid compiler warning */
+		/*default: c = 0; break;*/
 		}
 
 	F =	(value & SYXF)
@@ -1251,7 +1249,7 @@ INSTRUCTION(XY_illegal);
 
 /* MARK: - Instruction Function Tables */
 
-Q_PRIVATE const Instruction instruction_table[256] = {
+Q_PRIVATE Instruction const instruction_table[256] = {
 /*	0	     1		 2	      3		   4		5	  6	       7	 8	      9		 A	      B		 C	      D		 E	    F */
 /* 0 */ nop,	     ld_SS_WORD, ld_vbc_a,    inc_SS,	   V_X,		V_X,	  ld_X_BYTE,   rlca,	 ex_af_af_,   add_hl_SS, ld_a_vbc,    dec_SS,	 V_X,	      V_X,	 ld_X_BYTE, rrca,
 /* 1 */ djnz_OFFSET, ld_SS_WORD, ld_vde_a,    inc_SS,	   V_X,		V_X,	  ld_X_BYTE,   rla,	 jr_OFFSET,   add_hl_SS, ld_a_vde,    dec_SS,	 V_X,	      V_X,	 ld_X_BYTE, rra,
@@ -1271,7 +1269,7 @@ Q_PRIVATE const Instruction instruction_table[256] = {
 /* F */ ret_Z,	     pop_TT,	 jp_Z_WORD,   di,	   call_Z_WORD,	push_TT,  U_a_BYTE,    rst_N,	 ret_Z,	      ld_sp_hl,	 jp_Z_WORD,   ei,	 call_Z_WORD, FD,	 U_a_BYTE,  rst_N
 };
 
-Q_PRIVATE const Instruction instruction_table_CB[256] = {
+Q_PRIVATE Instruction const instruction_table_CB[256] = {
 /*	0	 1	  2	   3	    4	     5	      6		 7	  8	   9	    A	     B	      C	       D	E	   F */
 /* 0 */ G_Y,	 G_Y,	  G_Y,	   G_Y,	    G_Y,     G_Y,     G_vhl,	 G_Y,	  G_Y,	   G_Y,	    G_Y,     G_Y,     G_Y,     G_Y,	G_vhl,	   G_Y,
 /* 1 */ G_Y,	 G_Y,	  G_Y,	   G_Y,	    G_Y,     G_Y,     G_vhl,	 G_Y,	  G_Y,	   G_Y,	    G_Y,     G_Y,     G_Y,     G_Y,	G_vhl,	   G_Y,
@@ -1291,7 +1289,7 @@ Q_PRIVATE const Instruction instruction_table_CB[256] = {
 /* F */ M_N_Y,	 M_N_Y,	  M_N_Y,   M_N_Y,   M_N_Y,   M_N_Y,   M_N_vhl,	 M_N_Y,	  M_N_Y,   M_N_Y,   M_N_Y,   M_N_Y,   M_N_Y,   M_N_Y,	M_N_vhl,   M_N_Y
 };
 
-Q_PRIVATE const Instruction instruction_table_XY_CB[256] = {
+Q_PRIVATE Instruction const instruction_table_XY_CB[256] = {
 /*	0		 1		  2		   3		    4		     5		      6		       7		8		 9		  A		   B		    C		     D		      E		       F */
 /* 0 */ G_vXYOFFSET_Y,	 G_vXYOFFSET_Y,	  G_vXYOFFSET_Y,   G_vXYOFFSET_Y,   G_vXYOFFSET_Y,   G_vXYOFFSET_Y,   G_vXYOFFSET,     G_vXYOFFSET_Y,	G_vXYOFFSET_Y,	 G_vXYOFFSET_Y,	  G_vXYOFFSET_Y,   G_vXYOFFSET_Y,   G_vXYOFFSET_Y,   G_vXYOFFSET_Y,   G_vXYOFFSET,     G_vXYOFFSET_Y,
 /* 1 */ G_vXYOFFSET_Y,	 G_vXYOFFSET_Y,	  G_vXYOFFSET_Y,   G_vXYOFFSET_Y,   G_vXYOFFSET_Y,   G_vXYOFFSET_Y,   G_vXYOFFSET,     G_vXYOFFSET_Y,	G_vXYOFFSET_Y,	 G_vXYOFFSET_Y,	  G_vXYOFFSET_Y,   G_vXYOFFSET_Y,   G_vXYOFFSET_Y,   G_vXYOFFSET_Y,   G_vXYOFFSET,     G_vXYOFFSET_Y,
@@ -1311,7 +1309,7 @@ Q_PRIVATE const Instruction instruction_table_XY_CB[256] = {
 /* F */ M_N_vXYOFFSET_Y, M_N_vXYOFFSET_Y, M_N_vXYOFFSET_Y, M_N_vXYOFFSET_Y, M_N_vXYOFFSET_Y, M_N_vXYOFFSET_Y, M_N_vXYOFFSET,   M_N_vXYOFFSET_Y, M_N_vXYOFFSET_Y, M_N_vXYOFFSET_Y, M_N_vXYOFFSET_Y, M_N_vXYOFFSET_Y, M_N_vXYOFFSET_Y, M_N_vXYOFFSET_Y, M_N_vXYOFFSET,   M_N_vXYOFFSET_Y
 };
 
-Q_PRIVATE const Instruction instruction_table_XY[256] = {
+Q_PRIVATE Instruction const instruction_table_XY[256] = {
 /*	0		1		2		3		4		5		6		   7		   8	       9	   A		B	    C		D	    E		    F */
 /* 0 */ XY_illegal,	XY_illegal,	XY_illegal,	XY_illegal,	XY_illegal,	XY_illegal,	XY_illegal,	   XY_illegal,	   XY_illegal, add_XY_WW,  XY_illegal,	XY_illegal, XY_illegal, XY_illegal, XY_illegal,	    XY_illegal,
 /* 1 */ XY_illegal,	XY_illegal,	XY_illegal,	XY_illegal,	XY_illegal,	XY_illegal,	XY_illegal,	   XY_illegal,	   XY_illegal, add_XY_WW,  XY_illegal,	XY_illegal, XY_illegal, XY_illegal, XY_illegal,	    XY_illegal,
@@ -1331,7 +1329,7 @@ Q_PRIVATE const Instruction instruction_table_XY[256] = {
 /* F */ XY_illegal,	XY_illegal,	XY_illegal,	XY_illegal,	XY_illegal,	XY_illegal,	XY_illegal,	   XY_illegal,	   XY_illegal, ld_sp_XY,   XY_illegal,	XY_illegal, XY_illegal, XY_illegal, XY_illegal,	    XY_illegal
 };
 
-Q_PRIVATE const Instruction instruction_table_ED[256] = {
+Q_PRIVATE Instruction const instruction_table_ED[256] = {
 /*	0	    1		2	    3		 4	     5		 6	     7		 8	     9		 A	     B		  C	      D		  E	      F */
 /* 0 */ ED_illegal, ED_illegal, ED_illegal, ED_illegal,	 ED_illegal, ED_illegal, ED_illegal, ED_illegal, ED_illegal, ED_illegal, ED_illegal, ED_illegal,  ED_illegal, ED_illegal, ED_illegal, ED_illegal,
 /* 1 */ ED_illegal, ED_illegal, ED_illegal, ED_illegal,	 ED_illegal, ED_illegal, ED_illegal, ED_illegal, ED_illegal, ED_illegal, ED_illegal, ED_illegal,  ED_illegal, ED_illegal, ED_illegal, ED_illegal,
@@ -1388,7 +1386,7 @@ INSTRUCTION(ED_illegal) {PC += 2; CYCLES(8);}
 /* MARK: - Main Functions */
 
 
-qsize z80_run(Z80 *object, qsize cycles)
+CPU_Z80_API qsize z80_run(Z80 *object, qsize cycles)
 	{
 	quint32 data;
 
@@ -1432,7 +1430,7 @@ qsize z80_run(Z80 *object, qsize cycles)
 			R++;		 /* Consume memory refresh.	*/
 			IFF1 = IFF2 = 0; /* Clear interrupt flip-flops.	*/
 
-#			ifdef Z80_AUTOCLEARS_INT_LINE
+#			ifdef EMULATION_CPU_Z80_AUTOCLEARS_INT_LINE
 				INT = FALSE;
 #			endif
 
@@ -1514,7 +1512,7 @@ qsize z80_run(Z80 *object, qsize cycles)
 	}
 
 
-void z80_reset(Z80 *object)
+CPU_Z80_API void z80_reset(Z80 *object)
 	{
 	PC   = Q_Z80_VALUE_AFTER_RESET_PC;
 	SP   = Q_Z80_VALUE_AFTER_RESET_SP;
@@ -1540,7 +1538,7 @@ void z80_reset(Z80 *object)
 	}
 
 
-void z80_power(Z80 *object, qboolean state)
+CPU_Z80_API void z80_power(Z80 *object, qboolean state)
 	{
 	if (state)
 		{
@@ -1573,11 +1571,11 @@ void z80_power(Z80 *object, qboolean state)
 	}
 
 
-void z80_nmi(Z80 *object)		  {NMI = TRUE ;}
-void z80_irq(Z80 *object, qboolean state) {INT = state;}
+CPU_Z80_API void z80_nmi(Z80 *object)		      {NMI = TRUE ;}
+CPU_Z80_API void z80_irq(Z80 *object, qboolean state) {INT = state;}
 
 
-#ifndef BUILDING_MODULE
+#ifdef BUILDING_MODULE_EMULATION_CPU_Z80
 
 	Q_PRIVATE void after_state_readed (Z80 *object, QZ80State *state)
 		{Q_Z80_STATE_R(state) = R_ALL;}
@@ -1585,9 +1583,9 @@ void z80_irq(Z80 *object, qboolean state) {INT = state;}
 	Q_PRIVATE void after_state_written(Z80 *object)
 		{R7 = R;}
 
-	#include <Q/ABIs/emulation.h>
+#	include <Q/ABIs/emulation.h>
 
-	Q_PRIVATE QEmulatorExport exports[7] = {
+	Q_PRIVATE QEmulatorExport const exports[7] = {
 		{Q_EMULATOR_ACTION_POWER,		(QDo)z80_power		},
 		{Q_EMULATOR_ACTION_RESET,		(QDo)z80_reset		},
 		{Q_EMULATOR_ACTION_RUN,			(QDo)z80_run		},
@@ -1597,9 +1595,9 @@ void z80_irq(Z80 *object, qboolean state) {INT = state;}
 		{Q_EMULATOR_ACTION_INT,			(QDo)z80_irq		}
 	};
 
-	#define SLOT_OFFSET(name) Q_OFFSET_OF(Z80, cb.name)
+#	define SLOT_OFFSET(name) Q_OFFSET_OF(Z80, cb.name)
 
-	Q_PRIVATE QEmulatorSlotLinkage slot_linkages[] = {
+	Q_PRIVATE QEmulatorSlotLinkage const slot_linkages[6] = {
 		{Q_EMULATOR_OBJECT_MEMORY,  Q_EMULATOR_ACTION_READ_8BIT,  SLOT_OFFSET(read    )},
 		{Q_EMULATOR_OBJECT_MEMORY,  Q_EMULATOR_ACTION_WRITE_8BIT, SLOT_OFFSET(write   )},
 		{Q_EMULATOR_OBJECT_IO,	    Q_EMULATOR_ACTION_IN_8BIT,	  SLOT_OFFSET(in      )},
@@ -1608,8 +1606,8 @@ void z80_irq(Z80 *object, qboolean state) {INT = state;}
 		{Q_EMULATOR_OBJECT_MACHINE, Q_EMULATOR_ACTION_HALT,	  SLOT_OFFSET(halt    )}
 	};
 
-	Q_PUBLIC QCPUEmulatorABI cpu_emulator_abi = {
-		0, NULL, 7, exports, {sizeof(Z80), Q_OFFSET_OF(Z80, state), 1, slot_linkages}
+	Q_API_EXPORT QCPUEmulatorABI const abi_emulation_cpu_z80 = {
+		0, NULL, 7, exports, {sizeof(Z80), Q_OFFSET_OF(Z80, state), 6, slot_linkages}
 	};
 
 #endif

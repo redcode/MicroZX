@@ -7,11 +7,7 @@
 Copyright © 2014 Manuel Sainz de Baranda y Goñi.
 Released under the terms of the GNU General Public License v3. */
 
-#define MODULE_NAME   AY_3_891X
-#define MODULE_PREFIX ay_3_891x
-#define MODULE_HEADER <modules/emulation/PSG/AY-3-891x.h>
-
-#include <Q/configuration/module.h>
+#include "AY-3-891x.h"
 #include <Q/macros/value.h>
 
 #define R(index) object->r[index]
@@ -41,17 +37,17 @@ static const quint8 levels[16] = {
 #define Q_AY_3_891X_IO_PORT_A_DATA_STORE		14
 #define Q_AY_3_891X_IO_PORT_B_DATA_STORE		15*/
 
-EXPORTED(void, power)(AY3891x *object, qboolean state)
+void power(AY3891x *object, qboolean state)
 	{
 	}
 
 
-EXPORTED(void, reset)(AY3891x *object)
+void reset(AY3891x *object)
 	{
 	}
 
 
-EXPORTED(qsize, run)(AY3891x *object, qsize cycles)
+qsize run(AY3891x *object, qsize cycles)
 	{
 
 	return cycles;
