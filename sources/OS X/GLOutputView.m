@@ -131,7 +131,7 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 		[_GLContext setValues: &swapInterval forParameter: NSOpenGLCPSwapInterval];
 		_GLContext.view = self;
 		gl_output_initialize(&_GLOutput, [_GLContext CGLContextObj]);
-		gl_output_set_geometry(&_GLOutput, Q_CAST(self.bounds, NSRect, QRectangle), Q_SCALING_EXPAND);
+		gl_output_set_geometry(&_GLOutput, Q_CAST(NSRect, QRectangle, self.bounds), Q_SCALING_EXPAND);
 		/*gl_output_set_effect(&_GLOutput, &effect, NULL);
 
 		OPEN_GL_CONTEXT_SET_CURRENT(_GLOutput.context);
@@ -159,7 +159,7 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 			if (_flags.reshaped)
 				{
 				[_GLContext update];
-				gl_output_set_geometry(&_GLOutput, Q_CAST(self.bounds, NSRect, QRectangle), Q_SCALING_SAME);
+				gl_output_set_geometry(&_GLOutput, Q_CAST(NSRect, QRectangle, self.bounds), Q_SCALING_SAME);
 				}
 
 			gl_output_draw(&_GLOutput, FALSE);
@@ -195,7 +195,7 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 	- (void) setScaling: (QKey(SCALING)) scaling
 		{
 		if (_flags.active) pthread_mutex_lock(&mutex_);
-		gl_output_set_geometry(&_GLOutput, Q_CAST(self.bounds, NSRect, QRectangle), scaling);
+		gl_output_set_geometry(&_GLOutput, Q_CAST(NSRect, QRectangle, self.bounds), scaling);
 		if (_flags.active) pthread_mutex_unlock(&mutex_);
 		}
 

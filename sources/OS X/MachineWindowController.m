@@ -177,7 +177,7 @@ static void *EmulationMain(MachineWindowController *controller)
 		{
 		if (_flags.isFullScreen)
 			{
-			Q2D boundsSize = Q_CAST(_videoOutput.bounds.size, NSSize, Q2D);
+			Q2D boundsSize = Q_CAST(NSSize, Q2D, _videoOutput.bounds.size);
 			Q2D zoomedSize = q_2d(Q_ZX_SPECTRUM_SCREEN_WIDTH * zoom, Q_ZX_SPECTRUM_SCREEN_HEIGHT * zoom);
 
 			_videoOutput.contentSize = q_2d_contains(boundsSize, zoomedSize)
@@ -187,16 +187,15 @@ static void *EmulationMain(MachineWindowController *controller)
 
 		else	{
 			NSWindow *window = self.window;
-			QRectangle screenFrame = Q_CAST(window.screen.visibleFrame, NSRect, QRectangle);
-			Q2D borderSize = Q_CAST(window.borderSize, NSSize, Q2D);
+			QRectangle screenFrame = Q_CAST(NSRect, QRectangle, window.screen.visibleFrame);
+			Q2D borderSize = Q_CAST(NSSize, Q2D, window.borderSize);
 			Q2D newSize = q_2d(borderSize.x + Q_ZX_SPECTRUM_SCREEN_WIDTH * zoom, borderSize.y + Q_ZX_SPECTRUM_SCREEN_HEIGHT * zoom);
 
-			[window animateIntoScreenFrame: Q_CAST(screenFrame, QRectangle, NSRect)
+			[window animateIntoScreenFrame: Q_CAST(QRectangle, NSRect, screenFrame)
 				fromTopCenterToSize:	Q_CAST
-					(q_2d_contains(screenFrame.size, newSize)
+					(Q2D, NSSize, q_2d_contains(screenFrame.size, newSize)
 						? newSize
-						: q_2d_add(q_2d_fit(MACHINE_SCREEN_SIZE, q_2d_subtract(screenFrame.size, borderSize)), borderSize),
-					 Q2D, NSSize)];
+						: q_2d_add(q_2d_fit(MACHINE_SCREEN_SIZE, q_2d_subtract(screenFrame.size, borderSize)), borderSize))];
 			}
 		}
 
