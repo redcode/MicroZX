@@ -12,7 +12,6 @@
 #import "NSWindow+RedCode.h"
 #import "NSView+RedCode.h"
 #import <pthread.h>
-#import "TapeRecorderController.h"
 #import "NSMenu+CocoPlus.h"
 #import "NSMenuItem+CocoPlus.h"
 #include <stdio.h>
@@ -28,7 +27,28 @@
 #define NS_MACHINE_SCREEN_SIZE	NSMakeSize(Q_ZX_SPECTRUM_SCREEN_WIDTH, Q_ZX_SPECTRUM_SCREEN_HEIGHT)
 #include <Q/macros/color.h>
 
-quint8 const keymap[256] = {
+typedef struct {
+	struct {quint8 row  :3;
+		quint8 mask :5;
+	} modifier_key;
+
+	struct {quint8 row  :3;
+		quint8 mask :5;
+	} key;
+} KeyCode;
+
+#define KEY_1(KEY_NAME)					\
+	{{0, 0},					\
+	 {Q_JOIN_2(Q_ZX_SPECTRUM_KEY_ROW_,  KEY_NAME),	\
+	  Q_JOIN_2(Q_ZX_SPECTRUM_KEY_MASK_, KEY_NAME)}}
+
+#define KEY_2(MODIFIER_KEY_NAME, KEY_NAME)			 \
+	{{Q_JOIN_2(Q_ZX_SPECTRUM_KEY_ROW_,  MODIFIER_KEY_NAME),	 \
+	  Q_JOIN_2(Q_ZX_SPECTRUM_KEY_MASK_, MODIFIER_KEY_NAME)}, \
+	 {Q_JOIN_2(Q_ZX_SPECTRUM_KEY_ROW_,  KEY_NAME),		 \
+	  Q_JOIN_2(Q_ZX_SPECTRUM_KEY_MASK_, KEY_NAME)}}
+
+quint16 const keymap[256] = {
 /* 0 1 2 3 4 5 6 7 8 9 A B C D E F */
 /* 0 */
 /* 1 */
@@ -277,7 +297,7 @@ static void *EmulationMain(MachineWindowController *controller)
 		[_audioOutput stop];
 		machine_stop(&_machine);
 		[titleWindow release];
-		[_tapeRecorderController release];
+		[_tapeRecorderWindowController release];
 		[_pointerVisibilityTimer invalidate];
 		[_videoOutput release];
 		[_audioOutput release];
@@ -321,7 +341,7 @@ static void *EmulationMain(MachineWindowController *controller)
 
 	- (void) keyDown: (NSEvent *) event
 		{
-		//NSLog(@"keyDown:");
+		//NSLog(@"keyDown: %X, %@, %lu", [event keyCode], [event characters], strlen([[event characters] UTF8String]));
 
 		switch ([event keyCode])
 			{
@@ -625,7 +645,7 @@ static void *EmulationMain(MachineWindowController *controller)
 
 	- (void) submitAudioFrame: (void *) frame
 		{
-		ring_buffer_write(_audioInputRing, frame);
+		ring_buffer_write(_machine.audio_input_buffer, frame);
 		}
 
 
@@ -762,25 +782,23 @@ static void *EmulationMain(MachineWindowController *controller)
 
 	- (IBAction) tapeRecorder: (NSMenuItem *) sender
 		{
-		if (_tapeRecorderController)
+		if (_tapeRecorderWindowController)
 			{
 			sender.state = NSOffState;
-			[_tapeRecorderController removeOutput: self];
-			[_tapeRecorderController release];
-			_tapeRecorderController = nil;
-			ring_buffer_destroy(_audioInputRing);
-			free(_audioInputBuffer);
-			_audioInputRing = NULL;
+			[_tapeRecorderWindowController removeOutput: self];
+			[_tapeRecorderWindowController release];
+			_tapeRecorderWindowController = nil;
+			ring_buffer_destroy(_machine.audio_input_buffer);
+			_machine.audio_input_buffer = NULL;
 			}
 
 		else	{
 			sender.state = NSOnState;
-			_audioInputBuffer = malloc(882);
-			_audioInputRing = ring_buffer_new(3, 882);
-			_tapeRecorderController = [[TapeRecorderController alloc] init];
-			[_tapeRecorderController setFrameSize: 882 count: 4];
-			[_tapeRecorderController addOutput: self action: @selector(submitAudioFrame:)];
-			[_tapeRecorderController.window makeKeyAndOrderFront: self];
+			_machine.audio_input_buffer = ring_buffer_new(3, 882);
+			_tapeRecorderWindowController = [[TapeRecorderWindowController alloc] init];
+			[_tapeRecorderWindowController setFrameSize: 882 count: 4];
+			[_tapeRecorderWindowController addOutput: self action: @selector(submitAudioFrame:)];
+			[_tapeRecorderWindowController.window makeKeyAndOrderFront: self];
 			}
 		}
 

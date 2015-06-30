@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="TapeRecorderWindowController">
+            <connections>
+                <outlet property="contentView" destination="QkU-Eq-XAE" id="xSD-wq-3Rl"/>
+                <outlet property="tapeView" destination="IYk-7f-Yzf" id="E1F-dj-MHd"/>
+                <outlet property="window" destination="6p1-6Q-kzK" id="905-J2-gRh"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="6p1-6Q-kzK" customClass="Window">
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="283" y="305" width="480" height="265"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <view key="contentView" id="NZc-bW-cu8">
+                <rect key="frame" x="0.0" y="5" width="480" height="265"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view id="QkU-Eq-XAE">
+                        <rect key="frame" x="30" y="20" width="419" height="220"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" id="p3D-2z-Pev">
+                                <rect key="frame" x="14" y="13" width="40" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="WlV-q4-tGg">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="eject:" target="-2" id="L2p-dO-3LX"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" id="rdp-7v-EWW">
+                                <rect key="frame" x="104" y="13" width="66" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="|&lt;&lt;" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="y4L-Z5-JeB">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="rewindToPreviousBlock:" target="-2" id="lOz-Hr-EqC"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" id="lqt-f4-6Am">
+                                <rect key="frame" x="167" y="13" width="61" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="&lt;&lt;" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gnV-z4-NLs">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="rewind:" target="-2" id="HRP-lM-5Gh"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" id="BhK-4O-8fH">
+                                <rect key="frame" x="228" y="13" width="51" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="&gt;" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="IsS-NY-Yj2">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="play:" target="-2" id="Bpq-Kz-Ftt"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" id="LYA-82-B6o">
+                                <rect key="frame" x="278" y="13" width="61" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="&gt;&gt;" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="KxM-Qe-fQT">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="windForward:" target="-2" id="Lux-WT-YQ6"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" id="O5u-Ky-uEN">
+                                <rect key="frame" x="339" y="13" width="66" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="&gt;&gt;|" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="iBO-3c-QY0">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="windForwardToNextBlock:" target="-2" id="62A-8I-DuN"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" id="uwc-L4-9Sn">
+                                <rect key="frame" x="54" y="13" width="50" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="O" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="AxW-tA-V8W">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="record:" target="-2" id="49z-4D-PtJ"/>
+                                </connections>
+                            </button>
+                            <imageView hidden="YES" id="IYk-7f-Yzf">
+                                <rect key="frame" x="89" y="80" width="240" height="120"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="Tape" id="A5I-kI-LYE"/>
+                            </imageView>
+                        </subviews>
+                    </view>
+                </subviews>
+            </view>
+            <point key="canvasLocation" x="726" y="647.5"/>
+        </window>
+    </objects>
+    <resources>
+        <image name="Tape" width="6804" height="4536"/>
+    </resources>
+</document>

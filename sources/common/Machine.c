@@ -33,6 +33,9 @@ static void *emulate(Machine *object)
 		do object->abi->run_one_frame(object->context);
 		while ((next_frame_tick += frame_ticks) < q_ticks() && ++loops < maximum_frameskip);
 
+		//-----------------.
+		// Produce output. |
+		//-----------------'
 		if ((audio_output_buffer = q_ring_buffer_try_produce(object->audio_output_buffer)) != NULL)
 			object->context->audio_output_buffer = audio_output_buffer;
 
@@ -44,11 +47,11 @@ static void *emulate(Machine *object)
 		if ((keyboard = q_triple_buffer_consume(object->keyboard_input_buffer)) != NULL)
 			{object->context->state.keyboard.value_uint64 = *keyboard;}
 
-		/*if (object->audio_input_buffer != NULL)
+		if (object->audio_input_buffer != NULL)
 			{
-			object->context->audio_input_buffer = ring_buffer_try_read(controller->_audioInputRing, controller->_audioInputBuffer)
-				? controller->_audioInputBuffer : NULL;
-			}*/
+			object->context->audio_input_buffer = ring_buffer_try_read(object->audio_input_buffer, object->audio_frame)
+				? object->audio_frame : NULL;
+			}
 
 		//----------------------------------------.
 		// Schedule next iteration time and wait. |

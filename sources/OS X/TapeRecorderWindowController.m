@@ -4,7 +4,7 @@
  |   ____________/\__\	Released under the terms of the GNU General Public License v3.
  |_*/
 
-#import "TapeRecorderController.h"
+#import "TapeRecorderWindowController.h"
 #import <Q/formats/storage medium image/audio/TZX.h>
 #import <CoreAudio/CoreAudio.h>
 #import <time.h>
@@ -25,7 +25,7 @@ void *tape_recorder_play(TapeRecorder *object)
 
 
 
-@implementation TapeRecorderController
+@implementation TapeRecorderWindowController
 
 
 #	pragma mark - Helpers
@@ -104,9 +104,8 @@ void *tape_recorder_play(TapeRecorder *object)
 
 	- (id) init
 		{
-		if ((self = [super init]))
+		if ((self = [super initWithWindowNibName: @"TapeRecorderWindow"]))
 			{
-			[NSBundle loadNibNamed: @"TapeRecorder" owner: self];
 			NSSize contentSize = contentView.bounds.size;
 		//	NSWindow *window = [[DevicePanel alloc] initWithContentRect: NSMakeRect(100.0, 100.0, contentSize.width, contentSize.height)];
 

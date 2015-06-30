@@ -317,11 +317,14 @@ static quint8 zx_spectrum_cpu_in(ZXSpectrum *object, quint16 port)
 		default: return Q_ZX_SPECTRUM_UNASSIGNED_IO_PORT_INPUT;
 		}
 
+	/*--------------------------------------------.
+	| Every even I/O address will address the ULA |
+	'--------------------------------------------*/
 	else	{
 		/*---------.
 		| Keyboard |
 		'---------*/
-		value = 0xFF;
+		value = 0xBF;
 		if (!(port & (1 <<  8))) value &= object->state.keyboard.array_uint8[0];
 		if (!(port & (1 <<  9))) value &= object->state.keyboard.array_uint8[1];
 		if (!(port & (1 << 10))) value &= object->state.keyboard.array_uint8[2];

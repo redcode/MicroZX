@@ -12,6 +12,7 @@
 #include <pthread.h>
 #include "ZX Spectrum.h"
 #include "MachineABI.h"
+#include "RingBuffer.h"
 
 typedef struct {
 	pthread_t	  thread;
@@ -19,7 +20,8 @@ typedef struct {
 	MachineABI*	  abi;
 	QTripleBuffer*	  video_output_buffer;
 	QRingBuffer*	  audio_output_buffer;
-	QRingBuffer*	  audio_input_buffer;
+	RingBuffer*	  audio_input_buffer;
+	quint8		  audio_frame[882];
 	QTripleBuffer*	  keyboard_input_buffer;
 	volatile qboolean must_stop;
 

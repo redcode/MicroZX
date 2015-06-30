@@ -8,7 +8,7 @@
 #import "Machine.h"
 #import "GLOutputView.h"
 #import "CoreAudioOutput.h"
-#import "TapeRecorderController.h"
+#import "TapeRecorderWindowController.h"
 #import "ZX Spectrum.h" // Eliminar
 #import "SNA.h"
 #import "RingBuffer.h"
@@ -68,17 +68,15 @@
 	//--------.
 	// Panels |
 	//--------'
-	//KeyboardController*	_keyboardController;
-	//DebuggerController*	_debuggerController;
-	TapeRecorderController*	_tapeRecorderController;
-
+	//KeyboardWindowController*     _keyboardWindowController;
+	//DebuggerWindowController*     _debuggerWindowController;
+	TapeRecorderWindowController* _tapeRecorderWindowController;
 
 	volatile BOOL _mustStop;
 
 	struct {BOOL isFullScreen	 :1;
 		BOOL ignoreKeyboardInput :1;
 	} _flags;
-
 
 	// Temporal
 	qsize	_tapeSampleCount;

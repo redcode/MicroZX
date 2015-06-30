@@ -14,7 +14,6 @@ typedef struct {
 } AudioIOCB;
 
 typedef struct {
-
 	qsize	(* test_data)			(void*	    data);
 
 	qsize	(* object_size_for_data)	(void*	    data);
@@ -30,7 +29,6 @@ typedef struct {
 
 } AudioIOABI;
 
-
 typedef struct {
 	void*	buffer;
 	void*	samples;
@@ -43,24 +41,16 @@ typedef struct {
 	id	output;
 } TapeRecorder;
 
+@interface TapeRecorderWindowController : NSWindowController <TapeRecorderWindowDelegate> {
+	IBOutlet NSView*      contentView;
+	IBOutlet NSImageView* tapeView;
 
-
-@interface TapeRecorderController : NSWindowController <TapeRecorderWindowDelegate> {
-
-	IBOutlet NSView*	contentView;
-	IBOutlet NSImageView*	tapeView;
-
-	TapeRecorder		_tapeRecorder;
-
-
-	NSString*		_filePath;
-	NSTimer*		_timer;
-	BOOL			_playing;
-
-	pthread_t		_thread;
-
+	TapeRecorder _tapeRecorder;
+	NSString*    _filePath;
+	NSTimer*     _timer;
+	BOOL	     _playing;
+	pthread_t    _thread;
 }
-
 	- (void) setFrameSize: (qsize) frameSize
 		 count:	       (qsize) count;
 
@@ -76,5 +66,4 @@ typedef struct {
 	- (IBAction) rewind:		     (id) sender;
 	- (IBAction) windForward:	     (id) sender;
 	- (IBAction) windForwardToNextBlock: (id) sender;
-
 @end
