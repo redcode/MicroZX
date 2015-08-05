@@ -20,7 +20,7 @@ QStatus sna_v48k_test(QSNAv48K *object, qsize object_size)
 	if (object_size	!= sizeof(QSNAv48K)) return Q_ERROR_INVALID_SIZE;
 
 	return (object->im < 3 && object->border_color < 8)
-		? OK : Q_ERROR_INVALID_FORMAT;
+		? Q_OK : Q_ERROR_INVALID_FORMAT;
 	}
 
 qsize sna_v48k_encoding_size(

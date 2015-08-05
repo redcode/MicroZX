@@ -19,7 +19,7 @@ static QStatus test(QZX *object, qsize object_size)
 	{
 	if (object_size	!= sizeof(QZX)) return Q_ERROR_INVALID_SIZE;
 
-	return OK;
+	return Q_OK;
 	}
 
 

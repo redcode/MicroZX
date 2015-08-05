@@ -56,23 +56,24 @@ static OSStatus FillBuffer(
 			//---------------------------------------------------------------------------.
 			// Configure the search parameters to find the default playback output unit. |
 			//---------------------------------------------------------------------------'
-			AudioComponentDescription defaultOutputDescription;
-			defaultOutputDescription.componentType		= kAudioUnitType_Output;
-			defaultOutputDescription.componentSubType	= kAudioUnitSubType_DefaultOutput;
-			defaultOutputDescription.componentManufacturer	= kAudioUnitManufacturer_Apple;
-			defaultOutputDescription.componentFlags		= 0;
-			defaultOutputDescription.componentFlagsMask	= 0;
+			AudioComponentDescription outputDescription = {
+				.componentType		= kAudioUnitType_Output,
+				.componentSubType	= kAudioUnitSubType_DefaultOutput,
+				.componentManufacturer	= kAudioUnitManufacturer_Apple,
+				.componentFlags		= 0,
+				.componentFlagsMask	= 0
+			};
 
 			//---------------------------------------.
 			// Get the default playback output unit. |
 			//---------------------------------------'
-			AudioComponent defaultOutput = AudioComponentFindNext(NULL, &defaultOutputDescription);
-			NSAssert(defaultOutput, @"Can't find default output");
+			AudioComponent output = AudioComponentFindNext(NULL, &outputDescription);
+			NSAssert(output, @"Can't find default output");
 
 			//------------------------------------------------------------.
 			// Create a new unit based on this that we'll use for output. |
 			//------------------------------------------------------------'
-			OSErr error = AudioComponentInstanceNew(defaultOutput, &_audioUnit);
+			OSErr error = AudioComponentInstanceNew(output, &_audioUnit);
 		//	NSAssert1(_toneUnit, @"Error creating unit: %hd", error);
 
 			// Set our tone rendering function on the unit
@@ -81,12 +82,8 @@ static OSStatus FillBuffer(
 			input.inputProcRefCon = self;
 
 			error = AudioUnitSetProperty
-				(_audioUnit,
-				 kAudioUnitProperty_SetRenderCallback, 
-				 kAudioUnitScope_Input,
-				 0,
-				 &input,
-				 sizeof(input));
+				(_audioUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input,
+				 0, &input, sizeof(input));
 
 			NSAssert1(error == noErr, @"Error setting callback: %hd", error);
 
@@ -108,20 +105,16 @@ static OSStatus FillBuffer(
 			// Set the max frames
 
 			error = AudioUnitSetProperty
-				(_audioUnit,
-				 kAudioUnitProperty_MaximumFramesPerSlice,
-				 kAudioUnitScope_Global, 0,
-				 &frames, sizeof(frames));
+				(_audioUnit, kAudioUnitProperty_MaximumFramesPerSlice, kAudioUnitScope_Global,
+				 0, &frames, sizeof(frames));
 
 			NSAssert1(error == noErr, @"Error setting maximum frames per slice: %hd", error);
 
 			// Set the buffer size
 
 			error = AudioUnitSetProperty
-				(_audioUnit,
-				 kAudioDevicePropertyBufferFrameSize,
-				 kAudioUnitScope_Global, 0,
-				 &frames, sizeof(frames));
+				(_audioUnit, kAudioDevicePropertyBufferFrameSize, kAudioUnitScope_Global,
+				 0, &frames, sizeof(frames));
 
 			NSAssert1(error == noErr, @"Error setting buffer frame size: %hd", error);
 
@@ -141,12 +134,8 @@ static OSStatus FillBuffer(
 			};
 
 			error = AudioUnitSetProperty
-				(_audioUnit,
-				 kAudioUnitProperty_StreamFormat,
-				 kAudioUnitScope_Input,
-				 0,
-				 &streamFormat,
-				 sizeof(AudioStreamBasicDescription));
+				(_audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input,
+				 0, &streamFormat, sizeof(AudioStreamBasicDescription));
 
 			NSAssert1(error == noErr, @"Error setting stream format: %hd", error);
 
