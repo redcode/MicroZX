@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MachineWindow</class>
+ <widget class="QMainWindow" name="MachineWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>352</width>
+    <height>316</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>NEStalin</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="minimumSize">
+    <size>
+     <width>352</width>
+     <height>296</height>
+    </size>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="margin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="GLVideoOutputView" name="videoOutputView" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>352</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionFileNewWindow"/>
+    <addaction name="actionFileOpen"/>
+    <addaction name="actionFileClose"/>
+    <addaction name="separator"/>
+    <addaction name="actionFileProperties"/>
+    <addaction name="separator"/>
+    <addaction name="actionMachineSaveScreenshot"/>
+    <addaction name="actionRecord_Movie"/>
+    <addaction name="separator"/>
+    <addaction name="actionFileQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuMachine">
+    <property name="title">
+     <string>Machine</string>
+    </property>
+    <widget class="QMenu" name="menuVideo">
+     <property name="title">
+      <string>Video</string>
+     </property>
+     <addaction name="actionV_Sync"/>
+     <addaction name="actionBackground"/>
+    </widget>
+    <widget class="QMenu" name="menuFrameskip">
+     <property name="title">
+      <string>Frameskip</string>
+     </property>
+     <addaction name="actionAuto"/>
+     <addaction name="separator"/>
+     <addaction name="action1"/>
+     <addaction name="action2"/>
+     <addaction name="action3"/>
+     <addaction name="action4"/>
+    </widget>
+    <addaction name="actionMachinePower"/>
+    <addaction name="actionMachinePause"/>
+    <addaction name="actionMachineReset"/>
+    <addaction name="separator"/>
+    <addaction name="actionMachineAudio"/>
+    <addaction name="menuVideo"/>
+    <addaction name="menuFrameskip"/>
+    <addaction name="separator"/>
+    <addaction name="actionSaveState"/>
+    <addaction name="actionLoadState"/>
+    <addaction name="actionSavedStates"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <widget class="QMenu" name="menuEffect">
+     <property name="title">
+      <string>Effect</string>
+     </property>
+     <addaction name="actionLinear_Interpolation"/>
+     <addaction name="separator"/>
+     <addaction name="actionNone"/>
+     <addaction name="actionScanlines"/>
+    </widget>
+    <addaction name="actionViewFullScreen"/>
+    <addaction name="actionFPS"/>
+    <addaction name="actionMenu_Bar"/>
+    <addaction name="actionViewStatusBar"/>
+    <addaction name="separator"/>
+    <addaction name="actionViewZoomIn"/>
+    <addaction name="actionViewZoomOut"/>
+    <addaction name="separator"/>
+    <addaction name="actionView1x"/>
+    <addaction name="actionView2x"/>
+    <addaction name="actionView3x"/>
+    <addaction name="separator"/>
+    <addaction name="actionSmooth"/>
+    <addaction name="menuEffect"/>
+   </widget>
+   <widget class="QMenu" name="menuWindow">
+    <property name="title">
+     <string>Window</string>
+    </property>
+    <widget class="QMenu" name="menuDeveloper_2">
+     <property name="title">
+      <string>Developer</string>
+     </property>
+     <addaction name="actionDebugger"/>
+     <addaction name="actionWindowCPUDebugger"/>
+     <addaction name="actionULA"/>
+     <addaction name="actionPSG"/>
+    </widget>
+    <addaction name="actionWindowEditTitle"/>
+    <addaction name="separator"/>
+    <addaction name="actionKeyboard"/>
+    <addaction name="actionTape_Recorder"/>
+    <addaction name="menuDeveloper_2"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionHelpAbout"/>
+    <addaction name="actionAbout_Qt"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuMachine"/>
+   <addaction name="menuView"/>
+   <addaction name="menuWindow"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <action name="actionMachinePower">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../common/images.qrc">
+     <normaloff>:/icons/Menu - Power.png</normaloff>:/icons/Menu - Power.png</iconset>
+   </property>
+   <property name="text">
+    <string>Power</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionMachinePause">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Pause</string>
+   </property>
+   <property name="shortcut">
+    <string>Pause</string>
+   </property>
+  </action>
+  <action name="actionMachineReset">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Reset</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionWindowCPUDebugger">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>CPU</string>
+   </property>
+  </action>
+  <action name="actionFileOpen">
+   <property name="text">
+    <string>Open ROM...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionViewZoomIn">
+   <property name="icon">
+    <iconset resource="../../common/images.qrc">
+     <normaloff>:/icons/Menu - Zoom In.png</normaloff>:/icons/Menu - Zoom In.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom In</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl++</string>
+   </property>
+  </action>
+  <action name="actionViewZoomOut">
+   <property name="icon">
+    <iconset resource="../../common/images.qrc">
+     <normaloff>:/icons/Menu - Zoom Out.png</normaloff>:/icons/Menu - Zoom Out.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom Out</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
+   </property>
+  </action>
+  <action name="actionView1x">
+   <property name="text">
+    <string>1x</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+1</string>
+   </property>
+  </action>
+  <action name="actionView2x">
+   <property name="text">
+    <string>2x</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+2</string>
+   </property>
+  </action>
+  <action name="actionView3x">
+   <property name="text">
+    <string>3x</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+3</string>
+   </property>
+  </action>
+  <action name="actionFileNewWindow">
+   <property name="text">
+    <string>New Window</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionFileQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionViewFullScreen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../common/images.qrc">
+     <normaloff>:/icons/Menu - Full Screen.png</normaloff>:/icons/Menu - Full Screen.png</iconset>
+   </property>
+   <property name="text">
+    <string>Full Screen</string>
+   </property>
+   <property name="shortcut">
+    <string>F11</string>
+   </property>
+  </action>
+  <action name="actionScanlines">
+   <property name="text">
+    <string>Scanlines</string>
+   </property>
+  </action>
+  <action name="actionHelpAbout">
+   <property name="text">
+    <string>About NEStalin...</string>
+   </property>
+  </action>
+  <action name="actionFileClose">
+   <property name="text">
+    <string>Close</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionFileProperties">
+   <property name="text">
+    <string>Properties...</string>
+   </property>
+  </action>
+  <action name="actionMachineAudio">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Audio</string>
+   </property>
+  </action>
+  <action name="actionMachineSaveScreenshot">
+   <property name="text">
+    <string>Save Screenshot</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Print</string>
+   </property>
+  </action>
+  <action name="actionCopyScreen">
+   <property name="text">
+    <string>Copy Screen</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actionMachineSaveMovie">
+   <property name="text">
+    <string>Record Movie</string>
+   </property>
+  </action>
+  <action name="actionMachineRecordAudio">
+   <property name="text">
+    <string>Record Audio</string>
+   </property>
+  </action>
+  <action name="actionWindowEditTitle">
+   <property name="text">
+    <string>Edit Title...</string>
+   </property>
+  </action>
+  <action name="actionSaveState">
+   <property name="text">
+    <string>Save State</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
+  </action>
+  <action name="actionLoadState">
+   <property name="text">
+    <string>Restore State</string>
+   </property>
+   <property name="shortcut">
+    <string>F6</string>
+   </property>
+  </action>
+  <action name="actionSavedStates">
+   <property name="text">
+    <string>States...</string>
+   </property>
+  </action>
+  <action name="actionViewStatusBar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Status Bar</string>
+   </property>
+  </action>
+  <action name="actionAuto">
+   <property name="text">
+    <string>Auto</string>
+   </property>
+  </action>
+  <action name="action1">
+   <property name="text">
+    <string>1</string>
+   </property>
+  </action>
+  <action name="action2">
+   <property name="text">
+    <string>2</string>
+   </property>
+  </action>
+  <action name="action3">
+   <property name="text">
+    <string>3</string>
+   </property>
+  </action>
+  <action name="action4">
+   <property name="text">
+    <string>4</string>
+   </property>
+  </action>
+  <action name="actionFPS">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>FPS</string>
+   </property>
+  </action>
+  <action name="actionLinear_Interpolation">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Linear Interpolation</string>
+   </property>
+  </action>
+  <action name="actionPattern_Tables">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Pattern Tables</string>
+   </property>
+  </action>
+  <action name="actionColor_Palette">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Color Palette</string>
+   </property>
+  </action>
+  <action name="actionMenu_Bar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Menu Bar</string>
+   </property>
+  </action>
+  <action name="actionAbout_Qt">
+   <property name="text">
+    <string>About Qt...</string>
+   </property>
+  </action>
+  <action name="actionBackground">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Background</string>
+   </property>
+  </action>
+  <action name="actionV_Sync">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>V-Sync</string>
+   </property>
+  </action>
+  <action name="actionStart_Recording">
+   <property name="text">
+    <string>Start Recording</string>
+   </property>
+  </action>
+  <action name="actionStop_Recording">
+   <property name="text">
+    <string>Stop Recording</string>
+   </property>
+  </action>
+  <action name="actionRecord_Movie">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Movie</string>
+   </property>
+  </action>
+  <action name="actionNone">
+   <property name="text">
+    <string>None</string>
+   </property>
+  </action>
+  <action name="actionULA">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>ULA</string>
+   </property>
+  </action>
+  <action name="actionPSG">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>PSG</string>
+   </property>
+  </action>
+  <action name="actionKeyboard">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Keyboard</string>
+   </property>
+  </action>
+  <action name="actionTape_Recorder">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Tape Recorder</string>
+   </property>
+  </action>
+  <action name="actionDebugger">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Debugger</string>
+   </property>
+  </action>
+  <action name="actionSmooth">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Smooth</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GLVideoOutputView</class>
+   <extends>QWidget</extends>
+   <header>GLVideoOutputView.hpp</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../../common/images.qrc"/>
+ </resources>
+ <connections/>
+</ui>

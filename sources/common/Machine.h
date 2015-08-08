@@ -12,15 +12,24 @@
 #include <pthread.h>
 #include "ZX Spectrum.h"
 #include "MachineABI.h"
-#include "RingBuffer.h"
+
+#include <Q/inspection/OS.h>
+
+#if Q_OS == Q_OS_MAC_OS_X
+#	include "RingBuffer.h"
+#endif
 
 typedef struct {
-	pthread_t	  thread;
-	ZXSpectrum*	  context;
-	MachineABI*	  abi;
-	QTripleBuffer*	  video_output_buffer;
-	QRingBuffer*	  audio_output_buffer;
-	RingBuffer*	  audio_input_buffer;
+	pthread_t      thread;
+	ZXSpectrum*    context;
+	MachineABI*    abi;
+	QTripleBuffer* video_output_buffer;
+	QRingBuffer*   audio_output_buffer;
+
+#	if Q_OS == Q_OS_MAC_OS_X
+		RingBuffer* audio_input_buffer;
+#	endif
+
 	quint8		  audio_frame[882];
 	QTripleBuffer*	  keyboard_input_buffer;
 	volatile qboolean must_stop;

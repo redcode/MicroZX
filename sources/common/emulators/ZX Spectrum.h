@@ -9,8 +9,8 @@ Released under the terms of the GNU General Public License v2. */
 
 #define USE_STATIC_EMULATION_CPU_Z80
 #include "Z80.h"
-#include <ACME/types/basics.h>
 #include <Q/hardware/machine/platform/computer/ZX Spectrum.h>
+#include <Q/ABIs/emulation.h>
 
 typedef struct {
 	qsize cycles_per_frame;
@@ -26,10 +26,10 @@ typedef struct {
 	quint8*			audio_input_buffer;	\
 	qint16*			audio_output_buffer;	\
 							\
-	struct {ACMERunCycles	run;			\
-		ACMESwitch	power;			\
-		ACMEPulse	reset;			\
-		ACMESwitch	irq;			\
+	struct {QEmulatorRun	run;			\
+		QSwitch	power;			\
+		QDo	reset;			\
+		QSwitch	irq;			\
 	} cpu_abi;					\
 							\
 	quint8			keyboard[8];		\

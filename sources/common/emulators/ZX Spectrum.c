@@ -422,7 +422,7 @@ Q_PRIVATE void cpu_halt(ZXSpectrum *object)
 	{
 	}
 
-
+#include "Z80.h"
 #define CPU(object) ((Z80 *)(object))
 
 Q_PRIVATE void zx_spectrum_initialize(ZXSpectrum *object)

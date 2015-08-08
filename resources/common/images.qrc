@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/Source Code.png</file>
+        <file>icons/Home Page.png</file>
+        <file>icons/Menu - Zoom In.png</file>
+        <file>icons/Menu - Zoom Out.png</file>
+        <file>icons/Menu - CPU Debugger.png</file>
+        <file>icons/Menu - Preferences.png</file>
+        <file>icons/Menu - Power.png</file>
+        <file>icons/Donate.png</file>
+        <file>icons/Menu - Full Screen.png</file>
+        <file>icons/Menu - Audio.png</file>
+        <file>icons/Menu - Save Screenshot.png</file>
+        <file>icons/Menu - Movie.png</file>
+        <file>icons/Menu - Video.png</file>
+    </qresource>
+</RCC>

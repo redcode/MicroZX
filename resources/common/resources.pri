@@ -1,0 +1,2 @@
+RESOURCES += \
+	$$P_RESOURCES_COMMON/images.qrc

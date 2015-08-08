@@ -48,11 +48,13 @@ Q_PRIVATE void *emulate(Machine *object)
 		if ((keyboard = q_triple_buffer_consume(object->keyboard_input_buffer)) != NULL)
 			{object->context->state.keyboard.value_uint64 = *keyboard;}
 
-		if (object->audio_input_buffer != NULL)
-			{
-			object->context->audio_input_buffer = ring_buffer_try_read(object->audio_input_buffer, object->audio_frame)
-				? object->audio_frame : NULL;
-			}
+#		if Q_OS == Q_OS_MAC_OS_X
+			if (object->audio_input_buffer != NULL)
+				{
+				object->context->audio_input_buffer = ring_buffer_try_read(object->audio_input_buffer, object->audio_frame)
+					? object->audio_frame : NULL;
+				}
+#		endif
 
 		//----------------------------------------.
 		// Schedule next iteration time and wait. |
