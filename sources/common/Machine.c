@@ -5,6 +5,7 @@
  |_*/
 
 #include <stdlib.h>
+#include <string.h>
 #include "Machine.h"
 #include "system.h"
 #include "Z80.h"
@@ -144,9 +145,21 @@ void machine_power(Machine *object, qboolean state)
 			}
 
 		else	{
+			qsize rom_count = object->abi->rom_count, index = 0;
+			qsize offset = 0;
+			ROM *rom;
+
 			if (!object->flags.pause) stop(object);
 			object->abi->power(object->context, OFF);
-			memset(object->context->memory, 0, object->abi->memory_size);
+
+			for (; index < rom_count; index++)
+				{
+				rom = &object->abi->roms[index];
+				memset(object->context->memory + offset, 0, rom->base_address - offset);
+				offset = rom->base_address + rom->size;
+				}
+
+			memset(object->context->memory + offset, 0, object->abi->memory_size - offset);
 			object->flags.power = OFF;
 			object->flags.pause = OFF;
 			}
