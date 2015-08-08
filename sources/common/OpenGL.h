@@ -14,10 +14,12 @@
 #	include <OpenGL/gl.h>
 #	include <OpenGL/OpenGL.h>
 
-	typedef CGLContextObj OpenGLContext;
+#elif Q_OS == Q_OS_IOS
 
-#	define OPEN_GL_CONTEXT_SET_CURRENT(context) CGLSetCurrentContext(context)
-#	define OPEN_GL_CONTEXT_RESTORE		    CGLSetCurrentContext(NULL)
+#	include <OpenGLES/ES2/gl.h>
+#	include <OpenGLES/ES2/glext.h>
+
+#	define USE_GL_ES
 
 #else
 #	include <GL/gl.h>

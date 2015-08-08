@@ -10,7 +10,8 @@
 #define Q_C_HAS_ANONYMOUS_UNION
 
 #ifdef __OBJC__
-	#import <Cocoa/Cocoa.h>
+#	define Q_AVOID_NULL_DECLARATION
+#	import <Cocoa/Cocoa.h>
 #endif
 
 #define STRING(...) [NSString stringWithFormat: __VA_ARGS__]

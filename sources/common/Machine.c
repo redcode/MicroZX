@@ -4,18 +4,18 @@
  |   ____________/\__\	Released under the terms of the GNU General Public License v3.
  |_*/
 
+#include <stdlib.h>
 #include "Machine.h"
 #include "system.h"
 #include "Z80.h"
 #include <Q/functions/buffering/QTripleBuffer.h>
 #include <Q/functions/buffering/QRingBuffer.h>
-#include <stdlib.h>
 
 
 /*--------------------------------.
 | Emulation thread main function. |
 '--------------------------------*/
-static void *emulate(Machine *object)
+Q_PRIVATE void *emulate(Machine *object)
 	{
 	quint64 frames_per_second = 50;
 	quint64 frame_ticks	  = 1000000000 / frames_per_second;
@@ -64,6 +64,24 @@ static void *emulate(Machine *object)
 	}
 
 
+Q_PRIVATE void start(Machine *object)
+	{
+	object->must_stop = FALSE;
+	pthread_attr_t attributes;
+	pthread_attr_init(&attributes);
+	pthread_create(&object->thread, &attributes, (void *(*)(void *))emulate, object);
+	pthread_attr_destroy(&attributes);
+	}
+
+
+Q_PRIVATE void stop(Machine *object)
+	{
+	object->must_stop = TRUE;
+	pthread_join(object->thread, NULL);
+	}
+
+
+
 void machine_initialize(
 	Machine*       object,
 	MachineABI*    abi,
@@ -74,6 +92,8 @@ void machine_initialize(
 	object->abi		    = abi;
 	object->video_output_buffer = video_output_buffer;
 	object->audio_output_buffer = audio_output_buffer;
+	object->flags.power	    = OFF;
+	object->flags.pause	    = OFF;
 
 	/*--------------------------------------.
 	| Create the machine and its components |
@@ -113,41 +133,56 @@ void machine_run_one_frame(Machine *object)
 
 void machine_power(Machine *object, qboolean state)
 	{
-	}
-
-
-void machine_start(Machine *object)
-	{
-	if (!object->flags.running)
+	if (state != object->flags.power)
 		{
-		object->flags.running = TRUE;
-		object->must_stop = FALSE;
+		if (state)
+			{
+			object->flags.power = ON;
+			object->flags.pause = OFF;
+			object->abi->power(object->context, ON);
+			start(object);
+			}
 
-		pthread_attr_t attributes;
-		pthread_attr_init(&attributes);
-		pthread_create(&object->thread, &attributes, (void *(*)(void *))emulate, object);
-		pthread_attr_destroy(&attributes);
+		else	{
+			if (!object->flags.pause) stop(object);
+			object->abi->power(object->context, OFF);
+			object->flags.power = OFF;
+			object->flags.pause = OFF;
+			}
 		}
 	}
 
 
-void machine_stop(Machine *object)
+void machine_pause(Machine *object, qboolean state)
 	{
-	if (object->flags.running)
+	if (object->flags.power && state != object->flags.pause)
 		{
-		object->must_stop = TRUE;
-		pthread_join(object->thread, NULL);
-		object->flags.running = FALSE;
+		if (state)
+			{
+			object->flags.pause = ON;
+			stop(object);
+			}
+
+		else	{
+			start(object);
+			object->flags.pause = OFF;
+			}
 		}
 	}
 
 
 void machine_reset(Machine *object)
 	{
+	if (object->flags.power)
+		{
+		if (!object->flags.pause) stop(object);
+		object->abi->reset(object->context);
+		if (!object->flags.pause) start(object);
+		}
 	}
 
 
-void machine_keyboard_input(Machine *object, quint16  key_code, qboolean key_state)
+void machine_keyboard_input(Machine *object, quint16 key_code, qboolean key_state)
 	{
 	}
 

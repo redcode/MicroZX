@@ -10,15 +10,14 @@
 
 @interface GLOutputView : NSView {
 
-	NSOpenGLContext*	_GLContext;
-	NSOpenGLPixelFormat*	_pixelFormat;
-	QTripleBuffer		_buffer;
-	GLOutput		_GLOutput;
+	NSOpenGLContext*     _GLContext;
+	CGLContextObj	     _CGLContext;
+	NSOpenGLPixelFormat* _pixelFormat;
+	QTripleBuffer	     _buffer;
+	GLOutput	     _GLOutput;
 
-	struct {BOOL OpenGLReady       :1;
-		BOOL startWhenPossible :1;
-		BOOL reshaped	       :1;
-		BOOL active	       :1;
+	struct {BOOL reshaped :1;
+		BOOL active   :1;
 	} _flags;
 }
 	@property (nonatomic, readonly) GLOutput*      GLOutput;

@@ -9,13 +9,12 @@
 #include <Q/functions/base/Q3DValue.h>
 #include <Q/functions/geometry/QRectangle.h>
 #include <Q/functions/buffering/QTripleBuffer.h>
-#include <stdio.h>
 
 static const GLubyte indices_data[] = {0, 1, 2, 3};
 
 static const GLfloat vertices_data[] = {
-	-1.0f, -1.0f,	1.0f, -1.0f,
-	-1.0f,  1.0f,	1.0f,  1.0f
+	-1.0f, -1.0f, 1.0f, -1.0f,
+	-1.0f,  1.0f, 1.0f,  1.0f
 };
 
 static GLuint indices  = 0;
@@ -40,13 +39,10 @@ static void set_viewport(QRectangle viewport)
 	}
 
 
-void gl_output_initialize(GLOutput *object, OpenGLContext context)
+void gl_output_initialize(GLOutput *object)
 	{
-	object->texture_loaded = FALSE;
-	object->context	       = context;
-	object->effect	       = NULL;
-	q_3d_divide_3(q_3d(4.5, 554.3, 432.2), q_3d(4.5, 554.3, 432.2), q_3d(4.5, 554.3, 432.2));
-	OPEN_GL_CONTEXT_SET_CURRENT(object->context);
+	object->effect = NULL;
+
 	glEnable(GL_TEXTURE_2D);
 	glGenTextures(1, &object->texture);
 	glBindTexture(GL_TEXTURE_2D, object->texture);
@@ -55,19 +51,16 @@ void gl_output_initialize(GLOutput *object, OpenGLContext context)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,     GL_CLAMP_TO_EDGE); // Nedded?
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,     GL_CLAMP_TO_EDGE); // Nedded?
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // Nedded?
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Nedded?
 	glDisable(GL_TEXTURE_2D);
-	OPEN_GL_CONTEXT_RESTORE;
 	}
 
 
 void gl_output_finalize(GLOutput *object)
 	{
-	OPEN_GL_CONTEXT_SET_CURRENT(object->context);
 	if (object->effect != NULL) gl_output_remove_effect(object);
 	glDeleteTextures(1, &object->texture);
-	OPEN_GL_CONTEXT_RESTORE;
 	}
 
 
@@ -76,6 +69,15 @@ void gl_output_set_input(GLOutput *object, QTripleBuffer *buffer, Q2DSize resolu
 	object->input_buffer = buffer;
 	object->input_width  = (GLsizei)resolution.x;
 	object->input_height = (GLsizei)resolution.y;
+
+	glEnable(GL_TEXTURE_2D);
+
+	glTexImage2D
+		(GL_TEXTURE_2D, 0, GL_RGBA,
+		 object->input_width, object->input_height, 0,
+		 GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+	glDisable(GL_TEXTURE_2D);
 	}
 
 
@@ -83,7 +85,6 @@ void gl_output_set_content_bounds(GLOutput *object, QRectangle bounds)
 	{
 	object->content_bounds = bounds;
 
-	OPEN_GL_CONTEXT_SET_CURRENT(object->context);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
@@ -97,7 +98,6 @@ void gl_output_set_content_bounds(GLOutput *object, QRectangle bounds)
 		 1.0);
 
 	glGetFloatv(GL_MODELVIEW_MATRIX, object->model_view_matrix);
-	OPEN_GL_CONTEXT_RESTORE;
 	}
 
 
@@ -109,7 +109,6 @@ void gl_output_set_content_size(GLOutput *object, Q2D size)
 	bounds.size = size;
 	object->content_bounds = bounds;
 
-	OPEN_GL_CONTEXT_SET_CURRENT(object->context);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
@@ -118,7 +117,6 @@ void gl_output_set_content_size(GLOutput *object, Q2D size)
 		 1.0);
 
 	glGetFloatv(GL_MODELVIEW_MATRIX, object->model_view_matrix);
-	OPEN_GL_CONTEXT_RESTORE;
 	}
 
 
@@ -128,7 +126,6 @@ void gl_output_set_geometry(
 	QKey(SCALING) content_scaling
 )
 	{
-	OPEN_GL_CONTEXT_SET_CURRENT(object->context);
 	set_viewport(object->viewport = viewport);
 
 	switch (content_scaling ? (object->content_scaling = content_scaling) : object->content_scaling)
@@ -149,8 +146,6 @@ void gl_output_set_geometry(
 		glGetFloatv(GL_MODELVIEW_MATRIX, object->model_view_matrix);
 		break;
 		}
-
-	OPEN_GL_CONTEXT_RESTORE;
 	}
 
 
@@ -158,11 +153,9 @@ void gl_output_set_linear_interpolation(GLOutput *object, qboolean value)
 	{
 	GLint filter = value ? GL_LINEAR : GL_NEAREST;
 
-	OPEN_GL_CONTEXT_SET_CURRENT(object->context);
 	glBindTexture(GL_TEXTURE_2D, object->texture);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
-	OPEN_GL_CONTEXT_RESTORE;
 	}
 
 
@@ -171,7 +164,6 @@ void gl_output_set_effect(GLOutput *object, GLOutputEffect *effect, void *effect
 	if (object->effect != effect)
 		{
 		gl_output_remove_effect(object);
-		OPEN_GL_CONTEXT_SET_CURRENT(object->context);
 
 		if (!gpu_shared_data_owner_count++)
 			{
@@ -203,7 +195,7 @@ void gl_output_set_effect(GLOutput *object, GLOutputEffect *effect, void *effect
 
 			glCompileShader(vertex_shader);
 			glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &ok);
-			if (!ok) printf("Error con el shader\n");
+			//if (!ok) printf("Error con el shader\n");
 			effect->vertex_shader = vertex_shader;
 
 			/*------------------------.
@@ -216,7 +208,7 @@ void gl_output_set_effect(GLOutput *object, GLOutputEffect *effect, void *effect
 
 			glCompileShader(fragment_shader);
 			glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &ok);
-			if (!ok) printf("Error con el shader\n");
+			//if (!ok) printf("Error con el shader\n");
 			effect->fragment_shader = fragment_shader;
 
 			/*-----------------------------.
@@ -227,15 +219,13 @@ void gl_output_set_effect(GLOutput *object, GLOutputEffect *effect, void *effect
 			glAttachShader(program, fragment_shader);
 			glLinkProgram(program);
 			glGetProgramiv(program, GL_LINK_STATUS, &ok);
-			if (!ok) printf("Error con el programa del shader\n");
+			//if (!ok) printf("Error con el programa del shader\n");
 			effect->program = program;
 
 			effect->transform_uniform = glGetUniformLocation(program, "transform");
 			effect->vertex_attribute  = glGetAttribLocation (program, "vertex"   );
 			effect->texture_uniform   = glGetUniformLocation(program, "texture");
 			}
-
-		OPEN_GL_CONTEXT_RESTORE;
 		}
 	}
 
@@ -245,8 +235,6 @@ void gl_output_remove_effect(GLOutput *object)
 	if (object->effect != NULL)
 		{
 		GLOutputEffect *effect = object->effect;
-
-		OPEN_GL_CONTEXT_SET_CURRENT(object->context);
 
 		if (!--effect->owner_count)
 			{
@@ -261,7 +249,6 @@ void gl_output_remove_effect(GLOutput *object)
 			glDeleteBuffers(1, &vertices);
 			}
 
-		OPEN_GL_CONTEXT_RESTORE;
 		object->effect = NULL;
 		}
 	}
@@ -277,24 +264,13 @@ void gl_output_draw(GLOutput *object, qboolean skip_old)
 		frame = q_triple_buffer_consumption_buffer(object->input_buffer);
 		}
 
-	OPEN_GL_CONTEXT_SET_CURRENT(object->context);
 	glEnable(GL_TEXTURE_2D);
 	glDisable(GL_DEPTH_TEST);
 
-	if (object->texture_loaded)
-		glTexSubImage2D
-			(GL_TEXTURE_2D, 0, 0, 0,
-			 object->input_width, object->input_height,
-			 GL_RGBA, GL_UNSIGNED_BYTE, frame);
-
-	else	{
-		glTexImage2D
-			(GL_TEXTURE_2D, 0, GL_RGBA,
-			 object->input_width, object->input_height, 0,
-			 GL_RGBA, GL_UNSIGNED_BYTE, frame);
-
-		object->texture_loaded = TRUE;
-		}
+	glTexSubImage2D
+		(GL_TEXTURE_2D, 0, 0, 0,
+		 object->input_width, object->input_height,
+		 GL_RGBA, GL_UNSIGNED_BYTE, frame);
 
 	if (object->content_scaling != Q_SCALING_EXPAND)
 		{
@@ -337,7 +313,6 @@ void gl_output_draw(GLOutput *object, qboolean skip_old)
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_TEXTURE_2D);
 	glFlush();
-	OPEN_GL_CONTEXT_RESTORE;
 	}
 
 

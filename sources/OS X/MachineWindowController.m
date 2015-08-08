@@ -12,8 +12,6 @@
 #import "NSWindow+RedCode.h"
 #import "NSView+RedCode.h"
 #import <pthread.h>
-#import "NSMenu+CocoPlus.h"
-#import "NSMenuItem+CocoPlus.h"
 #include <stdio.h>
 
 #include "system.h"
@@ -294,7 +292,7 @@ static void *EmulationMain(MachineWindowController *controller)
 		{
 		[_videoOutput stop];
 		[_audioOutput stop];
-		machine_stop(&_machine);
+		machine_power(&_machine, OFF);
 		[titleWindow release];
 		[_tapeRecorderWindowController release];
 		[_pointerVisibilityTimer invalidate];
@@ -328,7 +326,7 @@ static void *EmulationMain(MachineWindowController *controller)
 
 		[_videoOutput start];
 		[_audioOutput start];
-		machine_start(&_machine);
+		machine_power(&_machine, ON);
 		}
 
 
@@ -706,39 +704,18 @@ static void *EmulationMain(MachineWindowController *controller)
 
 	- (IBAction) power: (NSMenuItem *) sender
 		{
-		if (_machine.flags.running)
-			{
-			machine_stop(&_machine);
-			[_videoOutput stop];
-			sender.state = NSOffState;
-			}
-
-		else	{
-			sender.state = NSOnState;
-			[_videoOutput start];
-			machine_start(&_machine);
-			}
+		machine_power(&_machine, !_machine.flags.power);
 		}
 
 
 	- (IBAction) pause: (id) sender
 		{
-		if (_machine.flags.running) machine_stop(&_machine);
-		else machine_start(&_machine);
+		machine_pause(&_machine, !_machine.flags.pause);
 		}
 
 
 	- (IBAction) reset: (id) sender
-		{
-		if (_machine.flags.running)
-			{
-			machine_stop(&_machine);
-			machine_reset(&_machine);
-			machine_stop(&_machine);
-			}
-
-		else machine_reset(&_machine);
-		}
+		{machine_reset(&_machine);}
 
 
 #	pragma mark - IBAction: Main Menu (View)

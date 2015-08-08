@@ -7,11 +7,11 @@
 #ifndef __mZX_common_GLOutput_H
 #define __mZX_common_GLOutput_H
 
+#include "OpenGL.h"
 #include <Q/types/mathematics.h>
 #include <Q/types/buffering.h>
 #include <Q/keys/layout.h>
 #include <Q/macros/key.h>
-#include "OpenGL.h"
 
 typedef struct {
 	QString* name;
@@ -39,14 +39,12 @@ typedef struct {
 } GLOutputEffect;
 
 typedef struct {
-	OpenGLContext   context;
 	GLsizei	        input_width;
 	GLsizei		input_height;
 	QTripleBuffer*  input_buffer;
 	QRectangle      viewport;
 	QRectangle      content_bounds;
 	QKey(SCALING)   content_scaling;
-	qboolean        texture_loaded;
 	GLfloat	        model_view_matrix[16];
 	GLuint		texture;
 	GLOutputEffect* effect;
@@ -57,8 +55,7 @@ typedef struct {
 
 Q_C_SYMBOLS_BEGIN
 
-void gl_output_initialize	  (GLOutput*	   object,
-				   OpenGLContext   context);
+void gl_output_initialize	  (GLOutput*	   object);
 
 void gl_output_finalize		  (GLOutput*	   object);
 

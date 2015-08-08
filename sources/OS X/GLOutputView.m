@@ -13,27 +13,8 @@
 #import <pthread.h>
 #import <stdlib.h>
 
-static GLOutput**	activeOutputs_     = NULL;
-static qsize		activeOutputCount_ = 0;
-static pthread_mutex_t	mutex_		   = PTHREAD_MUTEX_INITIALIZER;
-static CVDisplayLinkRef	displayLink_;
-
-
-static CVReturn draw(
-	CVDisplayLinkRef   displayLink,
-	const CVTimeStamp* now,
-	const CVTimeStamp* outputTime,
-	CVOptionFlags	   flagsIn,
-	CVOptionFlags*	   flagsOut,
-	GLOutput*	   output
-)
-	{
-	pthread_mutex_lock(&mutex_);
-	qsize index = activeOutputCount_;
-	while (index) gl_output_draw(activeOutputs_[--index], TRUE);
-	pthread_mutex_unlock(&mutex_);
-	return kCVReturnSuccess;
-	}
+#define SET_CONTEXT	CGLSetCurrentContext(_CGLContext)
+#define RESTORE_CONTEXT CGLSetCurrentContext(NULL)
 
 
 GLOutputEffect effect;
@@ -48,6 +29,37 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 
 
 @implementation GLOutputView
+
+
+	static GLOutputView**	activeOutputs_     = NULL;
+	static qsize		activeOutputCount_ = 0;
+	static pthread_mutex_t	mutex_		   = PTHREAD_MUTEX_INITIALIZER;
+	static CVDisplayLinkRef	displayLink_;
+
+
+	static CVReturn draw(
+		CVDisplayLinkRef   displayLink,
+		const CVTimeStamp* now,
+		const CVTimeStamp* outputTime,
+		CVOptionFlags	   flagsIn,
+		CVOptionFlags*	   flagsOut,
+		void*		   dummy
+	)
+		{
+		pthread_mutex_lock(&mutex_);
+		qsize index = activeOutputCount_;
+
+		while (index)
+			{
+			GLOutputView *view = activeOutputs_[--index];
+			CGLSetCurrentContext(view->_CGLContext);
+			gl_output_draw(&view->_GLOutput, TRUE);
+			}
+
+		CGLSetCurrentContext(NULL);
+		pthread_mutex_unlock(&mutex_);
+		return kCVReturnSuccess;
+		}
 
 
 #	pragma mark - Overwritten
@@ -68,6 +80,22 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 
 			_pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes: attrs];
 			_GLContext   = [[NSOpenGLContext alloc] initWithFormat: _pixelFormat shareContext: nil];
+
+			GLint swapInterval = 1;
+
+			[_GLContext setValues: &swapInterval forParameter: NSOpenGLCPSwapInterval];
+			_GLContext.view = self;
+			_CGLContext = _GLContext.CGLContextObj;
+
+			SET_CONTEXT;
+			gl_output_initialize(&_GLOutput);
+			gl_output_set_geometry(&_GLOutput, Q_CAST(NSRect, QRectangle, self.bounds), Q_SCALING_EXPAND);
+			RESTORE_CONTEXT;
+			/*gl_output_set_effect(&_GLOutput, &effect, NULL);
+
+			OPEN_GL_CONTEXT_SET_CURRENT(_GLOutput.context);
+			texture_size_uniform = glGetUniformLocation(effect.program, "textureSize");
+			OPEN_GL_CONTEXT_RESTORE;*/
 
 
 			/*NSBundle *bundle = [NSBundle mainBundle];
@@ -97,14 +125,15 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 		{
 		[self stop];
 		pthread_mutex_lock(&mutex_);
+		SET_CONTEXT;
 		gl_output_finalize(&_GLOutput);
+		RESTORE_CONTEXT;
 		[_pixelFormat release];
 		[_GLContext release];
 		free(_buffer.buffers[0]);
 		pthread_mutex_unlock(&mutex_);
 		[super dealloc];
 		}
-
 
 
 	- (void) viewDidMoveToWindow
@@ -122,27 +151,6 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 		}
 
 
-	- (void) prepareOpenGL
-		{
-		//NSLog(@"prepareOpenGL");
-
-		GLint swapInterval = 1;
-
-		[_GLContext setValues: &swapInterval forParameter: NSOpenGLCPSwapInterval];
-		_GLContext.view = self;
-		gl_output_initialize(&_GLOutput, [_GLContext CGLContextObj]);
-		gl_output_set_geometry(&_GLOutput, Q_CAST(NSRect, QRectangle, self.bounds), Q_SCALING_EXPAND);
-		/*gl_output_set_effect(&_GLOutput, &effect, NULL);
-
-		OPEN_GL_CONTEXT_SET_CURRENT(_GLOutput.context);
-		texture_size_uniform = glGetUniformLocation(effect.program, "textureSize");
-		OPEN_GL_CONTEXT_RESTORE;*/
-
-		_flags.OpenGLReady = YES;
-		if (_flags.startWhenPossible) [self start];
-		}
-
-
 	- (void) setFrame: (NSRect) frame
 		{
 		if (!NSEqualSizes(frame.size, self.bounds.size)) _flags.reshaped = YES;
@@ -154,23 +162,23 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 		{
 		if (_flags.active) pthread_mutex_lock(&mutex_);
 
-		if (_GLOutput.texture_loaded)
-			{
-			if (_flags.reshaped)
-				{
-				[_GLContext update];
-				gl_output_set_geometry(&_GLOutput, Q_CAST(NSRect, QRectangle, self.bounds), Q_SCALING_SAME);
-				}
+		SET_CONTEXT;
 
-			gl_output_draw(&_GLOutput, FALSE);
-			_flags.reshaped = NO;
+		if (_flags.reshaped)
+			{
+			[_GLContext update];
+			gl_output_set_geometry(&_GLOutput, Q_CAST(NSRect, QRectangle, self.bounds), Q_SCALING_SAME);
 			}
 
-		else	{
+		gl_output_draw(&_GLOutput, FALSE);
+		_flags.reshaped = NO;
+		RESTORE_CONTEXT;
+
+		/*else	{
 			glClearColor(1.0, 0.0, 0.0, 1.0);
 			glClear(GL_COLOR_BUFFER_BIT);
 			glFlush();
-			}
+			}*/
 
 		if (_flags.active) pthread_mutex_unlock(&mutex_);
 		}
@@ -187,7 +195,9 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 	- (void) setContentSize: (Q2D) contentSize
 		{
 		if (_flags.active) pthread_mutex_lock(&mutex_);
+		SET_CONTEXT;
 		gl_output_set_content_size(&_GLOutput, contentSize);
+		RESTORE_CONTEXT;
 		if (_flags.active) pthread_mutex_unlock(&mutex_);
 		}
 
@@ -195,7 +205,9 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 	- (void) setScaling: (QKey(SCALING)) scaling
 		{
 		if (_flags.active) pthread_mutex_lock(&mutex_);
+		SET_CONTEXT;
 		gl_output_set_geometry(&_GLOutput, Q_CAST(NSRect, QRectangle, self.bounds), scaling);
+		RESTORE_CONTEXT;
 		if (_flags.active) pthread_mutex_unlock(&mutex_);
 		}
 
@@ -209,39 +221,36 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 		qsize slot_size = resolution.x * resolution.y * 4;
 
 		q_triple_buffer_initialize(&_buffer, _buffer.buffers[0] = realloc(_buffer.buffers[0], slot_size * 3), slot_size);
+		SET_CONTEXT;
 		gl_output_set_input(&_GLOutput, &_buffer, resolution);
+		RESTORE_CONTEXT;
 		}
 
 
 	- (void) start
 		{
-		if (_flags.OpenGLReady)
+		if (activeOutputCount_)
 			{
-			if (activeOutputCount_)
-				{
-				pthread_mutex_lock(&mutex_);
-				activeOutputs_ = realloc(activeOutputs_, sizeof(void *) * (activeOutputCount_ + 1));
-				activeOutputs_[activeOutputCount_++] = &_GLOutput;
-				pthread_mutex_unlock(&mutex_);
-				}
-
-			else	{
-				*(activeOutputs_ = malloc(sizeof(void *))) = &_GLOutput;
-				activeOutputCount_ = 1;
-
-				CVDisplayLinkCreateWithActiveCGDisplays(&displayLink_);
-				CVDisplayLinkSetOutputCallback(displayLink_, (CVDisplayLinkOutputCallback)draw, &_GLOutput);
-
-				CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext
-					(displayLink_, [_GLContext CGLContextObj], [_pixelFormat CGLPixelFormatObj]);
-
-				CVDisplayLinkStart(displayLink_);
-				}
-
-			_flags.active = YES;
+			pthread_mutex_lock(&mutex_);
+			activeOutputs_ = realloc(activeOutputs_, sizeof(void *) * (activeOutputCount_ + 1));
+			activeOutputs_[activeOutputCount_++] = self;
+			pthread_mutex_unlock(&mutex_);
 			}
 
-		else _flags.startWhenPossible = YES;
+		else	{
+			*(activeOutputs_ = malloc(sizeof(void *))) = self;
+			activeOutputCount_ = 1;
+
+			CVDisplayLinkCreateWithActiveCGDisplays(&displayLink_);
+			CVDisplayLinkSetOutputCallback(displayLink_, (CVDisplayLinkOutputCallback)draw, NULL);
+
+			CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext
+				(displayLink_, [_GLContext CGLContextObj], [_pixelFormat CGLPixelFormatObj]);
+
+			CVDisplayLinkStart(displayLink_);
+			}
+
+		_flags.active = YES;
 		}
 
 
@@ -255,7 +264,7 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 				{
 				qsize index = activeOutputCount_--;
 
-				while (activeOutputs_[--index] != &_GLOutput);
+				while (activeOutputs_[--index] != self);
 				memmove(activeOutputs_ + index, activeOutputs_ + index + 1, sizeof(void *) * (activeOutputCount_ - index));
 				activeOutputs_ = realloc(activeOutputs_, sizeof(void *) * activeOutputCount_);
 				}
@@ -276,8 +285,6 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 			_flags.active = NO;
 			pthread_mutex_unlock(&mutex_);
 			}
-
-		_flags.startWhenPossible = NO;
 		}
 
 
@@ -285,7 +292,9 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 	- (void) setLinearInterpolation: (BOOL) value
 		{
 		if (_flags.active) pthread_mutex_lock(&mutex_);
+		SET_CONTEXT;
 		gl_output_set_linear_interpolation(&_GLOutput, value);
+		RESTORE_CONTEXT;
 		if (_flags.active) pthread_mutex_unlock(&mutex_);
 		}
 

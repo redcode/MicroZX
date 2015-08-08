@@ -25,7 +25,8 @@ typedef struct {
 	QTripleBuffer*	  keyboard_input_buffer;
 	volatile qboolean must_stop;
 
-	struct {quint8 running :1;
+	struct {quint8 power :1;
+		quint8 pause :1;
 	} flags;
 } Machine;
 
@@ -45,9 +46,8 @@ void machine_run_one_frame	    (Machine*	    object);
 void machine_power		    (Machine*	    object,
 				     qboolean	    state);
 
-void machine_start		    (Machine*	    object);
-
-void machine_stop		    (Machine*	    object);
+void machine_pause		    (Machine*	    object,
+				     qboolean	    state);
 
 void machine_reset		    (Machine*	    object);
 

@@ -27,8 +27,6 @@
 		64F5DE231A28E93600D29077 /* Z80 Debugger.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DE1D1A28E93600D29077 /* Z80 Debugger.xib */; };
 		64F5DE2D1A28E99000D29077 /* NSWindow+RedCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE261A28E99000D29077 /* NSWindow+RedCode.m */; };
 		64F5DE2E1A28E99000D29077 /* NSView+RedCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE281A28E99000D29077 /* NSView+RedCode.m */; };
-		64F5DE2F1A28E99000D29077 /* NSMenu+CocoPlus.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE2A1A28E99000D29077 /* NSMenu+CocoPlus.m */; };
-		64F5DE301A28E99000D29077 /* NSMenuItem+CocoPlus.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE2C1A28E99000D29077 /* NSMenuItem+CocoPlus.m */; };
 		64F5DE481A28E9B100D29077 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE331A28E9B100D29077 /* main.m */; };
 		64F5DE491A28E9B100D29077 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE351A28E9B100D29077 /* MainController.m */; };
 		64F5DE4B1A28E9B100D29077 /* TapeRecorderWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE391A28E9B100D29077 /* TapeRecorderWindowController.m */; };
@@ -91,10 +89,6 @@
 		64F5DE261A28E99000D29077 /* NSWindow+RedCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSWindow+RedCode.m"; sourceTree = "<group>"; };
 		64F5DE271A28E99000D29077 /* NSView+RedCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+RedCode.h"; sourceTree = "<group>"; };
 		64F5DE281A28E99000D29077 /* NSView+RedCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+RedCode.m"; sourceTree = "<group>"; };
-		64F5DE291A28E99000D29077 /* NSMenu+CocoPlus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMenu+CocoPlus.h"; sourceTree = "<group>"; };
-		64F5DE2A1A28E99000D29077 /* NSMenu+CocoPlus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMenu+CocoPlus.m"; sourceTree = "<group>"; };
-		64F5DE2B1A28E99000D29077 /* NSMenuItem+CocoPlus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMenuItem+CocoPlus.h"; sourceTree = "<group>"; };
-		64F5DE2C1A28E99000D29077 /* NSMenuItem+CocoPlus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMenuItem+CocoPlus.m"; sourceTree = "<group>"; };
 		64F5DE311A28E9B100D29077 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		64F5DE331A28E9B100D29077 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		64F5DE341A28E9B100D29077 /* MainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainController.h; sourceTree = "<group>"; };
@@ -154,6 +148,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6497FB9E1B74D157001B0196 /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				64F5DE7A1A28EB3900D29077 /* SABR.fsh */,
+				64F5DE7B1A28EB3900D29077 /* SABR.vsh */,
+			);
+			path = shaders;
+			sourceTree = "<group>";
+		};
 		64F5DD961A28E03C00D29077 = {
 			isa = PBXGroup;
 			children = (
@@ -197,7 +200,8 @@
 			children = (
 				64F5DDA31A28E03C00D29077 /* Info.plist */,
 			);
-			path = "Property Lists";
+			name = "Property Lists";
+			path = "property lists";
 			sourceTree = "<group>";
 		};
 		64F5DDF01A28E56800D29077 /* Images */ = {
@@ -208,17 +212,19 @@
 				64F5DE761A28EB2600D29077 /* Tape.pdf */,
 				64F5DDA91A28E03C00D29077 /* Images.xcassets */,
 			);
-			path = Images;
+			name = Images;
+			path = images;
 			sourceTree = "<group>";
 		};
 		64F5DDF11A28E56E00D29077 /* Strings */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = Strings;
+			name = Strings;
+			path = strings;
 			sourceTree = "<group>";
 		};
-		64F5DDF21A28E58D00D29077 /* XIBs */ = {
+		64F5DDF21A28E58D00D29077 /* UI */ = {
 			isa = PBXGroup;
 			children = (
 				64F5DE181A28E93600D29077 /* mZX.xib */,
@@ -228,7 +234,7 @@
 				64F5DE1C1A28E93600D29077 /* PreferencesWindow.xib */,
 				64F5DE1D1A28E93600D29077 /* Z80 Debugger.xib */,
 			);
-			path = XIBs;
+			path = UI;
 			sourceTree = "<group>";
 		};
 		64F5DDF31A28E5EC00D29077 /* Common */ = {
@@ -282,7 +288,7 @@
 		64F5DDF51A28E68E00D29077 /* OS X */ = {
 			isa = PBXGroup;
 			children = (
-				64F5DDF21A28E58D00D29077 /* XIBs */,
+				64F5DDF21A28E58D00D29077 /* UI */,
 				64F5DDF11A28E56E00D29077 /* Strings */,
 				64F5DDF01A28E56800D29077 /* Images */,
 				64F5DDEF1A28E56100D29077 /* Property Lists */,
@@ -293,11 +299,11 @@
 		64F5DDF61A28E69900D29077 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				6497FB9E1B74D157001B0196 /* shaders */,
 				64F5DEB31A28EB6600D29077 /* ROMs */,
-				64F5DE7A1A28EB3900D29077 /* SABR.fsh */,
-				64F5DE7B1A28EB3900D29077 /* SABR.vsh */,
 			);
-			path = Common;
+			name = Common;
+			path = common;
 			sourceTree = "<group>";
 		};
 		64F5DE151A28E8D400D29077 /* Frameworks */ = {
@@ -320,12 +326,9 @@
 				64F5DE261A28E99000D29077 /* NSWindow+RedCode.m */,
 				64F5DE271A28E99000D29077 /* NSView+RedCode.h */,
 				64F5DE281A28E99000D29077 /* NSView+RedCode.m */,
-				64F5DE291A28E99000D29077 /* NSMenu+CocoPlus.h */,
-				64F5DE2A1A28E99000D29077 /* NSMenu+CocoPlus.m */,
-				64F5DE2B1A28E99000D29077 /* NSMenuItem+CocoPlus.h */,
-				64F5DE2C1A28E99000D29077 /* NSMenuItem+CocoPlus.m */,
 			);
-			path = Extensions;
+			name = Extensions;
+			path = extensions;
 			sourceTree = "<group>";
 		};
 		64F5DE531A28E9F900D29077 /* Emulators */ = {
@@ -339,7 +342,8 @@
 				64F5DE701A28EA5F00D29077 /* AY-3-891x.h */,
 				64F5DE6F1A28EA5F00D29077 /* AY-3-891x.c */,
 			);
-			path = Emulators;
+			name = Emulators;
+			path = emulators;
 			sourceTree = "<group>";
 		};
 		64F5DE541A28EA0000D29077 /* Codecs */ = {
@@ -347,12 +351,13 @@
 			children = (
 				64F5DE571A28EA1800D29077 /* Floppy Image */,
 				64F5DE561A28EA1200D29077 /* Tape Image */,
-				64F5DE551A28EA0D00D29077 /* State */,
+				64F5DE551A28EA0D00D29077 /* Snapshot */,
 			);
-			path = Codecs;
+			name = Codecs;
+			path = codecs;
 			sourceTree = "<group>";
 		};
-		64F5DE551A28EA0D00D29077 /* State */ = {
+		64F5DE551A28EA0D00D29077 /* Snapshot */ = {
 			isa = PBXGroup;
 			children = (
 				64F5DE581A28EA5100D29077 /* 89C.c */,
@@ -366,21 +371,24 @@
 				64F5DE601A28EA5100D29077 /* ZX.c */,
 				64F5DE611A28EA5100D29077 /* PRG.c */,
 			);
-			path = State;
+			name = Snapshot;
+			path = snapshot;
 			sourceTree = "<group>";
 		};
 		64F5DE561A28EA1200D29077 /* Tape Image */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = "Tape Image";
+			name = "Tape Image";
+			path = "tape image";
 			sourceTree = "<group>";
 		};
 		64F5DE571A28EA1800D29077 /* Floppy Image */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = "Floppy Image";
+			name = "Floppy Image";
+			path = "floppy image";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -497,12 +505,10 @@
 				64F5DE641A28EA5100D29077 /* PLUSD.c in Sources */,
 				64F5DE2E1A28E99000D29077 /* NSView+RedCode.m in Sources */,
 				64F5DE711A28EA5F00D29077 /* Z80.c in Sources */,
-				64F5DE2F1A28E99000D29077 /* NSMenu+CocoPlus.m in Sources */,
 				64F5DE4E1A28E9B100D29077 /* GLOutputView.m in Sources */,
 				64F5DE081A28E83A00D29077 /* RingBuffer.c in Sources */,
 				64F5DE521A28E9B100D29077 /* Window.m in Sources */,
 				64F5DE721A28EA5F00D29077 /* ZX Spectrum.c in Sources */,
-				64F5DE301A28E99000D29077 /* NSMenuItem+CocoPlus.m in Sources */,
 				64F5DE481A28E9B100D29077 /* main.m in Sources */,
 				64F5DE2D1A28E99000D29077 /* NSWindow+RedCode.m in Sources */,
 				64F5DE6A1A28EA5100D29077 /* PRG.c in Sources */,
@@ -520,8 +526,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -564,8 +568,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
