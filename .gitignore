@@ -1,6 +1,8 @@
 # Per-user IDE configuration files
 development/Xcode/μZX (OS X).xcodeproj/project.xcworkspace
 development/Xcode/μZX (OS X).xcodeproj/xcuserdata
+development/Xcode/μZX (iOS).xcodeproj/project.xcworkspace
+development/Xcode/μZX (iOS).xcodeproj/xcuserdata
 
 # OS generated files
 .DS_Store
