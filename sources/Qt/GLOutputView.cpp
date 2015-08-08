@@ -1,10 +1,8 @@
-/* NEStalin - Qt/GLVideoOutputView.cpp
- __ __  ____  ____   __ 	__
-|  \  ||  __|/	__| |  |  ___  |  | __  ____
-|     ||  _| \__  \|_  _|/ _ | |  |(__)|    |
-|__\__||____||____/ |__| \__,_||__||__||__|_|
-Copyright © 2014 Manuel Sainz de Baranda y Goñi
-Released under the terms of the GNU General Public License v3. */
+/*	_________  ___
+  _____ \_   /\  \/  /	Qt/GLOutputView.cpp
+ |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
+ |   ____________/\__\	Released under the terms of the GNU General Public License v3.
+ |_*/
 
 #include "GLOutputView.hpp"
 #include <stdlib.h>
@@ -21,22 +19,22 @@ namespace Q {
 
 #define BOUNDS Q::q_rectangle(0.0, 0.0, (Q::qreal)this->width(), (Q::qreal)this->height())
 
-GLVideoOutputView**	GLVideoOutputView::activeViews	= NULL;
-size_t		GLVideoOutputView::activeViewCount = 0;
-pthread_t	GLVideoOutputView::drawingThread;
-pthread_mutex_t	GLVideoOutputView::mutex		= PTHREAD_MUTEX_INITIALIZER;
-volatile bool	GLVideoOutputView::mustStop		= FALSE;
+GLOutputView**	GLOutputView::activeViews     = NULL;
+size_t		GLOutputView::activeViewCount = 0;
+pthread_t	GLOutputView::drawingThread;
+pthread_mutex_t	GLOutputView::mutex	      = PTHREAD_MUTEX_INITIALIZER;
+volatile bool	GLOutputView::mustStop	      = FALSE;
 
 
 
 static void *drawing_thread_entry(void *)
 	{
-	GLVideoOutputView::drawActiveViews();
+	GLOutputView::drawActiveViews();
 	return NULL;
 	}
 
 
-void GLVideoOutputView::drawActiveViews()
+void GLOutputView::drawActiveViews()
 	{
 	Q::quint64 frames_per_second = 60;
 	Q::quint64 frame_ticks	     = 1000000000 / frames_per_second;
@@ -49,7 +47,7 @@ void GLVideoOutputView::drawActiveViews()
 
 		for (Q::qsize index = activeViewCount; index;)
 			{
-			GLVideoOutputView *view = activeViews[--index];
+			GLOutputView *view = activeViews[--index];
 			view->makeCurrent();
 			Q::gl_output_draw(&view->GLOutput, FALSE);
 			view->doneCurrent();
@@ -64,9 +62,9 @@ void GLVideoOutputView::drawActiveViews()
 	}
 
 
-GLVideoOutputView::GLVideoOutputView(QWidget *parent) : QGLWidget(parent)
+GLOutputView::GLOutputView(QWidget *parent) : QGLWidget(parent)
 	{
-	buffer.buffers[0]	= NULL;
+	//buffer.buffers[0]	= NULL;
 	flags.active		= false;
 	flags.reshaped		= false;
 	flags.OpenGLReady	= false;
@@ -76,27 +74,27 @@ GLVideoOutputView::GLVideoOutputView(QWidget *parent) : QGLWidget(parent)
 	}
 
 
-GLVideoOutputView::~GLVideoOutputView()
+GLOutputView::~GLOutputView()
 	{
 	stop();
 	pthread_mutex_lock(&mutex);
 	gl_output_finalize(&GLOutput);
 	//[_pixelFormat release];
 	//[_GLContext release];
-	free(buffer.buffers[0]);
+	free(GLOutput.buffer.buffers[0]);
 	pthread_mutex_unlock(&mutex);
 	//[super dealloc];
-	qDebug("~GLVideoOutputView()");
+	qDebug("~GLOutputView()");
 	}
 
 
-void GLVideoOutputView::initializeGL()
+void GLOutputView::initializeGL()
 	{
-	qDebug("GLVideoOutputView::initializeGL");
+	qDebug("GLOutputView::initializeGL");
 //	QGLFormat format(QGL::SampleBuffers);
 //	format.setSwapInterval(1); // vsync
 //	setFormat(format);
-	Q::gl_output_initialize(&GLOutput, NULL);
+	Q::gl_output_initialize(&GLOutput);
 	Q::gl_output_set_geometry(&GLOutput, BOUNDS, Q_SCALING_FIT);
 	GLContext = (QGLContext *)context();
 	flags.OpenGLReady = TRUE;
@@ -104,7 +102,7 @@ void GLVideoOutputView::initializeGL()
 	}
 
 
-void GLVideoOutputView::paintEvent(QPaintEvent *event)
+void GLOutputView::paintEvent(QPaintEvent *event)
 	{
 	if (flags.active) pthread_mutex_lock(&mutex);
 	QGLWidget::paintEvent(event);
@@ -112,25 +110,17 @@ void GLVideoOutputView::paintEvent(QPaintEvent *event)
 	}
 
 
-void GLVideoOutputView::paintGL()
+void GLOutputView::paintGL()
 	{
-	if (GLOutput.texture_loaded)
-		{
-		if (flags.reshaped)
-			Q::gl_output_set_geometry(&GLOutput, BOUNDS, Q_SCALING_SAME);
+	if (flags.reshaped)
+		Q::gl_output_set_geometry(&GLOutput, BOUNDS, Q_SCALING_SAME);
 
-		Q::gl_output_draw(&GLOutput, FALSE);
-		flags.reshaped = FALSE;
-		}
-
-	else	{
-		glClearColor(0.0, 0.0, 0.0, 1.0);
-		glClear(GL_COLOR_BUFFER_BIT);
-		}
+	Q::gl_output_draw(&GLOutput, FALSE);
+	flags.reshaped = FALSE;
 	}
 
 
-void GLVideoOutputView::resizeGL(int w, int h)
+void GLOutputView::resizeGL(int w, int h)
 	{
 	Q_UNUSED(w);
 	Q_UNUSED(h);
@@ -138,19 +128,19 @@ void GLVideoOutputView::resizeGL(int w, int h)
 	}
 
 
-int GLVideoOutputView::heightForWidth(int width) const
+int GLOutputView::heightForWidth(int width) const
 	{
 	return width;
 	}
 
 
-Q::Q2D GLVideoOutputView::contentSize()
+Q::Q2D GLOutputView::contentSize()
 	{
 	return GLOutput.content_bounds.size;
 	}
 
 
-void GLVideoOutputView::setContentSize(Q::Q2D contentSize)
+void GLOutputView::setContentSize(Q::Q2D contentSize)
 	{
 	if (flags.active) pthread_mutex_lock(&mutex);
 	Q::gl_output_set_content_size(&GLOutput, contentSize);
@@ -158,7 +148,7 @@ void GLVideoOutputView::setContentSize(Q::Q2D contentSize)
 	}
 
 
-void GLVideoOutputView::setScaling(QKey(SCALING) scaling)
+void GLOutputView::setScaling(QKey(SCALING) scaling)
 	{
 	if (flags.active) pthread_mutex_lock(&mutex);
 	Q::gl_output_set_geometry(&GLOutput, BOUNDS, scaling);
@@ -166,18 +156,17 @@ void GLVideoOutputView::setScaling(QKey(SCALING) scaling)
 	}
 
 
-void GLVideoOutputView::setResolutionAndFormat(Q::Q2DSize resolution, Q::quint format)
+void GLOutputView::setResolutionAndFormat(Q::Q2DSize resolution, Q::quint format)
 	{
 	Q_UNUSED(format);
+	makeCurrent();
 	qDebug("GLVideoOutputView::setResolutionAndFormat");
-	Q::qsize buffer_size = resolution.x * resolution.y * 4;
-
-	Q::q_triple_buffer_initialize(&buffer, realloc(buffer.buffers[0], buffer_size * 3), buffer_size);
-	Q::gl_output_set_input(&GLOutput, &buffer, resolution);
+	Q::gl_output_set_resolution(&GLOutput, resolution);
+	doneCurrent();
 	}
 
 
-void GLVideoOutputView::start()
+void GLOutputView::start()
 	{
 	qDebug("start");
 	if (flags.OpenGLReady)
@@ -188,14 +177,14 @@ void GLVideoOutputView::start()
 		if (activeViewCount)
 			{
 			pthread_mutex_lock(&mutex);
-			activeViews = (GLVideoOutputView **)realloc(activeViews, sizeof(void *) * (activeViewCount + 1));
+			activeViews = (GLOutputView **)realloc(activeViews, sizeof(void *) * (activeViewCount + 1));
 			activeViews[activeViewCount++] = this;
 			pthread_mutex_unlock(&mutex);
 			}
 
 		else	{
 			qDebug("crear hilo");
-			*(activeViews = (GLVideoOutputView **)malloc(sizeof(void *))) = this;
+			*(activeViews = (GLOutputView **)malloc(sizeof(void *))) = this;
 			activeViewCount = 1;
 			mustStop = FALSE;
 			pthread_attr_t thread_attributes;
@@ -209,7 +198,7 @@ void GLVideoOutputView::start()
 	}
 
 
-void GLVideoOutputView::stop()
+void GLOutputView::stop()
 	{
 	if (flags.active)
 		{
@@ -221,7 +210,7 @@ void GLVideoOutputView::stop()
 
 				while (activeViews[--index] != this);
 				memmove(activeViews + index, activeViews + index + 1, sizeof(void *) * (activeViewCount - index));
-				activeViews = (GLVideoOutputView **)realloc(activeViews, sizeof(void *) * activeViewCount);
+				activeViews = (GLOutputView **)realloc(activeViews, sizeof(void *) * activeViewCount);
 				}
 
 			else	{
@@ -240,7 +229,7 @@ void GLVideoOutputView::stop()
 	}
 
 
-void GLVideoOutputView::setLinearInterpolation(bool enabled)
+void GLOutputView::setLinearInterpolation(bool enabled)
 	{
 	if (flags.active) pthread_mutex_lock(&mutex);
 	Q::gl_output_set_linear_interpolation(&GLOutput, enabled);
@@ -248,4 +237,4 @@ void GLVideoOutputView::setLinearInterpolation(bool enabled)
 	}
 
 
-// Qt/GLVideoOutputView.cpp EOF
+// Qt/GLOutputView.cpp EOF

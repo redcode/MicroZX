@@ -31,7 +31,7 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="GLVideoOutputView" name="videoOutputView" native="true">
+     <widget class="QWidget" name="videoOutputView" native="true">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -563,14 +563,6 @@
    </property>
   </action>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>GLVideoOutputView</class>
-   <extends>QWidget</extends>
-   <header>GLVideoOutputView.hpp</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="../../common/images.qrc"/>
  </resources>

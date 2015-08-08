@@ -1,13 +1,11 @@
-/* NEStalin - Qt/GLVideoOutputView.hpp
- __ __  ____  ____   __ 	__
-|  \  ||  __|/	__| |  |  ___  |  | __  ____
-|     ||  _| \__  \|_  _|/ _ | |  |(__)|    |
-|__\__||____||____/ |__| \__,_||__||__||__|_|
-Copyright © 2014 Manuel Sainz de Baranda y Goñi
-Released under the terms of the GNU General Public License v3. */
+/*	_________  ___
+  _____ \_   /\  \/  /	Qt/GLOutputView.hpp
+ |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
+ |   ____________/\__\	Released under the terms of the GNU General Public License v3.
+ |_*/
 
-#ifndef __NEStalin_Qt_GLVideoOutputView_HPP
-#define __NEStalin_Qt_GLVideoOutputView_HPP
+#ifndef __NEStalin_Qt_GLOutputView_HPP
+#define __NEStalin_Qt_GLOutputView_HPP
 
 #include <QGLWidget>
 #include <QEvent>
@@ -17,18 +15,17 @@ namespace Q {
 #	include <GLOutput.h>
 }
 
-class GLVideoOutputView : public QGLWidget {Q_OBJECT
+class GLOutputView : public QGLWidget {Q_OBJECT
 	private:
 
-	static GLVideoOutputView**	activeViews;
-	static size_t		activeViewCount;
-	static pthread_mutex_t	mutex;
-	static pthread_t	drawingThread;
-	static volatile bool	mustStop;
+	static GLOutputView**  activeViews;
+	static size_t	       activeViewCount;
+	static pthread_mutex_t mutex;
+	static pthread_t       drawingThread;
+	static volatile bool   mustStop;
 
-	QGLContext*	 GLContext;
-	Q::GLOutput	 GLOutput;
-	Q::QTripleBuffer buffer;
+	QGLContext* GLContext;
+	Q::GLOutput GLOutput;
 
 	struct {bool reshaped	       :1;
 		bool active	       :1;
@@ -40,14 +37,14 @@ class GLVideoOutputView : public QGLWidget {Q_OBJECT
 	void paintEvent(QPaintEvent *);
 
 	public:
-	explicit GLVideoOutputView(QWidget *parent = 0);
-	~GLVideoOutputView();
+	explicit GLOutputView(QWidget *parent = 0);
+	~GLOutputView();
 	void initializeGL();
 	void paintGL();
 	void resizeGL(int w, int h);
 	int heightForWidth(int width) const;
 	static void drawActiveViews();
-	Q::QTripleBuffer *getBuffer() {return &buffer;}
+	Q::QTripleBuffer *getBuffer() {return &GLOutput.buffer;}
 	Q::Q2D contentSize();
 	void setContentSize(Q::Q2D content_size);
 	void setScaling(QKey(SCALING) scaling);
@@ -57,4 +54,4 @@ class GLVideoOutputView : public QGLWidget {Q_OBJECT
 	void setLinearInterpolation(bool enabled);
 };
 
-#endif // __NEStalin_Qt_GLVideoOutputView_HPP
+#endif // __NEStalin_Qt_GLOutputView_HPP
