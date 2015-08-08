@@ -41,7 +41,7 @@ typedef struct {
 typedef struct {
 	GLsizei	        input_width;
 	GLsizei		input_height;
-	QTripleBuffer*  input_buffer;
+	QTripleBuffer	buffer;
 	QRectangle      viewport;
 	QRectangle      content_bounds;
 	QKey(SCALING)   content_scaling;
@@ -59,8 +59,7 @@ void gl_output_initialize	  (GLOutput*	   object);
 
 void gl_output_finalize		  (GLOutput*	   object);
 
-void gl_output_set_input	  (GLOutput*	   object,
-				   QTripleBuffer*  buffer,
+void gl_output_set_resolution	  (GLOutput*	   object,
 				   Q2DSize	   resolution);
 
 void gl_output_set_content_bounds (GLOutput*	   object,

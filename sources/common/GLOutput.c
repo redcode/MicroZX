@@ -4,6 +4,7 @@
  |   ____________/\__\	Released under the terms of the GNU General Public License v3.
  |_*/
 
+#include <stdlib.h>
 #include "GLOutput.h"
 #include <Q/functions/base/Q2DValue.h>
 #include <Q/functions/base/Q3DValue.h>
@@ -42,6 +43,7 @@ static void set_viewport(QRectangle viewport)
 void gl_output_initialize(GLOutput *object)
 	{
 	object->effect = NULL;
+	object->buffer.buffers[0] = NULL;
 
 	glEnable(GL_TEXTURE_2D);
 	glGenTextures(1, &object->texture);
@@ -61,12 +63,19 @@ void gl_output_finalize(GLOutput *object)
 	{
 	if (object->effect != NULL) gl_output_remove_effect(object);
 	glDeleteTextures(1, &object->texture);
+	free(object->buffer.buffers[0]);
 	}
 
 
-void gl_output_set_input(GLOutput *object, QTripleBuffer *buffer, Q2DSize resolution)
+void gl_output_set_resolution(GLOutput *object, Q2DSize resolution)
 	{
-	object->input_buffer = buffer;
+	qsize slot_size = resolution.x * resolution.y * 4;
+
+	q_triple_buffer_initialize
+		(&object->buffer,
+		 object->buffer.buffers[0] = realloc(object->buffer.buffers[0], slot_size * 3),
+		 slot_size);
+
 	object->input_width  = (GLsizei)resolution.x;
 	object->input_height = (GLsizei)resolution.y;
 
@@ -256,12 +265,12 @@ void gl_output_remove_effect(GLOutput *object)
 
 void gl_output_draw(GLOutput *object, qboolean skip_old)
 	{
-	void *frame = q_triple_buffer_consume(object->input_buffer);
+	void *frame = q_triple_buffer_consume(&object->buffer);
 
 	if (frame == NULL)
 		{
 		if (skip_old) return;
-		frame = q_triple_buffer_consumption_buffer(object->input_buffer);
+		frame = q_triple_buffer_consumption_buffer(&object->buffer);
 		}
 
 	glEnable(GL_TEXTURE_2D);

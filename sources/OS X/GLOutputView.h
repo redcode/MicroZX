@@ -13,11 +13,11 @@
 	NSOpenGLContext*     _GLContext;
 	CGLContextObj	     _CGLContext;
 	NSOpenGLPixelFormat* _pixelFormat;
-	QTripleBuffer	     _buffer;
 	GLOutput	     _GLOutput;
 
 	struct {BOOL reshaped :1;
 		BOOL active   :1;
+		BOOL blank    :1;
 	} _flags;
 }
 	@property (nonatomic, readonly) GLOutput*      GLOutput;

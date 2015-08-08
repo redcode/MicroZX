@@ -704,7 +704,18 @@ static void *EmulationMain(MachineWindowController *controller)
 
 	- (IBAction) power: (NSMenuItem *) sender
 		{
-		machine_power(&_machine, !_machine.flags.power);
+		qboolean state = !_machine.flags.power;
+
+		machine_power(&_machine, state);
+
+		if (!state)
+			{
+			[_videoOutput stop];
+			}
+
+		else	{
+			[_videoOutput start];
+			}
 		}
 
 

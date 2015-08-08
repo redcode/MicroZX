@@ -130,7 +130,6 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 		RESTORE_CONTEXT;
 		[_pixelFormat release];
 		[_GLContext release];
-		free(_buffer.buffers[0]);
 		pthread_mutex_unlock(&mutex_);
 		[super dealloc];
 		}
@@ -164,21 +163,25 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 
 		SET_CONTEXT;
 
-		if (_flags.reshaped)
+		if (_flags.blank)
 			{
-			[_GLContext update];
-			gl_output_set_geometry(&_GLOutput, Q_CAST(NSRect, QRectangle, self.bounds), Q_SCALING_SAME);
-			}
-
-		gl_output_draw(&_GLOutput, FALSE);
-		_flags.reshaped = NO;
-		RESTORE_CONTEXT;
-
-		/*else	{
 			glClearColor(1.0, 0.0, 0.0, 1.0);
 			glClear(GL_COLOR_BUFFER_BIT);
 			glFlush();
-			}*/
+			}
+
+		else	{
+			if (_flags.reshaped)
+				{
+				[_GLContext update];
+				gl_output_set_geometry(&_GLOutput, Q_CAST(NSRect, QRectangle, self.bounds), Q_SCALING_SAME);
+				}
+
+			gl_output_draw(&_GLOutput, FALSE);
+			_flags.reshaped = NO;
+			}
+
+		RESTORE_CONTEXT;
 
 		if (_flags.active) pthread_mutex_unlock(&mutex_);
 		}
@@ -187,7 +190,7 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 #	pragma mark - Accessors
 
 	- (GLOutput	 *) GLOutput	{return &_GLOutput;}
-	- (QTripleBuffer *) buffer	{return &_buffer;}
+	- (QTripleBuffer *) buffer	{return &_GLOutput.buffer;}
 	- (Q2D		  ) contentSize {return _GLOutput.content_bounds.size;}
 	- (QKey(SCALING)  ) scaling	{return _GLOutput.content_scaling;}
 
@@ -218,11 +221,8 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 	- (void) setResolution: (Q2DSize) resolution
 		 format:	(quint	) format
 		{
-		qsize slot_size = resolution.x * resolution.y * 4;
-
-		q_triple_buffer_initialize(&_buffer, _buffer.buffers[0] = realloc(_buffer.buffers[0], slot_size * 3), slot_size);
 		SET_CONTEXT;
-		gl_output_set_input(&_GLOutput, &_buffer, resolution);
+		gl_output_set_resolution(&_GLOutput, resolution);
 		RESTORE_CONTEXT;
 		}
 
