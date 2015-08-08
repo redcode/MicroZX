@@ -146,6 +146,7 @@ void machine_power(Machine *object, qboolean state)
 		else	{
 			if (!object->flags.pause) stop(object);
 			object->abi->power(object->context, OFF);
+			memset(object->context->memory, 0, object->abi->memory_size);
 			object->flags.power = OFF;
 			object->flags.pause = OFF;
 			}

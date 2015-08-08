@@ -708,13 +708,11 @@ static void *EmulationMain(MachineWindowController *controller)
 
 		machine_power(&_machine, state);
 
-		if (!state)
-			{
-			[_videoOutput stop];
-			}
+		if (state) [_videoOutput start];
 
 		else	{
-			[_videoOutput start];
+			[_videoOutput stop];
+			[_videoOutput blank];
 			}
 		}
 

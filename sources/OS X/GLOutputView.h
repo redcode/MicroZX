@@ -32,5 +32,8 @@
 
 	- (void) stop;
 
+	- (void) blank;
+
 	- (void) setLinearInterpolation: (BOOL) value;
+
 @end

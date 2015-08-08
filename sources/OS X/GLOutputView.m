@@ -163,14 +163,14 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 
 		SET_CONTEXT;
 
-		if (_flags.blank)
+		/*if (_flags.blank)
 			{
 			glClearColor(1.0, 0.0, 0.0, 1.0);
 			glClear(GL_COLOR_BUFFER_BIT);
 			glFlush();
-			}
+			}*/
 
-		else	{
+		//else	{
 			if (_flags.reshaped)
 				{
 				[_GLContext update];
@@ -179,7 +179,7 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 
 			gl_output_draw(&_GLOutput, FALSE);
 			_flags.reshaped = NO;
-			}
+			//}
 
 		RESTORE_CONTEXT;
 
@@ -251,6 +251,7 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 			}
 
 		_flags.active = YES;
+		_flags.blank  = NO;
 		}
 
 
@@ -287,6 +288,16 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 			}
 		}
 
+
+	- (void) blank
+		{
+		if (!_flags.active)
+			{
+			memset(_GLOutput.buffer.buffers[0], 0, _GLOutput.input_height * _GLOutput.input_width * 4 * 3);
+
+			self.needsDisplay = YES;
+			}
+		}
 
 
 	- (void) setLinearInterpolation: (BOOL) value
