@@ -340,7 +340,20 @@ static void *EmulationMain(MachineWindowController *controller)
 				menuItem.state = _machine.flags.power ? NSOnState : NSOffState;
 
 			else if (action == @selector(togglePause:))
+				{
+				if (!_machine.flags.power)
+					{
+					menuItem.state = NSOffState;
+					return NO;
+					}
+
 				menuItem.state = _machine.flags.pause ? NSOnState : NSOffState;
+				}
+
+			else if (action == @selector(reset:) || action == @selector(saveState:))
+				{
+				if (!_machine.flags.power) return NO;
+				}
 
 			return YES;
 			}
@@ -748,7 +761,11 @@ static void *EmulationMain(MachineWindowController *controller)
 
 
 	- (IBAction) reset: (id) sender
-		{machine_reset(&_machine);}
+		{
+		qboolean pause = _machine.flags.pause;
+		machine_reset(&_machine);
+		if (pause) [_videoOutput start];
+		}
 
 
 

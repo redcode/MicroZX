@@ -122,11 +122,6 @@ void machine_finalize(Machine *object)
 	}
 
 
-void machine_run(Machine *object)
-	{
-	}
-
-
 void machine_run_one_frame(Machine *object)
 	{
 	}
@@ -191,7 +186,8 @@ void machine_reset(Machine *object)
 		{
 		if (!object->flags.pause) stop(object);
 		object->abi->reset(object->context);
-		if (!object->flags.pause) start(object);
+		start(object);
+		object->flags.pause = OFF;
 		}
 	}
 

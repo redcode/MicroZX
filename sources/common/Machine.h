@@ -39,8 +39,6 @@ void machine_initialize		    (Machine*	    object,
 
 void machine_finalize		    (Machine*	    object);
 
-void machine_run		    (Machine*	    object);
-
 void machine_run_one_frame	    (Machine*	    object);
 
 void machine_power		    (Machine*	    object,
