@@ -65,7 +65,7 @@ void MachineWindow::emulateMachine()
 		| Consume input. |
 		'---------------*/
 		if ((keyboard = (Q::quint64 *)Q::q_triple_buffer_consume(keyboardBuffer)) != NULL)
-			{machine->state.keyboard.uint64_value = *keyboard;}
+			{machine->state.keyboard.value_uint64 = *keyboard;}
 
 		/*---------------------------------------.
 		| Schedule next iteration time and wait. |
@@ -200,7 +200,7 @@ MachineWindow::MachineWindow(QWidget *parent) :	QMainWindow(parent), ui(new Ui::
 		}
 
 	abi->initialize(machine);
-	keyboardState.uint64_value = Q_UINT64(0xFFFFFFFFFFFFFFFF);
+	keyboardState.value_uint64 = Q_UINT64(0xFFFFFFFFFFFFFFFF);
 	}
 
 
@@ -211,8 +211,8 @@ MachineWindow::~MachineWindow()
 	}
 
 
-#define KEY_DOWN(line, bit) keyboardState.uint8_array[line] &= ~(1 << bit)
-#define KEY_UP(  line, bit) keyboardState.uint8_array[line] |=  (1 << bit)
+#define KEY_DOWN(line, bit) keyboardState.array_uint8[line] &= ~(1 << bit)
+#define KEY_UP(  line, bit) keyboardState.array_uint8[line] |=  (1 << bit)
 
 
 void MachineWindow::keyPressEvent(QKeyEvent* event)
@@ -305,7 +305,7 @@ void MachineWindow::keyPressEvent(QKeyEvent* event)
 		default: break;
 		}
 
-	keyboard->uint64_value = keyboardState.uint64_value;
+	keyboard->value_uint64 = keyboardState.value_uint64;
 	keyboard = (Q::Q64Bit *)Q::q_triple_buffer_produce(keyboardBuffer);
 	}
 
@@ -373,7 +373,7 @@ void MachineWindow::keyReleaseEvent(QKeyEvent* event)
 		default: break;
 		}
 
-	keyboard->uint64_value = keyboardState.uint64_value;
+	keyboard->value_uint64 = keyboardState.value_uint64;
 	keyboard = (Q::Q64Bit *)Q::q_triple_buffer_produce(keyboardBuffer);
 	}
 
