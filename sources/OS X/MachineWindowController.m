@@ -330,6 +330,25 @@ static void *EmulationMain(MachineWindowController *controller)
 		}
 
 
+	- (BOOL) validateMenuItem: (NSMenuItem *) menuItem
+		{
+		SEL action = menuItem.action;
+
+		if ([self respondsToSelector: action])
+			{
+			if (action == @selector(togglePower:))
+				menuItem.state = _machine.flags.power ? NSOnState : NSOffState;
+
+			else if (action == @selector(togglePause:))
+				menuItem.state = _machine.flags.pause ? NSOnState : NSOffState;
+
+			return YES;
+			}
+
+		return NO;
+		}
+
+
 #	pragma mark - Overwritten: Input Control
 
 
@@ -646,7 +665,7 @@ static void *EmulationMain(MachineWindowController *controller)
 		}
 
 
-#	pragma mark - IBAction: Main Menu (File)
+#	pragma mark - IBAction: Main Menu - File
 
 
 	- (IBAction) saveDocument: (id) sender
@@ -691,7 +710,7 @@ static void *EmulationMain(MachineWindowController *controller)
 		}
 
 
-#	pragma mark - IBAction: Main Menu (Edit)
+#	pragma mark - IBAction: Main Menu - Edit
 
 
 	- (IBAction) copy: (id) sender
@@ -699,10 +718,10 @@ static void *EmulationMain(MachineWindowController *controller)
 		}
 
 
-#	pragma mark - IBAction: Main Menu (Machine)
+#	pragma mark - IBAction: Main Menu - Machine
 
 
-	- (IBAction) power: (NSMenuItem *) sender
+	- (IBAction) togglePower: (NSMenuItem *) sender
 		{
 		qboolean state = !_machine.flags.power;
 
@@ -717,9 +736,14 @@ static void *EmulationMain(MachineWindowController *controller)
 		}
 
 
-	- (IBAction) pause: (id) sender
+	- (IBAction) togglePause: (id) sender
 		{
-		machine_pause(&_machine, !_machine.flags.pause);
+		qboolean state = !_machine.flags.pause;
+
+		machine_pause(&_machine, state);
+
+		if (state) [_videoOutput stop];
+		else [_videoOutput start];
 		}
 
 
@@ -727,7 +751,23 @@ static void *EmulationMain(MachineWindowController *controller)
 		{machine_reset(&_machine);}
 
 
-#	pragma mark - IBAction: Main Menu (View)
+
+	- (IBAction) saveState: (id) sender
+		{
+		}
+
+
+	- (IBAction) restoreState: (id) sender
+		{
+		}
+
+
+	- (IBAction) showStates: (id) sender
+		{
+		}
+
+
+#	pragma mark - IBAction: Main Menu - View
 
 
 	- (IBAction) zoomIn: (id) sender
@@ -751,7 +791,7 @@ static void *EmulationMain(MachineWindowController *controller)
 	- (IBAction) zoomTo3x: (id) sender {[self setZoom: 3.0];}
 
 
-	- (IBAction) smooth: (NSMenuItem *) sender
+	- (IBAction) toggleSmooth: (NSMenuItem *) sender;
 		{
 		BOOL enable = sender.state == NSOnState ? NSOffState : NSOnState;
 
@@ -760,12 +800,12 @@ static void *EmulationMain(MachineWindowController *controller)
 		}
 
 
-	- (IBAction) keyboard: (id) sender
+	- (IBAction) toggleKeyboardShown: (id) sender
 		{
 		}
 
 
-	- (IBAction) tapeRecorder: (NSMenuItem *) sender
+	- (IBAction) toggleTapeRecorderShown: (NSMenuItem *) sender
 		{
 		if (_tapeRecorderWindowController)
 			{
@@ -788,27 +828,27 @@ static void *EmulationMain(MachineWindowController *controller)
 		}
 
 
-	- (IBAction) debugger: (id) sender
+	- (IBAction) toggleDebuggerShown: (id) sender
 		{
 		}
 
 
-	- (IBAction) CPU: (id) sender
+	- (IBAction) toggleCPUShown: (id) sender
 		{
 		}
 
 
-	- (IBAction) ULA: (id) sender
+	- (IBAction) toggleULAShown: (id) sender
 		{
 		}
 
 
-	- (IBAction) PSG: (id) sender
+	- (IBAction) togglePSGShown: (id) sender
 		{
 		}
 
 
-#	pragma mark - IBAction: Main Menu (Window)
+#	pragma mark - IBAction: Main Menu - Window
 
 
 	- (IBAction) editWindowTitle: (id) sender

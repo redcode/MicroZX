@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
@@ -345,13 +345,13 @@
                             <menuItem title="Power" keyEquivalent="p" id="Hts-RA-4gs">
                                 <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                 <connections>
-                                    <action selector="power:" target="-1" id="y8i-ny-1xJ"/>
+                                    <action selector="togglePower:" target="-1" id="ECQ-c9-QXV"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Pause" id="XUb-ky-BRL">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="pause:" target="-1" id="xSL-Dv-7lm"/>
+                                    <action selector="togglePause:" target="-1" id="lkJ-up-cqr"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Reset" keyEquivalent="r" id="aXe-Q0-wXB">
@@ -403,12 +403,21 @@
                             <menuItem isSeparatorItem="YES" id="3Pw-dX-ecU"/>
                             <menuItem title="Save State" keyEquivalent="" id="03F-mA-Td2">
                                 <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="saveState:" target="-1" id="hAE-a0-OWz"/>
+                                </connections>
                             </menuItem>
                             <menuItem title="Restore State" keyEquivalent="" id="hj8-Al-tC4">
                                 <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="restoreState:" target="-1" id="BWH-ch-VFe"/>
+                                </connections>
                             </menuItem>
                             <menuItem title="States..." id="sW7-1k-AWm">
                                 <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="showStates:" target="-1" id="NXJ-3H-DM7"/>
+                                </connections>
                             </menuItem>
                         </items>
                     </menu>
@@ -451,7 +460,7 @@
                             <menuItem isSeparatorItem="YES" id="yYR-Ly-UNh"/>
                             <menuItem title="Smooth" state="on" keyEquivalent="l" id="M8J-zk-fua">
                                 <connections>
-                                    <action selector="smooth:" target="-1" id="Bgf-Ut-t6P"/>
+                                    <action selector="toggleSmooth:" target="-1" id="cUk-E6-lKd"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Video Effects" id="Irr-Qc-mnm">
@@ -468,13 +477,13 @@
                             <menuItem title="Keyboard" id="S2G-p6-TEK">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="keyboard:" target="-1" id="cwt-56-nJQ"/>
+                                    <action selector="toggleKeyboardShown:" target="-1" id="K3K-xR-PDo"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Tape Recorder" id="U4u-5K-pMQ">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="tapeRecorder:" target="-1" id="v7R-je-19y"/>
+                                    <action selector="toggleTapeRecorderShown:" target="-1" id="iRO-F9-1Xt"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Developer" id="qBG-8J-1KP">
@@ -484,25 +493,25 @@
                                         <menuItem title="Debugger" id="qHO-VH-HxW">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="debugger:" target="-1" id="hOq-aQ-lgM"/>
+                                                <action selector="toggleDebuggerShown:" target="-1" id="yJ5-Zr-WPw"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="CPU" id="nCG-hf-DGX">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="CPU:" target="-1" id="pzZ-ql-TtL"/>
+                                                <action selector="toggleCPUShown:" target="-1" id="evw-ao-RKn"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="ULA" id="bAt-Nj-pK8">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="ULA:" target="-1" id="pG0-cP-HZz"/>
+                                                <action selector="toggleULAShown:" target="-1" id="xkd-9h-1uj"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="PSG" id="e4l-g5-0IJ">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="PSG:" target="-1" id="U2v-bl-NF4"/>
+                                                <action selector="togglePSGShown:" target="-1" id="rS7-UW-eqO"/>
                                             </connections>
                                         </menuItem>
                                     </items>
