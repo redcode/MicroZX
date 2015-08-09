@@ -143,37 +143,15 @@ typedef struct {
 #define WAVE_HIGH		6550
 #define WAVE_LOW		-6550
 
-Q_PRIVATE quint32 const bright_colors[8] = {
-	RGBA(00, 00, 00, 00),	/* Bright Black	  */
-	RGBA(00, 00, FF, 00),	/* Bright Blue	  */
-	RGBA(FF, 00, 00, 00),	/* Bright Red	  */
-	RGBA(FF, 00, FF, 00),	/* Bright Magenta */
-	RGBA(00, FF, 00, 00),	/* Bright Green	  */
-	RGBA(00, FF, FF, 00),	/* Bright Cyan	  */
-	RGBA(FF, FF, 00, 00),	/* Bright Yellow  */
-	RGBA(FF, FF, FF, 00)	/* Bright White	  */
-};
-
-Q_PRIVATE quint32 const basic_colors[8] = {
-	RGBA(00, 00, 00, 00),	/* Black	 */
-	RGBA(00, 00, CD, 00),	/* Basic Blue	 */
-	RGBA(CD, 00, 00, 00),	/* Basic Red	 */
-	RGBA(CD, 00, CD, 00),	/* Basic Magenta */
-	RGBA(00, CD, 00, 00),	/* Basic Green	 */
-	RGBA(00, CD, CD, 00),	/* Basic Cyan	 */
-	RGBA(CD, CD, 00, 00),	/* Basic Yellow	 */
-	RGBA(CD, CD, CD, 00),	/* Basic White	 */
-};
-
-Q_PRIVATE quint32 const palette[] = {
-	RGBA(00, 00, 00, 00), RGBA(00, 00, CD, 00),
-	RGBA(CD, 00, 00, 00), RGBA(CD, 00, CD, 00),
-	RGBA(00, CD, 00, 00), RGBA(00, CD, CD, 00),
-	RGBA(CD, CD, 00, 00), RGBA(CD, CD, CD, 00),
-	RGBA(00, 00, 00, 00), RGBA(00, 00, FF, 00),
-	RGBA(FF, 00, 00, 00), RGBA(FF, 00, FF, 00),
-	RGBA(00, FF, 00, 00), RGBA(00, FF, FF, 00),
-	RGBA(FF, FF, 00, 00), RGBA(FF, FF, FF, 00)
+Q_PRIVATE quint32 const palette[2][8] = {
+	{RGBA(00, 00, 00, 00), RGBA(00, 00, CD, 00),
+	 RGBA(CD, 00, 00, 00), RGBA(CD, 00, CD, 00),
+	 RGBA(00, CD, 00, 00), RGBA(00, CD, CD, 00),
+	 RGBA(CD, CD, 00, 00), RGBA(CD, CD, CD, 00)},
+	{RGBA(00, 00, 00, 00), RGBA(00, 00, FF, 00),
+	 RGBA(FF, 00, 00, 00), RGBA(FF, 00, FF, 00),
+	 RGBA(00, FF, 00, 00), RGBA(00, FF, FF, 00),
+	 RGBA(FF, FF, 00, 00), RGBA(FF, FF, FF, 00)}
 };
 
 
@@ -205,26 +183,26 @@ Q_PRIVATE void draw_character_row(quint8 *vram, qsize x, qsize y, qsize row, qbo
 		{
 		if (attribute & 64)
 			{
-			b = bright_colors[ attribute	   & 7];
-			f = bright_colors[(attribute >> 3) & 7];
+			b = palette[1][ attribute	& 7];
+			f = palette[1][(attribute >> 3) & 7];
 			}
 
 		else	{
-			b = basic_colors[ attribute	  & 7];
-			f = basic_colors[(attribute >> 3) & 7];
+			b = palette[0][ attribute	& 7];
+			f = palette[0][(attribute >> 3) & 7];
 			}
 		}
 
 	else	{
 		if (attribute & 64)
 			{
-			f = bright_colors[ attribute	   & 7];
-			b = bright_colors[(attribute >> 3) & 7];
+			f = palette[1][ attribute	& 7];
+			b = palette[1][(attribute >> 3) & 7];
 			}
 
 		else	{
-			f = basic_colors[ attribute	  & 7];
-			b = basic_colors[(attribute >> 3) & 7];
+			f = palette[0][ attribute	& 7];
+			b = palette[0][(attribute >> 3) & 7];
 			}
 		}
 
@@ -366,7 +344,7 @@ Q_PRIVATE void zx_spectrum_cpu_out(ZXSpectrum *object, quint16 port, quint8 valu
 		/*-------------.
 		| Border Color |
 		'-------------*/
-		object->border_color = palette[value & 0x07];
+		object->border_color = ((quint32 *)palette)[value & 0x07];
 
 		/*----------.
 		| MIC - EAR |
@@ -441,7 +419,7 @@ Q_PRIVATE void zx_spectrum_initialize(ZXSpectrum *object)
 	object->state.ula_io.value = 0;
 	object->state.flash = FALSE;
 	object->current_audio_sample = WAVE_LOW;
-	object->border_color = palette[0];
+	object->border_color = palette[0][0];
 	object->frame_cycles = 0;
 	object->audio_input_buffer = NULL;
 	object->audio_input_base_index = 0;
@@ -466,7 +444,7 @@ Q_PRIVATE void zx_spectrum_plus_128k_initialize(ZXSpectrum128K *object)
 	object->state.ula_io.value = 0;
 	object->state.flash = FALSE;
 	object->current_audio_sample = WAVE_LOW;
-	object->border_color = palette[0];
+	object->border_color = palette[0][0];
 	object->frame_cycles = 0;
 	object->audio_input_buffer = NULL;
 	object->audio_input_base_index = 0;
