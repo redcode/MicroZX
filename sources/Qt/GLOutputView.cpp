@@ -70,6 +70,13 @@ GLOutputView::GLOutputView(QWidget *parent) : QGLWidget(parent)
 	flags.OpenGLReady	= false;
 	flags.startWhenPossible = false;
 	//setAttribute(Qt::WA_PaintOutsidePaintEvent, true);
+
+	GLContext = (QGLContext *)context();
+
+	makeCurrent();
+	C::gl_output_initialize(&GLOutput);
+	C::gl_output_set_geometry(&GLOutput, BOUNDS, Q_SCALING_FIT);
+	doneCurrent();
 	qDebug("GLOutputView::constructor");
 	}
 
@@ -94,9 +101,8 @@ void GLOutputView::initializeGL()
 //	QGLFormat format(QGL::SampleBuffers);
 //	format.setSwapInterval(1); // vsync
 //	setFormat(format);
-	C::gl_output_initialize(&GLOutput);
-	C::gl_output_set_geometry(&GLOutput, BOUNDS, Q_SCALING_FIT);
-	GLContext = (QGLContext *)context();
+
+
 	flags.OpenGLReady = TRUE;
 	if (flags.startWhenPossible) this->start();
 	}

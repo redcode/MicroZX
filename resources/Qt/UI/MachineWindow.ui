@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>NEStalin</string>
+   <string>μZX</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="minimumSize">

@@ -112,6 +112,7 @@ MachineWindow::MachineWindow(QWidget *parent) :	QMainWindow(parent), ui(new Ui::
 		}
 
 	keyboardState.value_uint64 = Q_UINT64(0xFFFFFFFFFFFFFFFF);
+	setWindowTitle(QString(abi->model_name));
 	}
 
 
