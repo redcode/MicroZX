@@ -152,9 +152,9 @@ MachineWindow::MachineWindow(QWidget *parent) :	QMainWindow(parent), ui(new Ui::
 
 	machine		       = (Q::ZXSpectrum *)malloc(abi->context_size);
 	machine->cpu_abi.run   = (Q::ACMERunCycles)Q::z80_run;
-	machine->cpu_abi.irq   = (Q::ACMESwitch)Q::z80_irq;
-	machine->cpu_abi.reset = (Q::ACMEPulse)Q::z80_reset;
-	machine->cpu_abi.power = (Q::ACMESwitch)Q::z80_power;
+	machine->cpu_abi.irq   = (void *)Q::z80_irq;
+	machine->cpu_abi.reset = (void *)Q::z80_reset;
+	machine->cpu_abi.power = (void *)Q::z80_power;
 	machine->cpu	       = (Q::Z80 *)malloc(sizeof(Q::Z80));
 	machine->cpu_cycles    = &machine->cpu->ticks;
 	machine->memory	       = (Q::quint8 *)malloc(abi->memory_size);
