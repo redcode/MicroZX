@@ -5,25 +5,20 @@
  |_*/
 
 #import "MachineWindowController.h"
-#import "geometry.h"
 #import "KeyCodes.h"
 #import <Q/hardware/machine/platform/computer/ZX Spectrum.h>
 #import <Q/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum.h>
 #import "NSWindow+RedCode.h"
 #import "NSView+RedCode.h"
-#import <pthread.h>
-#include <stdio.h>
 
 #include "system.h"
 #import <Q/functions/buffering/QTripleBuffer.h>
-#import <Q/functions/buffering/QRingBuffer.h>
 #import <Q/functions/geometry/QRectangle.h>
 #import <Q/macros/casting.h>
 
 #define kScreenZoomIncrement	1.5
 #define MACHINE_SCREEN_SIZE	q_2d((qreal)Q_ZX_SPECTRUM_SCREEN_WIDTH, (qreal)Q_ZX_SPECTRUM_SCREEN_HEIGHT)
 #define NS_MACHINE_SCREEN_SIZE	NSMakeSize(Q_ZX_SPECTRUM_SCREEN_WIDTH, Q_ZX_SPECTRUM_SCREEN_HEIGHT)
-#include <Q/macros/color.h>
 
 typedef struct {
 	struct {quint8 row  :3;
@@ -46,26 +41,6 @@ typedef struct {
 	 {Q_JOIN_2(Q_ZX_SPECTRUM_KEY_ROW_,  KEY_NAME),		 \
 	  Q_JOIN_2(Q_ZX_SPECTRUM_KEY_MASK_, KEY_NAME)}}
 
-quint16 const keymap[256] = {
-/* 0 1 2 3 4 5 6 7 8 9 A B C D E F */
-/* 0 */
-/* 1 */
-/* 2 */
-/* 3 */
-/* 4 */
-/* 5 */
-/* 6 */
-/* 7 */
-/* 8 */
-/* 9 */
-/* A */
-/* B */
-/* C */
-/* D */
-/* E */
-/* F */
-};
-
 
 Q_INLINE qreal step_down(qreal n, qreal step_size)
 	{
@@ -78,54 +53,6 @@ Q_INLINE qreal step_down(qreal n, qreal step_size)
 
 Q_INLINE qreal step_up(qreal n, qreal step_size)
 	{return floor(n / step_size) * step_size + step_size;}
-
-/*
-static void *EmulationMain(MachineWindowController *controller)
-	{
-	quint64 frames_per_second = 50;
-	quint64 frame_ticks	  = 1000000000 / frames_per_second;
-	quint64 next_frame_tick   = q_ticks();
-	quint64 delta;
-	quint	maximum_frameskip = 5;
-	quint	loops;
-	void*	audio_output_buffer;
-	quint64* keyboard;
-
-	while (!controller->_mustStop)
-		{
-		loops = 0;
-
-		do controller->_machineABI->run_one_frame(controller->_machine);
-		while ((next_frame_tick += frame_ticks) < q_ticks() && ++loops < maximum_frameskip);
-
-		if ((audio_output_buffer = q_ring_buffer_try_produce(controller->_audioOutputBuffer)) != NULL)
-			controller->_machine->audio_output_buffer = audio_output_buffer;
-
-		controller->_machine->video_output_buffer = q_triple_buffer_produce(controller->_videoOutputBuffer);
-
-		//----------------.
-		// Consume input. |
-		//----------------'
-		if ((keyboard = q_triple_buffer_consume(controller->_keyboardBuffer)) != NULL)
-			{controller->_machine->state.keyboard.value_uint64 = *keyboard;}
-
-		if (controller->_audioInputBuffer != NULL)
-			{
-			controller->_machine->audio_input_buffer = ring_buffer_try_read(controller->_audioInputRing, controller->_audioInputBuffer)
-				? controller->_audioInputBuffer : NULL;
-			}
-
-		//----------------------------------------.
-		// Schedule next iteration time and wait. |
-		//----------------------------------------'
-		if ((delta = next_frame_tick - q_ticks()) <= frame_ticks)
-			q_wait(delta);
-
-		//else printf("delta => %lu, next => %lu\n", delta, next_frame_tick);
-		}
-
-	return NULL;
-	}*/
 
 
 @implementation MachineWindowController
@@ -318,7 +245,7 @@ static void *EmulationMain(MachineWindowController *controller)
 		)
 			[window setCollectionBehavior: [window collectionBehavior] | NSWindowCollectionBehaviorFullScreenPrimary];
 
-		_minimumWindowSize = q_2d_add(MACHINE_SCREEN_SIZE, NSSizeToQ(window.borderSize));
+		_minimumWindowSize = q_2d_add(MACHINE_SCREEN_SIZE, Q_CAST(NSSize, Q2D, window.borderSize));
 		window.title = [NSString stringWithUTF8String: _machine.abi->model_name];
 		[window.contentView addSubview: _videoOutput];
 		[window setContentAspectRatio: contentSize];

@@ -5,8 +5,6 @@
  |_*/
 
 #import "GLOutputView.h"
-#import "geometry.h"
-#import <Q/types/data.h>
 #import <Q/functions/geometry/QRectangle.h>
 #import <Q/functions/buffering/QTripleBuffer.h>
 #import <Q/macros/casting.h>

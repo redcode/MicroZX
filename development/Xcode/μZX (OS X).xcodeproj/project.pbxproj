@@ -67,7 +67,6 @@
 		64F5DDA31A28E03C00D29077 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		64F5DDA91A28E03C00D29077 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		64F5DDFC1A28E83A00D29077 /* MachineABI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MachineABI.h; sourceTree = "<group>"; };
-		64F5DDFD1A28E83A00D29077 /* geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geometry.h; sourceTree = "<group>"; };
 		64F5DDFE1A28E83A00D29077 /* OpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGL.h; sourceTree = "<group>"; };
 		64F5DDFF1A28E83A00D29077 /* RingBuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = RingBuffer.c; sourceTree = "<group>"; };
 		64F5DE001A28E83A00D29077 /* RingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingBuffer.h; sourceTree = "<group>"; };
@@ -244,7 +243,6 @@
 				64F5DE531A28E9F900D29077 /* Emulators */,
 				645DAEA41B3B2C5400C9AB10 /* system.h */,
 				645DAEA51B3B2C5400C9AB10 /* system.c */,
-				64F5DDFD1A28E83A00D29077 /* geometry.h */,
 				64F5DDFE1A28E83A00D29077 /* OpenGL.h */,
 				64F5DDFF1A28E83A00D29077 /* RingBuffer.c */,
 				64F5DE001A28E83A00D29077 /* RingBuffer.h */,

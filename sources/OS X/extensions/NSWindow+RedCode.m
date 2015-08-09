@@ -6,7 +6,6 @@
 Copyright © 2013 RedCode Software. All rights reserved. */
 
 #import "NSWindow+RedCode.h"
-#import "geometry.h"
 
 
 @implementation NSWindow (RedCode)
@@ -14,9 +13,10 @@ Copyright © 2013 RedCode Software. All rights reserved. */
 
 	- (NSSize) borderSize
 		{
-		return QToNSSize(q_2d_subtract
-			(NSSizeToQ(self.frame.size),
-			 NSSizeToQ(((NSView *)self.contentView).bounds.size)));
+		NSSize frameSize = self.frame.size;
+		NSSize contentSize = ((NSView *)self.contentView).bounds.size;
+
+		return NSMakeSize(frameSize.width - contentSize.width, frameSize.height - contentSize.height);
 		}
 
 

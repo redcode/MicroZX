@@ -85,9 +85,6 @@
 }
 	- (id) initWithMachineABI: (MachineABI *) machineABI;
 
-	- (void) start;
-	- (void) stop;
-
 	//--------------------.
 	// Main Menu: Machine |
 	//--------------------'
