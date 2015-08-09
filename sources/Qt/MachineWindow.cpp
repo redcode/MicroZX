@@ -14,7 +14,7 @@
 #include <QFileDialog>
 #include <math.h>
 
-namespace Q {
+namespace C {
 #	include <Q/keys/layout.h>
 #	include <Q/functions/buffering/QTripleBuffer.h>
 #	include <Q/functions/buffering/QRingBuffer.h>
@@ -22,90 +22,13 @@ namespace Q {
 #	include <Q/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum.h>
 #	include "system.h"
 #	include <Q/types/time.h>
+#	include "MachineABI.h"
 }
 
-#define MACHINE_SCREEN_SIZE Q::q_2d((Q::qreal)Q_ZX_SPECTRUM_SCREEN_WIDTH, (Q::qreal)Q_ZX_SPECTRUM_SCREEN_HEIGHT)
+#define MACHINE_SCREEN_SIZE C::q_2d((C::qreal)Q_ZX_SPECTRUM_SCREEN_WIDTH, (C::qreal)Q_ZX_SPECTRUM_SCREEN_HEIGHT)
 
 
 static AboutDialog* aboutDialog = NULL;
-
-
-static void *emulate_machine_entry(MachineWindow *machine_window)
-	{
-	machine_window->emulateMachine();
-	return NULL;
-	}
-
-
-void MachineWindow::emulateMachine()
-	{
-	Q::quint64  frames_per_second = 50;
-	Q::quint64  frame_ticks	      = 1000000000 / frames_per_second;
-	Q::quint64  next_frame_tick   = Q::q_ticks();
-	Q::quint64  delta;
-	Q::quint    maximum_frameskip = 5;
-	Q::quint    loops;
-	//void*	    audio_output_buffer;
-	Q::quint64* keyboard;
-
-	while (!mustStop)
-		{
-		loops = 0;
-
-		do abi->run_one_frame(machine);
-		while ((next_frame_tick += frame_ticks) < Q::q_ticks() && ++loops < maximum_frameskip);
-
-//		if ((audio_output_buffer = Q::q_ring_buffer_try_produce(this->audio_output_buffer)) != NULL)
-//			machine->audio_output_buffer = (Q::qint16 *)audio_output_buffer;
-
-		machine->video_output_buffer = Q::q_triple_buffer_produce(videoOutputBuffer);
-		//qDebug("thread new output buffer -> %p", machine->video_output_buffer);
-
-		/*---------------.
-		| Consume input. |
-		'---------------*/
-		if ((keyboard = (Q::quint64 *)Q::q_triple_buffer_consume(keyboardBuffer)) != NULL)
-			{machine->state.keyboard.value_uint64 = *keyboard;}
-
-		/*---------------------------------------.
-		| Schedule next iteration time and wait. |
-		'---------------------------------------*/
-		if ((delta = next_frame_tick - Q::q_ticks()) <= frame_ticks)
-			Q::q_wait(delta);
-
-		//qDebug("delta => %lu, next => %lu", delta, next_frame_tick);
-		}
-	}
-
-
-void MachineWindow::runMachine()
-	{
-	flags.running = true;
-	mustStop = false;
-	pthread_attr_t attributes;
-	pthread_attr_init(&attributes);
-	pthread_create(&thread, &attributes, (void *(*)(void *))emulate_machine_entry, this);
-	pthread_attr_destroy(&attributes);
-	}
-
-
-void MachineWindow::stopMachine()
-	{
-	flags.running = false;
-	mustStop = true;
-	pthread_join(thread, NULL);
-	//abi->reset(machine);
-	}
-/*
-QFrame frame;
-	QPalette palette;
-
-	palette.setColor(QPalette::Background,Qt::red);
-	frame.setFixedSize(240,240);
-	frame.setPalette(palette);
-	frame.setWindowTitle("QFrame Background Color");
-	frame.show();
- **/
 
 
 double MachineWindow::currentZoom()
@@ -120,12 +43,12 @@ void MachineWindow::setZoom(double zoom)
 	{
 	if (isFullScreen())
 		{
-		Q::Q2D boundsSize = Q::q_2d(ui->videoOutputView->width(), ui->videoOutputView->height());
-		Q::Q2D zoomedSize = Q::q_2d(double(Q_ZX_SPECTRUM_SCREEN_WIDTH) * zoom, double(Q_ZX_SPECTRUM_SCREEN_HEIGHT) * zoom);
+		C::Q2D boundsSize = C::q_2d(ui->videoOutputView->width(), ui->videoOutputView->height());
+		C::Q2D zoomedSize = C::q_2d(double(Q_ZX_SPECTRUM_SCREEN_WIDTH) * zoom, double(Q_ZX_SPECTRUM_SCREEN_HEIGHT) * zoom);
 
-		ui->videoOutputView->setContentSize(Q::q_2d_contains(boundsSize, zoomedSize)
+		ui->videoOutputView->setContentSize(C::q_2d_contains(boundsSize, zoomedSize)
 			? zoomedSize
-			: q_2d_fit(MACHINE_SCREEN_SIZE, boundsSize));
+			: C::q_2d_fit(MACHINE_SCREEN_SIZE, boundsSize));
 		}
 
 	else	{
@@ -148,35 +71,24 @@ MachineWindow::MachineWindow(QWidget *parent) :	QMainWindow(parent), ui(new Ui::
 	//---------------------------------------.
 	// Create the machine and its components |
 	//---------------------------------------'
-	abi = &Q::machine_abi_table[4];
-
-	machine		       = (Q::ZXSpectrum *)malloc(abi->context_size);
-	machine->cpu_abi.run   = (Q::ACMERunCycles)Q::z80_run;
-	machine->cpu_abi.irq   = (void *)Q::z80_irq;
-	machine->cpu_abi.reset = (void *)Q::z80_reset;
-	machine->cpu_abi.power = (void *)Q::z80_power;
-	machine->cpu	       = (Q::Z80 *)malloc(sizeof(Q::Z80));
-	machine->cpu_cycles    = &machine->cpu->ticks;
-	machine->memory	       = (Q::quint8 *)malloc(abi->memory_size);
-
-	memset(machine->memory, 0, abi->memory_size);
 
 	ui->videoOutputView->setResolutionAndFormat
-		(Q::q_2d_value(SIZE)(Q_ZX_SPECTRUM_SCREEN_WIDTH, Q_ZX_SPECTRUM_SCREEN_HEIGHT), 0);
+		(C::q_2d_value(SIZE)(Q_ZX_SPECTRUM_SCREEN_WIDTH, Q_ZX_SPECTRUM_SCREEN_HEIGHT), 0);
 
-	videoOutputBuffer = ui->videoOutputView->getBuffer();
-	machine->video_output_buffer = Q::q_triple_buffer_production_buffer(videoOutputBuffer);
-	qDebug("video buffer -> %p", machine->video_output_buffer);
-	machine->audio_output_buffer = (Q::qint16 *)malloc(sizeof(qint16) * 882 * 4);
-	//machine->audio_output_buffer = (Q::qint16 *)Q::q_ring_buffer_production_buffer(audio_output_buffer);
+	keyboardBuffer = (C::QTripleBuffer *)malloc(sizeof(C::QTripleBuffer));
+	C::q_triple_buffer_initialize(keyboardBuffer, malloc(sizeof(C::quint64) * 3), sizeof(C::quint64));
+	keyboard = (C::Q64Bit *)q_triple_buffer_production_buffer(keyboardBuffer);
+	memset(keyboardBuffer->buffers[0], 0xFF, sizeof(C::quint64) * 3);
 
-	keyboardBuffer = (Q::QTripleBuffer *)malloc(sizeof(Q::QTripleBuffer));
-	Q::q_triple_buffer_initialize(keyboardBuffer, malloc(sizeof(Q::quint64) * 3), sizeof(Q::quint64));
-	keyboard = (Q::Q64Bit *)q_triple_buffer_production_buffer(keyboardBuffer);
-	memset(keyboardBuffer->buffers[0], 0xFF, sizeof(Q::quint64) * 3);
+	C::q_ring_buffer_initialize(&audioOutputBuffer, malloc(sizeof(C::qint16) * 882 * 4), sizeof(C::qint16) * 882, 4);
 
-	Q::qsize index = abi->rom_count;
-	Q::ROM *rom;
+	MachineABI *abi = &C::machine_abi_table[4];
+
+	C::machine_initialize(&machine, abi, ui->videoOutputView->getBuffer(), &audioOutputBuffer);
+	machine.keyboard_input_buffer = keyboardBuffer;
+
+	C::qsize index = abi->rom_count;
+	C::ROM *rom;
 
 	while (index)
 		{
@@ -306,7 +218,7 @@ void MachineWindow::keyPressEvent(QKeyEvent* event)
 		}
 
 	keyboard->value_uint64 = keyboardState.value_uint64;
-	keyboard = (Q::Q64Bit *)Q::q_triple_buffer_produce(keyboardBuffer);
+	keyboard = (C::Q64Bit *)C::q_triple_buffer_produce(keyboardBuffer);
 	}
 
 
@@ -374,7 +286,7 @@ void MachineWindow::keyReleaseEvent(QKeyEvent* event)
 		}
 
 	keyboard->value_uint64 = keyboardState.value_uint64;
-	keyboard = (Q::Q64Bit *)Q::q_triple_buffer_produce(keyboardBuffer);
+	keyboard = (C::Q64Bit *)C::q_triple_buffer_produce(keyboardBuffer);
 	}
 
 
@@ -392,9 +304,9 @@ void MachineWindow::resizeEvent(QResizeEvent *)
 		{
 		ui->videoOutputView->setScaling(Q_SCALING_NONE);
 
-		ui->videoOutputView->setContentSize(Q::q_2d_fit
-			(Q::q_2d(Q_ZX_SPECTRUM_SCREEN_WIDTH, Q_ZX_SPECTRUM_SCREEN_HEIGHT),
-			 Q::q_2d(ui->videoOutputView->width(), ui->videoOutputView->height())));
+		ui->videoOutputView->setContentSize(C::q_2d_fit
+			(C::q_2d(Q_ZX_SPECTRUM_SCREEN_WIDTH, Q_ZX_SPECTRUM_SCREEN_HEIGHT),
+			 C::q_2d(ui->videoOutputView->width(), ui->videoOutputView->height())));
 
 		fullScreenMenuFrame->setGeometry(0.0, 0.0, ui->videoOutputView->width(), ui->menuBar->height());
 		fullScreenMenuFrame->show();
@@ -431,34 +343,38 @@ void MachineWindow::on_actionMachinePower_toggled(bool enabled)
 	ui->actionMachinePause->setEnabled(enabled);
 	ui->actionMachineReset->setEnabled(enabled);
 
-	if (enabled)
-		{
-		abi->power(machine, ON);
-		runMachine();
-		ui->videoOutputView->start();
-		}
+	bool state = !machine.flags.power;
+
+	C::machine_power(&machine, state);
+
+	if (state) ui->videoOutputView->start();
 
 	else	{
 		ui->videoOutputView->stop();
-		stopMachine();
-		abi->power(machine, OFF);
+		//ui->videoOutputView->blank();
 		}
 	}
 
 
 void MachineWindow::on_actionMachinePause_toggled(bool enabled)
 	{
-	if (enabled) stopMachine();
-	else runMachine();
+	Q_UNUSED(enabled);
+	bool state = !machine.flags.pause;
+
+	C::machine_pause(&machine, state);
+
+	if (state) ui->videoOutputView->stop();
+	else ui->videoOutputView->start();
 	}
 
 
 void MachineWindow::on_actionMachineReset_triggered()
 	{
 	ui->actionMachinePause->setChecked(false);
-	if (flags.running) stopMachine();
-	abi->reset(machine);
-	runMachine();
+
+	bool pause = machine.flags.pause;
+	C::machine_reset(&machine);
+	if (pause) ui->videoOutputView->start();
 	}
 
 

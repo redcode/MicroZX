@@ -11,10 +11,9 @@
 #include <QFrame>
 #include <QTimer>
 
-namespace Q {
+namespace C {
 #	include <Q/types/buffering.h>
-#	include "emulators/ZX Spectrum.h"
-#	include "MachineABI.h"
+#	include "Machine.h"
 }
 
 namespace Ui {class MachineWindow;}
@@ -27,15 +26,13 @@ class MachineWindow : public QMainWindow {Q_OBJECT
 
 	private:
 	Ui::MachineWindow* ui;
-	Q::MachineABI*	  abi;
-	Q::ZXSpectrum*	  machine;
+	C::Machine	  machine;
 	void*		  memory;
 	pthread_t	  thread;
-	Q::QTripleBuffer* videoOutputBuffer;
-	Q::QRingBuffer*	  audioOutputBuffer;
-	Q::QTripleBuffer* keyboardBuffer;
-	Q::Q64Bit*	  keyboard;
-	Q::Q64Bit	  keyboardState;
+	C::QRingBuffer	  audioOutputBuffer;
+	C::QTripleBuffer* keyboardBuffer;
+	C::Q64Bit*	  keyboard;
+	C::Q64Bit	  keyboardState;
 	QFrame*		  fullScreenMenuFrame;
 	volatile bool	  mustStop;
 
