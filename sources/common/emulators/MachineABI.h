@@ -10,6 +10,8 @@ Copyright © 2013 RedCode Software. All rights reserved. */
 
 #include <Q/types/generic functions.h>
 
+Q_C_SYMBOLS_BEGIN
+
 typedef struct {
 	QString* file_name;
 	qsize	 base_address;
@@ -32,5 +34,7 @@ typedef struct {
 
 extern MachineABI machine_abi_table[];
 extern qsize	  machine_abi_count;
+
+Q_C_SYMBOLS_END
 
 #endif

@@ -82,7 +82,7 @@ MachineWindow::MachineWindow(QWidget *parent) :	QMainWindow(parent), ui(new Ui::
 
 	C::q_ring_buffer_initialize(&audioOutputBuffer, malloc(sizeof(C::qint16) * 882 * 4), sizeof(C::qint16) * 882, 4);
 
-	MachineABI *abi = &C::machine_abi_table[4];
+	C::MachineABI *abi = &C::machine_abi_table[4];
 
 	C::machine_initialize(&machine, abi, ui->videoOutputView->getBuffer(), &audioOutputBuffer);
 	machine.keyboard_input_buffer = keyboardBuffer;
@@ -106,19 +106,18 @@ MachineWindow::MachineWindow(QWidget *parent) :	QMainWindow(parent), ui(new Ui::
 			}
 
 		else	{
-			file.read((char *)(machine->memory + rom->base_address), rom->size);
+			file.read((char *)(machine.context->memory + rom->base_address), rom->size);
 			file.close();
 			}
 		}
 
-	abi->initialize(machine);
 	keyboardState.value_uint64 = Q_UINT64(0xFFFFFFFFFFFFFFFF);
 	}
 
 
 MachineWindow::~MachineWindow()
 	{
-	if (flags.running) stopMachine();
+	//if (flags.running) stopMachine();
 	delete ui;
 	}
 
