@@ -12,7 +12,7 @@
 #ifdef __OBJC__
 #	define Q_AVOID_NULL_DECLARATION
 #	import <Cocoa/Cocoa.h>
-#endif
 
-#define STRING(...) [NSString stringWithFormat: __VA_ARGS__]
-#define _(string) NSLocalizedString(@string, nil)
+#	define STRING(...) [NSString stringWithFormat: __VA_ARGS__]
+#	define _(string) NSLocalizedString(@string, nil)
+#endif

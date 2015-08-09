@@ -132,9 +132,8 @@ typedef struct {
 #define RAM_BANK(number) (object->memory + (1024 * 16 * 2) + (1024 * 16 * (number)))
 #define ROM_BANK(number) (object->memory + (1024 * 16 * (number)))
 
-#include <string.h>
+
 #include <Q/macros/color.h>
-#include <stdlib.h>
 
 #define CPU_RUN(cycles)		object->cpu_abi.run(object->cpu, cycles)
 #define CPU_INT(state)		object->cpu_abi.irq(object->cpu, state)
@@ -157,20 +156,20 @@ Q_PRIVATE quint32 const bright_colors[8] = {
 
 Q_PRIVATE quint32 const basic_colors[8] = {
 	RGBA(00, 00, 00, 00),	/* Black	 */
-	RGBA(00, 00, C0, 00),	/* Basic Blue	 */
-	RGBA(C0, 00, 00, 00),	/* Basic Red	 */
-	RGBA(C0, 00, C0, 00),	/* Basic Magenta */
-	RGBA(00, C0, 00, 00),	/* Basic Green	 */
-	RGBA(00, C0, C0, 00),	/* Basic Cyan	 */
-	RGBA(C0, C0, 00, 00),	/* Basic Yellow	 */
-	RGBA(C0, C0, C0, 00),	/* Basic White	 */
+	RGBA(00, 00, CD, 00),	/* Basic Blue	 */
+	RGBA(CD, 00, 00, 00),	/* Basic Red	 */
+	RGBA(CD, 00, CD, 00),	/* Basic Magenta */
+	RGBA(00, CD, 00, 00),	/* Basic Green	 */
+	RGBA(00, CD, CD, 00),	/* Basic Cyan	 */
+	RGBA(CD, CD, 00, 00),	/* Basic Yellow	 */
+	RGBA(CD, CD, CD, 00),	/* Basic White	 */
 };
 
 Q_PRIVATE quint32 const palette[] = {
-	RGBA(00, 00, 00, 00), RGBA(00, 00, C0, 00),
-	RGBA(C0, 00, 00, 00), RGBA(C0, 00, C0, 00),
-	RGBA(00, C0, 00, 00), RGBA(00, C0, C0, 00),
-	RGBA(C0, C0, 00, 00), RGBA(C0, C0, C0, 00),
+	RGBA(00, 00, 00, 00), RGBA(00, 00, CD, 00),
+	RGBA(CD, 00, 00, 00), RGBA(CD, 00, CD, 00),
+	RGBA(00, CD, 00, 00), RGBA(00, CD, CD, 00),
+	RGBA(CD, CD, 00, 00), RGBA(CD, CD, CD, 00),
 	RGBA(00, 00, 00, 00), RGBA(00, 00, FF, 00),
 	RGBA(FF, 00, 00, 00), RGBA(FF, 00, FF, 00),
 	RGBA(00, FF, 00, 00), RGBA(00, FF, FF, 00),
