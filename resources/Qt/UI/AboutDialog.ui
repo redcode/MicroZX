@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>About NEStalin</string>
+   <string>About μZX</string>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -145,7 +145,7 @@ Released under the terms of the GNU General Public License v3</string>
     <string>Sources</string>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="../../common/images.qrc">
      <normaloff>:/icons/Source Code.png</normaloff>:/icons/Source Code.png</iconset>
    </property>
    <property name="iconSize">
@@ -191,7 +191,7 @@ Released under the terms of the GNU General Public License v3</string>
     <string>Website</string>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="../../common/images.qrc">
      <normaloff>:/icons/Home Page.png</normaloff>:/icons/Home Page.png</iconset>
    </property>
    <property name="iconSize">
@@ -237,7 +237,7 @@ Released under the terms of the GNU General Public License v3</string>
     <string>Donate</string>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="../../common/images.qrc">
      <normaloff>:/icons/Donate.png</normaloff>:/icons/Donate.png</iconset>
    </property>
    <property name="iconSize">
@@ -278,6 +278,8 @@ Released under the terms of the GNU General Public License v3</string>
    </property>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../common/images.qrc"/>
+ </resources>
  <connections/>
 </ui>
