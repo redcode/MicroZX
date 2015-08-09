@@ -21,9 +21,12 @@
 
 #	define USE_GL_ES
 
-#else
-#	include <GL/gl.h>
-#endif
+#elif Q_OS == Q_OS_LINUX
 
+#	define GL_GLEXT_PROTOTYPES
+#	include <GL/gl.h>
+#	include <GL/glext.h>
+
+#endif
 
 #endif /* __mZX_common_OpenGL_H */

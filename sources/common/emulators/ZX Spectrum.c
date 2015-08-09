@@ -155,7 +155,7 @@ Q_PRIVATE quint32 const palette[2][8] = {
 };
 
 
-#import "Z80.h"
+#include "Z80.h"
 
 
 /* MARK: - Helpers */

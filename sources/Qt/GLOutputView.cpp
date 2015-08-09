@@ -70,7 +70,7 @@ GLOutputView::GLOutputView(QWidget *parent) : QGLWidget(parent)
 	flags.OpenGLReady	= false;
 	flags.startWhenPossible = false;
 	//setAttribute(Qt::WA_PaintOutsidePaintEvent, true);
-	qDebug("GLVideoOutputView::constructor");
+	qDebug("GLOutputView::constructor");
 	}
 
 
@@ -160,7 +160,7 @@ void GLOutputView::setResolutionAndFormat(C::Q2DSize resolution, C::quint format
 	{
 	Q_UNUSED(format);
 	makeCurrent();
-	qDebug("GLVideoOutputView::setResolutionAndFormat");
+	qDebug("GLOutputView::setResolutionAndFormat");
 	C::gl_output_set_resolution(&GLOutput, resolution);
 	doneCurrent();
 	}
