@@ -1,8 +1,8 @@
-/*	_________  ___
-  _____ \_   /\  \/  /	Qt/MachineWindow.hpp
- |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
- |   ____________/\__\	Released under the terms of the GNU General Public License v3.
- |_*/
+/*     _________  ___
+ _____ \_   /\  \/  / Qt/MachineWindow.hpp
+|  |  |_/  /__>    <  Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
+|   ____________/\__\ Released under the GNU General Public License v3.
+|_*/
 
 #ifndef __NEStalin_Qt_MachineWindow_HPP
 #define __NEStalin_Qt_MachineWindow_HPP

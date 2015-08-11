@@ -370,6 +370,9 @@
                                     <items>
                                         <menuItem title="VSync" state="on" id="dn3-bx-A4C">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="toggleVSync:" target="-1" id="wxj-dd-zb0"/>
+                                            </connections>
                                         </menuItem>
                                     </items>
                                 </menu>
@@ -380,22 +383,40 @@
                                     <items>
                                         <menuItem title="Auto" state="on" id="WVt-U9-zJv">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="setFrameSkip:" target="-1" id="u82-Yi-LRt"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="i1b-fl-l54"/>
                                         <menuItem title="0" id="S6G-kd-Htp">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="setFrameSkip:" target="-1" id="zyl-66-jWs"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="1" id="059-eK-dAe">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="setFrameSkip:" target="-1" id="9ec-gY-r1x"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="2" id="NhT-2Z-4zx">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="setFrameSkip:" target="-1" id="Rf6-uE-mgV"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="3" id="ccE-1v-SSh">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="setFrameSkip:" target="-1" id="uSE-wd-YNk"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="4" id="qBL-Jv-FGG">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="setFrameSkip:" target="-1" id="pEX-bD-Eu0"/>
+                                            </connections>
                                         </menuItem>
                                     </items>
                                 </menu>

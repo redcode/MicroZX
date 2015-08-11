@@ -10,4 +10,8 @@
 
 @interface TapeRecorderView : UIView
 
+
+
+
+
 @end

@@ -1,8 +1,8 @@
-/*	_________  ___
-  _____ \_   /\  \/  /	OS X/TapeRecorderController.m
- |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
- |   ____________/\__\	Released under the terms of the GNU General Public License v3.
- |_*/
+/*     _________  ___
+ _____ \_   /\  \/  / OS X/TapeRecorderWindowController.m
+|  |  |_/  /__>    <  Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
+|   ____________/\__\ Released under the GNU General Public License v3.
+|_*/
 
 #import "TapeRecorderWindowController.h"
 #import <Q/formats/storage medium image/audio/TZX.h>

@@ -1,8 +1,8 @@
-/*	_________  ___
-  _____ \_   /\  \/  /	OS X/MachineWindowController.h
- |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
- |   ____________/\__\	Released under the terms of the GNU General Public License v3.
- |_*/
+/*     _________  ___
+ _____ \_   /\  \/  / OS X/MachineWindowController.h
+|  |  |_/  /__>    <  Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
+|   ____________/\__\ Released under the GNU General Public License v3.
+|_*/
 
 #import <Foundation/Foundation.h>
 #import "Machine.h"
@@ -29,11 +29,6 @@
 	// Emulation |
 	//-----------'
 	Machine			_machine;
-
-	//ZXSpectrum*		_machine;
-	//MachineABI*		_machineABI;
-	//void*			_memory;
-	//pthread_t		_thread;
 
 	//----------.
 	// Geometry |
@@ -94,6 +89,8 @@
 	- (IBAction) saveState:	   (id) sender;
 	- (IBAction) restoreState: (id) sender;
 	- (IBAction) showStates:   (id) sender;
+	- (IBAction) toggleVSync:  (id) sender;
+	- (IBAction) setFrameSkip: (id) sender;
 
 	//-----------------.
 	// Main Menu: Edit |

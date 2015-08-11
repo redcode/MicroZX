@@ -10,6 +10,7 @@
 		6497FBA01B74D180001B0196 /* ROMs in Resources */ = {isa = PBXBuildFile; fileRef = 6497FB9F1B74D180001B0196 /* ROMs */; };
 		6497FBA31B74D1CD001B0196 /* SimpleVertex.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 6497FBA21B74D1CD001B0196 /* SimpleVertex.glsl */; };
 		6497FBA51B74D3F6001B0196 /* SimplePixel.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 6497FBA41B74D3F6001B0196 /* SimplePixel.glsl */; };
+		64DEF67E1B794F4E000F4F01 /* Joystick.png in Resources */ = {isa = PBXBuildFile; fileRef = 64DEF67D1B794F4E000F4F01 /* Joystick.png */; };
 		64EC80581B722D2E00C15EFE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 64EC80571B722D2E00C15EFE /* main.m */; };
 		64EC805B1B722D2E00C15EFE /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64EC805A1B722D2E00C15EFE /* MainController.m */; };
 		64EC805E1B722D2E00C15EFE /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64EC805D1B722D2E00C15EFE /* MainViewController.m */; };
@@ -34,13 +35,13 @@
 		64EC80B31B73AB3200C15EFE /* GLOutputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64EC80B21B73AB3200C15EFE /* GLOutputView.m */; };
 		64EC80B51B7442C700C15EFE /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64EC80B41B7442C700C15EFE /* OpenGLES.framework */; };
 		64EC80B71B7442D600C15EFE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64EC80B61B7442D600C15EFE /* QuartzCore.framework */; };
-		64EC80BB1B744CCE00C15EFE /* GLOutput.c in Sources */ = {isa = PBXBuildFile; fileRef = 64EC80BA1B744CCE00C15EFE /* GLOutput.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		6497FB9F1B74D180001B0196 /* ROMs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ROMs; sourceTree = "<group>"; };
 		6497FBA21B74D1CD001B0196 /* SimpleVertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimpleVertex.glsl; sourceTree = "<group>"; };
 		6497FBA41B74D3F6001B0196 /* SimplePixel.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimplePixel.glsl; sourceTree = "<group>"; };
+		64DEF67D1B794F4E000F4F01 /* Joystick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Joystick.png; sourceTree = "<group>"; };
 		64EC80521B722D2E00C15EFE /* μZX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "μZX.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		64EC80561B722D2E00C15EFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		64EC80571B722D2E00C15EFE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -218,6 +219,7 @@
 		64EC80821B7233C900C15EFE /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				64DEF67D1B794F4E000F4F01 /* Joystick.png */,
 				64EC80621B722D2E00C15EFE /* Images.xcassets */,
 			);
 			name = Images;
@@ -353,6 +355,7 @@
 				64EC80611B722D2E00C15EFE /* Main.storyboard in Resources */,
 				6497FBA01B74D180001B0196 /* ROMs in Resources */,
 				6497FBA31B74D1CD001B0196 /* SimpleVertex.glsl in Resources */,
+				64DEF67E1B794F4E000F4F01 /* Joystick.png in Resources */,
 				64EC80661B722D2E00C15EFE /* LaunchScreen.xib in Resources */,
 				6497FBA51B74D3F6001B0196 /* SimplePixel.glsl in Resources */,
 				64EC80631B722D2E00C15EFE /* Images.xcassets in Resources */,
@@ -373,7 +376,6 @@
 				64EC80A51B72497300C15EFE /* ZX Spectrum.c in Sources */,
 				64EC80951B72491800C15EFE /* FRZ.c in Sources */,
 				64EC80AC1B73AAAF00C15EFE /* JoystickView.m in Sources */,
-				64EC80BB1B744CCE00C15EFE /* GLOutput.c in Sources */,
 				64EC809B1B72491800C15EFE /* ZX.c in Sources */,
 				64EC80941B72491800C15EFE /* ACH.c in Sources */,
 				64EC805E1B722D2E00C15EFE /* MainViewController.m in Sources */,

@@ -10,6 +10,14 @@
 @implementation MainController
 
 
+	- (BOOL) application:			 (UIApplication *) application
+		 willFinishLaunchingWithOptions: (NSDictionary *) launchOptions
+		{
+		[application setStatusBarStyle: UIStatusBarStyleLightContent];
+		return YES;
+		}
+
+
 	- (BOOL) application:			(UIApplication *) application
 		 didFinishLaunchingWithOptions: (NSDictionary  *) launchOptions
 		{

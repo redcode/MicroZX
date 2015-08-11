@@ -1,8 +1,8 @@
-/*	_________  ___
-  _____ \_   /\  \/  /	OS X/GLOutputView.m
- |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
- |   ____________/\__\	Released under the terms of the GNU General Public License v3.
- |_*/
+/*     _________  ___
+ _____ \_   /\  \/  / OS X/GLOutputView.m
+|  |  |_/  /__>    <  Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
+|   ____________/\__\ Released under the GNU General Public License v3.
+|_*/
 
 #import "GLOutputView.h"
 #import <Q/functions/geometry/QRectangle.h>

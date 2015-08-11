@@ -1,8 +1,8 @@
-/*	_________  ___
-  _____ \_   /\  \/  /	OS X/MachineWindowController.m
- |  |  |_/  /__>    <	Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
- |   ____________/\__\	Released under the terms of the GNU General Public License v3.
- |_*/
+/*     _________  ___
+ _____ \_   /\  \/  / OS X/MachineWindowController.m
+|  |  |_/  /__>    <  Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
+|   ____________/\__\ Released under the GNU General Public License v3.
+|_*/
 
 #import "MachineWindowController.h"
 #import "KeyCodes.h"
@@ -17,8 +17,10 @@
 #import <Q/macros/casting.h>
 
 #define kScreenZoomIncrement	1.5
-#define MACHINE_SCREEN_SIZE	q_2d((qreal)Q_ZX_SPECTRUM_SCREEN_WIDTH, (qreal)Q_ZX_SPECTRUM_SCREEN_HEIGHT)
-#define NS_MACHINE_SCREEN_SIZE	NSMakeSize(Q_ZX_SPECTRUM_SCREEN_WIDTH, Q_ZX_SPECTRUM_SCREEN_HEIGHT)
+#define SCREEN_SIZE_X		Q_JOIN_2(Q_ZX_SPECTRUM_SCREEN_WIDTH, .0)
+#define SCREEN_SIZE_Y		Q_JOIN_2(Q_ZX_SPECTRUM_SCREEN_HEIGHT, .0)
+#define SCREEN_SIZE		q_2d((qreal)Q_ZX_SPECTRUM_SCREEN_WIDTH, (qreal)Q_ZX_SPECTRUM_SCREEN_HEIGHT)
+#define NS_SCREEN_SIZE		NSMakeSize(Q_ZX_SPECTRUM_SCREEN_WIDTH, Q_ZX_SPECTRUM_SCREEN_HEIGHT)
 
 typedef struct {
 	struct {quint8 row  :3;
@@ -93,8 +95,8 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 	- (CGFloat) zoom
 		{
 		return _flags.isFullScreen
-			? _videoOutput.contentSize.x / (CGFloat)Q_ZX_SPECTRUM_SCREEN_WIDTH
-			: ((NSView *)self.window.contentView).bounds.size.width / (CGFloat)Q_ZX_SPECTRUM_SCREEN_WIDTH;
+			? _videoOutput.contentSize.x / SCREEN_SIZE_X
+			: ((NSView *)self.window.contentView).bounds.size.width / SCREEN_SIZE_X;
 		}
 
 
@@ -103,24 +105,24 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 		if (_flags.isFullScreen)
 			{
 			Q2D boundsSize = Q_CAST(NSSize, Q2D, _videoOutput.bounds.size);
-			Q2D zoomedSize = q_2d(Q_ZX_SPECTRUM_SCREEN_WIDTH * zoom, Q_ZX_SPECTRUM_SCREEN_HEIGHT * zoom);
+			Q2D zoomedSize = q_2d(SCREEN_SIZE_X * zoom, SCREEN_SIZE_Y * zoom);
 
 			_videoOutput.contentSize = q_2d_contains(boundsSize, zoomedSize)
 				? zoomedSize
-				: q_2d_fit(MACHINE_SCREEN_SIZE, boundsSize);
+				: q_2d_fit(SCREEN_SIZE, boundsSize);
 			}
 
 		else	{
 			NSWindow *window = self.window;
 			QRectangle screenFrame = Q_CAST(NSRect, QRectangle, window.screen.visibleFrame);
 			Q2D borderSize = Q_CAST(NSSize, Q2D, window.borderSize);
-			Q2D newSize = q_2d(borderSize.x + Q_ZX_SPECTRUM_SCREEN_WIDTH * zoom, borderSize.y + Q_ZX_SPECTRUM_SCREEN_HEIGHT * zoom);
+			Q2D newSize = q_2d(borderSize.x + SCREEN_SIZE_X * zoom, borderSize.y + SCREEN_SIZE_Y * zoom);
 
 			[window animateIntoScreenFrame: Q_CAST(QRectangle, NSRect, screenFrame)
 				fromTopCenterToSize:	Q_CAST
 					(Q2D, NSSize, q_2d_contains(screenFrame.size, newSize)
 						? newSize
-						: q_2d_add(q_2d_fit(MACHINE_SCREEN_SIZE, q_2d_subtract(screenFrame.size, borderSize)), borderSize))];
+						: q_2d_add(q_2d_fit(SCREEN_SIZE, q_2d_subtract(screenFrame.size, borderSize)), borderSize))];
 			}
 		}
 
@@ -150,10 +152,10 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 			| Create video output object. |
 			'----------------------------*/
 			_videoOutput = [[GLOutputView alloc] initWithFrame:
-				NSMakeRect(0.0, 0.0, (CGFloat)Q_ZX_SPECTRUM_SCREEN_WIDTH, (CGFloat)Q_ZX_SPECTRUM_SCREEN_HEIGHT)];
+				NSMakeRect(0.0, 0.0, SCREEN_SIZE_X, SCREEN_SIZE_Y)];
 
 			[_videoOutput
-				setResolution: q_2d_value(SIZE)(Q_ZX_SPECTRUM_SCREEN_WIDTH, Q_ZX_SPECTRUM_SCREEN_HEIGHT)
+				setResolution: q_2d_value(SIZE)(SCREEN_SIZE_X, SCREEN_SIZE_Y)
 				format:	       0];
 
 			_videoOutput.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
@@ -238,14 +240,14 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 		[super windowDidLoad];
 
 		NSWindow *window = self.window;
-		NSSize contentSize = NS_MACHINE_SCREEN_SIZE;
+		NSSize contentSize = NS_SCREEN_SIZE;
 
 		if (	[window respondsToSelector: @selector(setAnimationBehavior:) ] &&
 			[window respondsToSelector: @selector(setCollectionBehavior:)]
 		)
 			[window setCollectionBehavior: [window collectionBehavior] | NSWindowCollectionBehaviorFullScreenPrimary];
 
-		_minimumWindowSize = q_2d_add(MACHINE_SCREEN_SIZE, Q_CAST(NSSize, Q2D, window.borderSize));
+		_minimumWindowSize = q_2d_add(SCREEN_SIZE, Q_CAST(NSSize, Q2D, window.borderSize));
 		window.title = [NSString stringWithUTF8String: _machine.abi->model_name];
 		[window.contentView addSubview: _videoOutput];
 		[window setContentAspectRatio: contentSize];
@@ -525,7 +527,7 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 		{
 		NSWindow *window = self.window;
 
-		[window setContentAspectRatio: NS_MACHINE_SCREEN_SIZE];
+		[window setContentAspectRatio: NS_SCREEN_SIZE];
 		[window.contentView removeTrackingArea: _trackingArea];
 		[_pointerVisibilityTimer invalidate];
 		_pointerVisibilityTimer = nil;
@@ -711,6 +713,16 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 		}
 
 
+	- (IBAction) toggleVSync: (id) sender
+		{
+		}
+
+
+	- (IBAction) setFrameSkip: (id) sender
+		{
+		}
+
+
 #	pragma mark - IBAction: Main Menu - View
 
 
@@ -727,7 +739,7 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 
 
 	- (IBAction) zoomToFit: (id) sender
-		{[self setZoom: self.window.screen.frame.size.height / (qreal)Q_ZX_SPECTRUM_SCREEN_HEIGHT];}
+		{[self setZoom: self.window.screen.frame.size.height / SCREEN_SIZE_Y];}
 
 
 	- (IBAction) zoomTo1x: (id) sender {[self setZoom: 1.0];}

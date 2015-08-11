@@ -1,12 +1,11 @@
 /*     _________  ___
- _____ \_   /\  \/  / Qt/AudioOutputPlayer.cpp
+ _____ \_   /\  \/  / OS X/KeyboardWindowController.h
 |  |  |_/  /__>    <  Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
 |   ____________/\__\ Released under the GNU General Public License v3.
 |_*/
 
+#import <Cocoa/Cocoa.h>
 
-#include "AudioOutputPlayer.hpp"
+@interface KeyboardWindowController : NSWindowController
 
-AudioOutputPlayer::AudioOutputPlayer()
-	{
-	}
+@end

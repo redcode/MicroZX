@@ -1,18 +1,18 @@
 /*     _________  ___
- _____ \_   /\  \/  / OS X/PreferencesWindowController.m
+ _____ \_   /\  \/  / OS X/KeyboardWindowController.m
 |  |  |_/  /__>    <  Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
 |   ____________/\__\ Released under the GNU General Public License v3.
 |_*/
 
-#import "PreferencesWindowController.h"
+#import "KeyboardWindowController.h"
 
 
-@implementation PreferencesWindowController
+@implementation KeyboardWindowController
 
 
 	- (id) init
 		{
-		if ((self = [super initWithWindowNibName: @"PreferencesWindow"]))
+		if ((self = [super initWithWindowNibName: @"KeyboardWindow"]))
 			{
 			}
 

@@ -10,6 +10,7 @@
 		645DAEA61B3B2C5400C9AB10 /* system.c in Sources */ = {isa = PBXBuildFile; fileRef = 645DAEA51B3B2C5400C9AB10 /* system.c */; };
 		645DAEA91B3C750C00C9AB10 /* Machine.c in Sources */ = {isa = PBXBuildFile; fileRef = 645DAEA11B3B213D00C9AB10 /* Machine.c */; };
 		64BB31211B3D248700AE1D99 /* MachineWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64BB31201B3D248700AE1D99 /* MachineWindowController.m */; };
+		64DEF6811B797EF4000F4F01 /* KeyboardWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64DEF6801B797EF4000F4F01 /* KeyboardWindowController.m */; };
 		64F5DDAA1A28E03C00D29077 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DDA91A28E03C00D29077 /* Images.xcassets */; };
 		64F5DE081A28E83A00D29077 /* RingBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DDFF1A28E83A00D29077 /* RingBuffer.c */; };
 		64F5DE0B1A28E83A00D29077 /* GLOutput.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE061A28E83A00D29077 /* GLOutput.c */; };
@@ -63,6 +64,8 @@
 		645DAEA51B3B2C5400C9AB10 /* system.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = system.c; sourceTree = "<group>"; };
 		64BB311F1B3D248700AE1D99 /* KeyCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyCodes.h; sourceTree = "<group>"; };
 		64BB31201B3D248700AE1D99 /* MachineWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MachineWindowController.m; sourceTree = "<group>"; };
+		64DEF67F1B797EF4000F4F01 /* KeyboardWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardWindowController.h; sourceTree = "<group>"; };
+		64DEF6801B797EF4000F4F01 /* KeyboardWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardWindowController.m; sourceTree = "<group>"; };
 		64F5DD9F1A28E03C00D29077 /* μZX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "μZX.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		64F5DDA31A28E03C00D29077 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		64F5DDA91A28E03C00D29077 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -278,6 +281,8 @@
 				64F5DE451A28E9B100D29077 /* TapeRecorderWindow.m */,
 				64F5DE461A28E9B100D29077 /* Window.h */,
 				64F5DE471A28E9B100D29077 /* Window.m */,
+				64DEF67F1B797EF4000F4F01 /* KeyboardWindowController.h */,
+				64DEF6801B797EF4000F4F01 /* KeyboardWindowController.m */,
 				64F5DE241A28E95900D29077 /* Extensions */,
 			);
 			path = "OS X";
@@ -496,6 +501,7 @@
 				64F5DE671A28EA5100D29077 /* SIT.c in Sources */,
 				64F5DE511A28E9B100D29077 /* TapeRecorderWindow.m in Sources */,
 				645DAEA61B3B2C5400C9AB10 /* system.c in Sources */,
+				64DEF6811B797EF4000F4F01 /* KeyboardWindowController.m in Sources */,
 				64F5DE0B1A28E83A00D29077 /* GLOutput.c in Sources */,
 				64F5DE0C1A28E83A00D29077 /* GLOutputShader.c in Sources */,
 				64F5DE491A28E9B100D29077 /* MainController.m in Sources */,
