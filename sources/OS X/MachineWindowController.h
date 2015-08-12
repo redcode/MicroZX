@@ -11,7 +11,6 @@
 #import "TapeRecorderWindowController.h"
 #import "ZX Spectrum.h" // Eliminar
 #import "SNA.h"
-#import "RingBuffer.h"
 #import <Q/types/buffering.h>
 #import <pthread.h>
 

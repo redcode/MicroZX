@@ -7,7 +7,6 @@
 #import "TapeRecorderWindow.h"
 #import "CoreAudioOutput.h"
 #import <Q/types/data.h>
-#import "RingBuffer.h"
 #import <pthread.h>
 
 typedef struct {

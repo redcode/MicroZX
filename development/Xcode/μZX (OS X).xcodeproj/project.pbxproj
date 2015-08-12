@@ -17,7 +17,6 @@
 		64DEF68C1B7A4C83000F4F01 /* Tape Recorder Button - Pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 64DEF68B1B7A4C83000F4F01 /* Tape Recorder Button - Pressed.png */; };
 		64DEF6901B7A4EFD000F4F01 /* Tape Recorder Button Separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 64DEF68F1B7A4EFD000F4F01 /* Tape Recorder Button Separator.png */; };
 		64F5DDAA1A28E03C00D29077 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DDA91A28E03C00D29077 /* Images.xcassets */; };
-		64F5DE081A28E83A00D29077 /* RingBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DDFF1A28E83A00D29077 /* RingBuffer.c */; };
 		64F5DE0B1A28E83A00D29077 /* GLOutput.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE061A28E83A00D29077 /* GLOutput.c */; };
 		64F5DE0C1A28E83A00D29077 /* GLOutputShader.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE071A28E83A00D29077 /* GLOutputShader.c */; };
 		64F5DE0E1A28E84B00D29077 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64F5DE0D1A28E84B00D29077 /* OpenGL.framework */; };
@@ -81,8 +80,6 @@
 		64F5DDA91A28E03C00D29077 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		64F5DDFC1A28E83A00D29077 /* MachineABI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MachineABI.h; sourceTree = "<group>"; };
 		64F5DDFE1A28E83A00D29077 /* OpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGL.h; sourceTree = "<group>"; };
-		64F5DDFF1A28E83A00D29077 /* RingBuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = RingBuffer.c; sourceTree = "<group>"; };
-		64F5DE001A28E83A00D29077 /* RingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingBuffer.h; sourceTree = "<group>"; };
 		64F5DE051A28E83A00D29077 /* GLOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLOutput.h; sourceTree = "<group>"; };
 		64F5DE061A28E83A00D29077 /* GLOutput.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLOutput.c; sourceTree = "<group>"; };
 		64F5DE071A28E83A00D29077 /* GLOutputShader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLOutputShader.c; sourceTree = "<group>"; };
@@ -270,8 +267,6 @@
 				645DAEA41B3B2C5400C9AB10 /* system.h */,
 				645DAEA51B3B2C5400C9AB10 /* system.c */,
 				64F5DDFE1A28E83A00D29077 /* OpenGL.h */,
-				64F5DDFF1A28E83A00D29077 /* RingBuffer.c */,
-				64F5DE001A28E83A00D29077 /* RingBuffer.h */,
 				64F5DE051A28E83A00D29077 /* GLOutput.h */,
 				64F5DE061A28E83A00D29077 /* GLOutput.c */,
 				64F5DE071A28E83A00D29077 /* GLOutputShader.c */,
@@ -539,7 +534,6 @@
 				64F5DE2E1A28E99000D29077 /* NSView+RedCode.m in Sources */,
 				64F5DE711A28EA5F00D29077 /* Z80.c in Sources */,
 				64F5DE4E1A28E9B100D29077 /* GLOutputView.m in Sources */,
-				64F5DE081A28E83A00D29077 /* RingBuffer.c in Sources */,
 				64F5DE521A28E9B100D29077 /* Window.m in Sources */,
 				64F5DE721A28EA5F00D29077 /* ZX Spectrum.c in Sources */,
 				64F5DE481A28E9B100D29077 /* main.m in Sources */,

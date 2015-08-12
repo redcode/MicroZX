@@ -15,10 +15,6 @@
 
 #include <Q/inspection/OS.h>
 
-#if Q_OS == Q_OS_MAC_OS_X
-#	include "RingBuffer.h"
-#endif
-
 typedef struct {
 	pthread_t      thread;
 	ZXSpectrum*    context;
