@@ -5,6 +5,7 @@
 |_*/
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include "Machine.h"
 #include "system.h"
@@ -24,7 +25,7 @@ Q_PRIVATE void *emulate(Machine *object)
 	quint64 delta;
 	quint	maximum_frameskip = 5;
 	quint	loops;
-	void*	audio_output_buffer;
+	void*	buffer;
 	quint64* keyboard;
 
 	while (!object->must_stop)
@@ -37,22 +38,28 @@ Q_PRIVATE void *emulate(Machine *object)
 		//-----------------.
 		// Produce output. |
 		//-----------------'
-		if ((audio_output_buffer = q_ring_buffer_try_produce(object->audio_output_buffer)) != NULL)
-			object->context->audio_output_buffer = audio_output_buffer;
+		if ((buffer = q_ring_buffer_try_produce(object->audio_output)) != NULL)
+			object->context->audio_output_buffer = buffer;
 
-		object->context->video_output_buffer = q_triple_buffer_produce(object->video_output_buffer);
+		object->context->video_output_buffer = q_triple_buffer_produce(object->video_output);
 
 		//----------------.
 		// Consume input. |
 		//----------------'
-		if ((keyboard = q_triple_buffer_consume(object->keyboard_input_buffer)) != NULL)
+		if ((keyboard = q_triple_buffer_consume(object->keyboard_input)) != NULL)
 			{object->context->state.keyboard.value_uint64 = *keyboard;}
 
 #		if Q_OS == Q_OS_MAC_OS_X
-			if (object->audio_input_buffer != NULL)
+			if (object->audio_input != NULL)
 				{
-				object->context->audio_input_buffer = ring_buffer_try_read(object->audio_input_buffer, object->audio_frame)
-					? object->audio_frame : NULL;
+				while ((buffer = q_ring_buffer_try_consume(object->audio_input)) == NULL)
+					{
+					printf("skip");
+					next_frame_tick += frame_ticks / 4;
+					q_wait(frame_ticks / 4);
+					}
+
+				object->context->audio_input_buffer = buffer;
 				}
 #		endif
 
@@ -88,15 +95,15 @@ Q_PRIVATE void stop(Machine *object)
 void machine_initialize(
 	Machine*       object,
 	MachineABI*    abi,
-	QTripleBuffer* video_output_buffer,
-	QRingBuffer*   audio_output_buffer
+	QTripleBuffer* video_output,
+	QRingBuffer*   audio_output
 )
 	{
-	object->abi		    = abi;
-	object->video_output_buffer = video_output_buffer;
-	object->audio_output_buffer = audio_output_buffer;
-	object->flags.power	    = OFF;
-	object->flags.pause	    = OFF;
+	object->abi	     = abi;
+	object->video_output = video_output;
+	object->audio_output = audio_output;
+	object->flags.power  = OFF;
+	object->flags.pause  = OFF;
 
 	/*--------------------------------------.
 	| Create the machine and its components |
@@ -111,8 +118,8 @@ void machine_initialize(
 	context->cpu_cycles    = &context->cpu->cycles;
 	context->memory	       = calloc(1, abi->memory_size);
 
-	context->video_output_buffer = q_triple_buffer_production_buffer(video_output_buffer);
-	context->audio_output_buffer = q_ring_buffer_production_buffer	(audio_output_buffer);
+	context->video_output_buffer = q_triple_buffer_production_buffer(video_output);
+	context->audio_output_buffer = q_ring_buffer_production_buffer	(audio_output);
 	abi->initialize(context);
 	}
 

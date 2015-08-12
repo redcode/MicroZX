@@ -48,8 +48,7 @@
 	GLOutputView*		_videoOutput;
 	CoreAudioOutput*	_audioOutput;
 	BOOL			_keyboardInput;
-	RingBuffer*		_audioInputRing;
-	quint8*			_audioInputBuffer;
+	QRingBuffer		_audioInputBuffer;
 
 	NSTimer*		_pointerVisibilityTimer;
 	NSTrackingArea*		_trackingArea;

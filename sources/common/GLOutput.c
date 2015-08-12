@@ -69,22 +69,20 @@ void gl_output_finalize(GLOutput *object)
 
 void gl_output_set_resolution(GLOutput *object, Q2DSize resolution)
 	{
-	qsize slot_size = resolution.x * resolution.y * 4;
+	qsize frame_buffer_size = resolution.x * resolution.y * 4;
 
 	q_triple_buffer_initialize
 		(&object->buffer,
-		 object->buffer.buffers[0] = realloc(object->buffer.buffers[0], slot_size * 3),
-		 slot_size);
-
-	object->input_width  = (GLsizei)resolution.x;
-	object->input_height = (GLsizei)resolution.y;
+		 object->buffer.buffers[0] = realloc(object->buffer.buffers[0], frame_buffer_size * 3),
+		 frame_buffer_size);
 
 	glEnable(GL_TEXTURE_2D);
 
 	glTexImage2D
 		(GL_TEXTURE_2D, 0, GL_RGBA,
-		 object->input_width, object->input_height, 0,
-		 GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		 object->input_width  = (GLsizei)resolution.x,
+		 object->input_height = (GLsizei)resolution.y,
+		 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
 	glDisable(GL_TEXTURE_2D);
 	}

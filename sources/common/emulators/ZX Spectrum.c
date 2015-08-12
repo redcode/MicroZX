@@ -560,8 +560,9 @@ Q_PRIVATE void zx_spectrum_run_one_frame(ZXSpectrum *object)
 		quint8 *input = object->audio_input_buffer + 882;
 		quint index = 882;
 
-		while (index)
-			object->audio_output_buffer[--index] = *--input == 0x90 ? WAVE_HIGH : WAVE_LOW;
+		while (index) object->audio_output_buffer[--index] = *--input == 0x90
+			? WAVE_HIGH
+			: WAVE_LOW;
 		}
 
 	i = 0;

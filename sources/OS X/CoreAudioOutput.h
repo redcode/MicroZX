@@ -13,16 +13,11 @@
 @interface CoreAudioOutput : NSObject {
 
 	AudioComponentInstance	_audioUnit;
-
-	@public
 	QRingBuffer		_buffer;
-	void*			_silence;
 	quint			_bufferFrameCount;
-	quint			_bufferFillCount;
 	double			_sampleRate;
 	BOOL			_playing;
 }
-
 	@property (nonatomic, readonly) QRingBuffer* buffer;
 
 	- (void) start;

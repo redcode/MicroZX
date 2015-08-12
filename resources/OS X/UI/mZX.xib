@@ -495,14 +495,12 @@
                                 </menu>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="6hI-01-Dgv"/>
-                            <menuItem title="Keyboard" id="S2G-p6-TEK">
-                                <modifierMask key="keyEquivalentModifierMask"/>
+                            <menuItem title="Keyboard" keyEquivalent="k" id="S2G-p6-TEK">
                                 <connections>
                                     <action selector="toggleKeyboardShown:" target="-1" id="K3K-xR-PDo"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Tape Recorder" id="U4u-5K-pMQ">
-                                <modifierMask key="keyEquivalentModifierMask"/>
+                            <menuItem title="Tape Recorder" keyEquivalent="t" id="U4u-5K-pMQ">
                                 <connections>
                                     <action selector="toggleTapeRecorderShown:" target="-1" id="iRO-F9-1Xt"/>
                                 </connections>

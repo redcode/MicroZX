@@ -18,15 +18,15 @@ typedef struct {
 	qsize cycles_per_int;
 } Timmings;
 
-#define ZX_SPECTRUM_VALUES				\
-	quint8*			memory;			\
-	Z80*			cpu;			\
-	qsize*			cpu_cycles;		\
-	void*			video_output_buffer;	\
-	quint8*			audio_input_buffer;	\
-	qint16*			audio_output_buffer;	\
-							\
-	struct {QEmulatorRun	run;			\
+#define ZX_SPECTRUM_VALUES				  \
+	quint8*			memory;			  \
+	Z80*			cpu;			  \
+	qsize*			cpu_cycles;		  \
+	void*			video_output_buffer;  \
+	quint8*			audio_input_buffer;   \
+	qint16*			audio_output_buffer; \
+							  \
+	struct {QEmulatorRun	run;			  \
 		QSwitch	power;			\
 		QDo	reset;			\
 		QSwitch	irq;			\

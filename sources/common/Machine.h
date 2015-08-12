@@ -23,15 +23,15 @@ typedef struct {
 	pthread_t      thread;
 	ZXSpectrum*    context;
 	MachineABI*    abi;
-	QTripleBuffer* video_output_buffer;
-	QRingBuffer*   audio_output_buffer;
+	QTripleBuffer* video_output;
+	QRingBuffer*   audio_output;
 
 #	if Q_OS == Q_OS_MAC_OS_X
-		RingBuffer* audio_input_buffer;
+		QRingBuffer* audio_input;
 #	endif
 
 	quint8		  audio_frame[882];
-	QTripleBuffer*	  keyboard_input_buffer;
+	QTripleBuffer*	  keyboard_input;
 	volatile qboolean must_stop;
 
 	struct {quint8 power :1;
@@ -43,8 +43,8 @@ Q_C_SYMBOLS_BEGIN
 
 void machine_initialize		    (Machine*	    object,
 				     MachineABI*    abi,
-				     QTripleBuffer* video_output_buffer,
-				     QRingBuffer*   audio_output_buffer);
+				     QTripleBuffer* video_output,
+				     QRingBuffer*   audio_output);
 
 void machine_finalize		    (Machine*	    object);
 
@@ -63,7 +63,7 @@ void machine_keyboard_input	    (Machine*	    object,
 				     qboolean	    key_state);
 
 void machine_set_audio_input_buffer (Machine*	    object,
-				     QRingBuffer*   audio_input_buffer);
+				     QRingBuffer*   audio_input);
 
 Q_C_SYMBOLS_END
 

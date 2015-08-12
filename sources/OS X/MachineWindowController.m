@@ -13,6 +13,7 @@
 
 #include "system.h"
 #import <Q/functions/buffering/QTripleBuffer.h>
+#import <Q/functions/buffering/QRingBuffer.h>
 #import <Q/functions/geometry/QRectangle.h>
 #import <Q/macros/casting.h>
 
@@ -173,7 +174,7 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 			memset(_keyboardBuffer->buffers[0], 0xFF, sizeof(quint64) * 3);
 
 			machine_initialize(&_machine, machineABI, _videoOutput.buffer, _audioOutput.buffer);
-			_machine.keyboard_input_buffer = _keyboardBuffer;
+			_machine.keyboard_input = _keyboardBuffer;
 
 			/*-----------------.
 			| Load needed ROMs |
@@ -603,7 +604,11 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 
 	- (void) submitAudioFrame: (void *) frame
 		{
-		ring_buffer_write(_machine.audio_input_buffer, frame);
+		void *buffer = q_ring_buffer_production_buffer(_machine.audio_input);
+
+		memcpy(buffer, frame, _machine.audio_input->buffer_size);
+
+		q_ring_buffer_produce(_machine.audio_input);
 		}
 
 
@@ -769,13 +774,15 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 			[_tapeRecorderWindowController removeOutput: self];
 			[_tapeRecorderWindowController release];
 			_tapeRecorderWindowController = nil;
-			ring_buffer_destroy(_machine.audio_input_buffer);
-			_machine.audio_input_buffer = NULL;
+		//	ring_buffer_destroy(_machine.audio_input_buffer);
+			_machine.audio_input = NULL;
 			}
 
 		else	{
 			sender.state = NSOnState;
-			_machine.audio_input_buffer = ring_buffer_new(3, 882);
+			void *buffer = calloc(3, 882);
+			q_ring_buffer_initialize(&_audioInputBuffer, buffer, 882, 3);
+			_machine.audio_input = &_audioInputBuffer;
 			_tapeRecorderWindowController = [[TapeRecorderWindowController alloc] init];
 			[_tapeRecorderWindowController setFrameSize: 882 count: 4];
 			[_tapeRecorderWindowController addOutput: self action: @selector(submitAudioFrame:)];

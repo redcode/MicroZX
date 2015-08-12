@@ -11,35 +11,31 @@
 #import "system.h"
 
 
-static OSStatus FillBuffer(
-	CoreAudioOutput*	    audioOutput,
-	AudioUnitRenderActionFlags* ioActionFlags,
-	const AudioTimeStamp*	    inTimeStamp,
-	UInt32 			    inBusNumber,
-	UInt32 			    inNumberFrames,
-	AudioBufferList*	    ioData
-)
-	{
-	if (audioOutput->_buffer.fill_count < 2)
+@implementation CoreAudioOutput
+
+
+	static OSStatus FillBuffer(
+		CoreAudioOutput*	    audioOutput,
+		AudioUnitRenderActionFlags* ioActionFlags,
+		const AudioTimeStamp*	    inTimeStamp,
+		UInt32 			    inBusNumber,
+		UInt32 			    inNumberFrames,
+		AudioBufferList*	    ioData
+	)
 		{
-		//printf("m");
+		if (audioOutput->_buffer.fill_count < 2)
+			{
+			ioData->mBuffers[0].mData = q_ring_buffer_consumption_buffer(&audioOutput->_buffer);
+			return noErr;
+			}
+
+		while (audioOutput->_buffer.fill_count > 3)
+			q_ring_buffer_try_consume(&audioOutput->_buffer);
+
 		ioData->mBuffers[0].mData = q_ring_buffer_consumption_buffer(&audioOutput->_buffer);
+		q_ring_buffer_try_consume(&audioOutput->_buffer);
 		return noErr;
 		}
-
-	while (audioOutput->_buffer.fill_count > 3)
-		{
-		//printf("M");
-		q_ring_buffer_try_consume(&audioOutput->_buffer);
-		}
-
-	ioData->mBuffers[0].mData = q_ring_buffer_consumption_buffer(&audioOutput->_buffer);
-	q_ring_buffer_try_consume(&audioOutput->_buffer);
-	return noErr;
-	}
-
-
-@implementation CoreAudioOutput
 
 
 	- (id) init
@@ -47,7 +43,6 @@ static OSStatus FillBuffer(
 		if ((self = [super init]))
 			{
 			_sampleRate = 44100;
-			_bufferFillCount = 0;
 			_bufferFrameCount = 2;
 
 			void *buffer = calloc(1, sizeof(qint16) * 882 * 4);
@@ -86,20 +81,6 @@ static OSStatus FillBuffer(
 				 0, &input, sizeof(input));
 
 			NSAssert1(error == noErr, @"Error setting callback: %hd", error);
-
-/*			AudioUnitExternalBuffer externalBuffer;
-			externalBuffer.buffer = (Byte *)_buffer;
-			externalBuffer.size = sizeof(float) * 882;
-
-			error = AudioUnitSetProperty
-				(_toneUnit,
-				 kAudioUnitProperty_SetExternalBuffer,
-				 kAudioUnitScope_Input,
-				 0,
-				 &externalBuffer,
-				 sizeof(AudioUnitExternalBuffer));
-
-			NSAssert1(error == noErr, @"Error setting external buffer: %ld", error);*/
 
 			UInt32 frames = 882;
 			// Set the max frames
