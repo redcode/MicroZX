@@ -6,55 +6,55 @@
 
 #import "MachineWindowController.h"
 #import "KeyCodes.h"
-#import <Q/hardware/machine/platform/computer/ZX Spectrum.h>
-#import <Q/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum.h>
+#import <Z/hardware/machine/platform/computer/ZX Spectrum.h>
+#import <Z/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum.h>
 #import "NSWindow+RedCode.h"
 #import "NSView+RedCode.h"
 
 #include "system.h"
-#import <Q/functions/buffering/QTripleBuffer.h>
-#import <Q/functions/buffering/QRingBuffer.h>
-#import <Q/functions/geometry/QRectangle.h>
-#import <Q/macros/casting.h>
+#import <Z/functions/buffering/ZTripleBuffer.h>
+#import <Z/functions/buffering/ZRingBuffer.h>
+#import <Z/functions/geometry/ZRectangle.h>
+#import <Z/macros/casting.h>
 
 #define kScreenZoomIncrement	1.5
-#define SCREEN_SIZE_X		Q_JOIN_2(Q_ZX_SPECTRUM_SCREEN_WIDTH, .0)
-#define SCREEN_SIZE_Y		Q_JOIN_2(Q_ZX_SPECTRUM_SCREEN_HEIGHT, .0)
-#define SCREEN_SIZE		q_2d((qreal)Q_ZX_SPECTRUM_SCREEN_WIDTH, (qreal)Q_ZX_SPECTRUM_SCREEN_HEIGHT)
-#define NS_SCREEN_SIZE		NSMakeSize(Q_ZX_SPECTRUM_SCREEN_WIDTH, Q_ZX_SPECTRUM_SCREEN_HEIGHT)
+#define SCREEN_SIZE_X		Z_JOIN_2(Z_ZX_SPECTRUM_SCREEN_WIDTH, .0)
+#define SCREEN_SIZE_Y		Z_JOIN_2(Z_ZX_SPECTRUM_SCREEN_HEIGHT, .0)
+#define SCREEN_SIZE		z_2d((zreal)Z_ZX_SPECTRUM_SCREEN_WIDTH, (zreal)Z_ZX_SPECTRUM_SCREEN_HEIGHT)
+#define NS_SCREEN_SIZE		NSMakeSize(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT)
 
 typedef struct {
-	struct {quint8 row  :3;
-		quint8 mask :5;
+	struct {zuint8 row  :3;
+		zuint8 mask :5;
 	} modifier_key;
 
-	struct {quint8 row  :3;
-		quint8 mask :5;
+	struct {zuint8 row  :3;
+		zuint8 mask :5;
 	} key;
 } KeyCode;
 
 #define KEY_1(KEY_NAME)					\
 	{{0, 0},					\
-	 {Q_JOIN_2(Q_ZX_SPECTRUM_KEY_ROW_,  KEY_NAME),	\
-	  Q_JOIN_2(Q_ZX_SPECTRUM_KEY_MASK_, KEY_NAME)}}
+	 {Z_JOIN_2(Z_ZX_SPECTRUM_KEY_ROW_,  KEY_NAME),	\
+	  Z_JOIN_2(Z_ZX_SPECTRUM_KEY_MASK_, KEY_NAME)}}
 
 #define KEY_2(MODIFIER_KEY_NAME, KEY_NAME)			 \
-	{{Q_JOIN_2(Q_ZX_SPECTRUM_KEY_ROW_,  MODIFIER_KEY_NAME),	 \
-	  Q_JOIN_2(Q_ZX_SPECTRUM_KEY_MASK_, MODIFIER_KEY_NAME)}, \
-	 {Q_JOIN_2(Q_ZX_SPECTRUM_KEY_ROW_,  KEY_NAME),		 \
-	  Q_JOIN_2(Q_ZX_SPECTRUM_KEY_MASK_, KEY_NAME)}}
+	{{Z_JOIN_2(Z_ZX_SPECTRUM_KEY_ROW_,  MODIFIER_KEY_NAME),	 \
+	  Z_JOIN_2(Z_ZX_SPECTRUM_KEY_MASK_, MODIFIER_KEY_NAME)}, \
+	 {Z_JOIN_2(Z_ZX_SPECTRUM_KEY_ROW_,  KEY_NAME),		 \
+	  Z_JOIN_2(Z_ZX_SPECTRUM_KEY_MASK_, KEY_NAME)}}
 
 
-Q_INLINE qreal step_down(qreal n, qreal step_size)
+Z_INLINE zreal step_down(zreal n, zreal step_size)
 	{
-	qreal factor = n / step_size;
-	qreal step = floor(factor);
+	zreal factor = n / step_size;
+	zreal step = floor(factor);
 
 	return step < factor ? step * step_size : step * step_size - step_size;
 	}
 
 
-Q_INLINE qreal step_up(qreal n, qreal step_size)
+Z_INLINE zreal step_up(zreal n, zreal step_size)
 	{return floor(n / step_size) * step_size + step_size;}
 
 
@@ -68,6 +68,7 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 		{
 		_pointerVisibilityTimer = nil;
 		[NSCursor setHiddenUntilMouseMoves: YES];
+
 		}
 
 
@@ -101,29 +102,29 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 		}
 
 
-	- (void) setZoom: (qreal) zoom
+	- (void) setZoom: (zreal) zoom
 		{
 		if (_flags.isFullScreen)
 			{
-			Q2D boundsSize = Q_CAST(NSSize, Q2D, _videoOutput.bounds.size);
-			Q2D zoomedSize = q_2d(SCREEN_SIZE_X * zoom, SCREEN_SIZE_Y * zoom);
+			Z2D boundsSize = Z_CAST(NSSize, Z2D, _videoOutput.bounds.size);
+			Z2D zoomedSize = z_2d(SCREEN_SIZE_X * zoom, SCREEN_SIZE_Y * zoom);
 
-			_videoOutput.contentSize = q_2d_contains(boundsSize, zoomedSize)
+			_videoOutput.contentSize = z_2d_contains(boundsSize, zoomedSize)
 				? zoomedSize
-				: q_2d_fit(SCREEN_SIZE, boundsSize);
+				: z_2d_fit(SCREEN_SIZE, boundsSize);
 			}
 
 		else	{
 			NSWindow *window = self.window;
-			QRectangle screenFrame = Q_CAST(NSRect, QRectangle, window.screen.visibleFrame);
-			Q2D borderSize = Q_CAST(NSSize, Q2D, window.borderSize);
-			Q2D newSize = q_2d(borderSize.x + SCREEN_SIZE_X * zoom, borderSize.y + SCREEN_SIZE_Y * zoom);
+			ZRectangle screenFrame = Z_CAST(NSRect, ZRectangle, window.screen.visibleFrame);
+			Z2D borderSize = Z_CAST(NSSize, Z2D, window.borderSize);
+			Z2D newSize = z_2d(borderSize.x + SCREEN_SIZE_X * zoom, borderSize.y + SCREEN_SIZE_Y * zoom);
 
-			[window animateIntoScreenFrame: Q_CAST(QRectangle, NSRect, screenFrame)
-				fromTopCenterToSize:	Q_CAST
-					(Q2D, NSSize, q_2d_contains(screenFrame.size, newSize)
+			[window animateIntoScreenFrame: Z_CAST(ZRectangle, NSRect, screenFrame)
+				fromTopCenterToSize:	Z_CAST
+					(Z2D, NSSize, z_2d_contains(screenFrame.size, newSize)
 						? newSize
-						: q_2d_add(q_2d_fit(SCREEN_SIZE, q_2d_subtract(screenFrame.size, borderSize)), borderSize))];
+						: z_2d_add(z_2d_fit(SCREEN_SIZE, z_2d_subtract(screenFrame.size, borderSize)), borderSize))];
 			}
 		}
 
@@ -156,7 +157,7 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 				NSMakeRect(0.0, 0.0, SCREEN_SIZE_X, SCREEN_SIZE_Y)];
 
 			[_videoOutput
-				setResolution: q_2d_value(SIZE)(SCREEN_SIZE_X, SCREEN_SIZE_Y)
+				setResolution: z_2d_value(SIZE)(SCREEN_SIZE_X, SCREEN_SIZE_Y)
 				format:	       0];
 
 			_videoOutput.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
@@ -168,10 +169,10 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 			//_audioOutput = [[ALOutputPlayer alloc] init];
 
 
-			_keyboardBuffer = malloc(sizeof(QTripleBuffer));
-			q_triple_buffer_initialize(_keyboardBuffer, malloc(sizeof(quint64) * 3), sizeof(quint64));
-			_keyboard = q_triple_buffer_production_buffer(_keyboardBuffer);
-			memset(_keyboardBuffer->buffers[0], 0xFF, sizeof(quint64) * 3);
+			_keyboardBuffer = malloc(sizeof(ZTripleBuffer));
+			z_triple_buffer_initialize(_keyboardBuffer, malloc(Z_UINT64_SIZE * 3), Z_UINT64_SIZE);
+			_keyboard = z_triple_buffer_production_buffer(_keyboardBuffer);
+			memset(_keyboardBuffer->buffers[0], 0xFF, Z_UINT64_SIZE * 3);
 
 			machine_initialize(&_machine, machineABI, _videoOutput.buffer, _audioOutput.buffer);
 			_machine.keyboard_input = _keyboardBuffer;
@@ -179,7 +180,7 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 			/*-----------------.
 			| Load needed ROMs |
 			'-----------------*/
-			qsize index = machineABI->rom_count;
+			zsize index = machineABI->rom_count;
 			NSBundle *bundle = [NSBundle mainBundle];
 			ROM *rom;
 
@@ -197,13 +198,13 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 
 			//machineABI->initialize(_machine);
 
-			_keyboardState.value_uint64 = Q_UINT64(0xFFFFFFFFFFFFFFFF);
+			_keyboardState.value_uint64 = Z_UINT64(0xFFFFFFFFFFFFFFFF);
 
 			/*NSData *data = [NSData dataWithContentsOfFile: @"/Users/manuel/Desktop/Batman.sna"];
-			QSNAv48K *sna = (QSNAv48K *)[data bytes];
+			ZSNAv48K *sna = (ZSNAv48K *)[data bytes];
 
 			sna_v48k_decode(sna, &_machine->state, &_machine->cpu->state, _machine->memory);*/
-			//_machine->border_color = Q_RGBA32(FF, 00, 00, 00);*/
+			//_machine->border_color = Z_RGBA32(FF, 00, 00, 00);*/
 
 			_attachInputBuffer = NO;
 
@@ -248,7 +249,7 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 		)
 			[window setCollectionBehavior: [window collectionBehavior] | NSWindowCollectionBehaviorFullScreenPrimary];
 
-		_minimumWindowSize = q_2d_add(SCREEN_SIZE, Q_CAST(NSSize, Q2D, window.borderSize));
+		_minimumWindowSize = z_2d_add(SCREEN_SIZE, Z_CAST(NSSize, Z2D, window.borderSize));
 		window.title = [NSString stringWithUTF8String: _machine.abi->model_name];
 		[window.contentView addSubview: _videoOutput];
 		[window setContentAspectRatio: contentSize];
@@ -370,7 +371,7 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 			}
 
 		_keyboard->value_uint64 = _keyboardState.value_uint64;
-		_keyboard = q_triple_buffer_produce(_keyboardBuffer);
+		_keyboard = z_triple_buffer_produce(_keyboardBuffer);
 		}
 
 
@@ -438,7 +439,7 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 			}
 
 		_keyboard->value_uint64 = _keyboardState.value_uint64;
-		_keyboard = q_triple_buffer_produce(_keyboardBuffer);
+		_keyboard = z_triple_buffer_produce(_keyboardBuffer);
 		}
 
 
@@ -456,7 +457,7 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 			}
 
 		_keyboard->value_uint64 = _keyboardState.value_uint64;
-		_keyboard = q_triple_buffer_produce(_keyboardBuffer);
+		_keyboard = z_triple_buffer_produce(_keyboardBuffer);
 		}
 
 
@@ -490,7 +491,7 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 		{
 		[window setContentAspectRatio: NSZeroSize];
 
-		_videoOutput.scaling = Q_SCALING_FIT;
+		_videoOutput.scaling = Z_SCALING_FIT;
 		return proposedSize;
 		}
 
@@ -510,7 +511,7 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 		{
 		NSWindow *window = self.window;
 
-		_videoOutput.scaling = Q_SCALING_NONE;
+		_videoOutput.scaling = Z_SCALING_NONE;
 
 		_trackingArea = [[NSTrackingArea alloc]
 			initWithRect: _videoOutput.bounds
@@ -534,7 +535,7 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 		_pointerVisibilityTimer = nil;
 		_trackingArea = nil;
 		_flags.isFullScreen = NO;
-		_videoOutput.scaling = Q_SCALING_EXPAND;
+		_videoOutput.scaling = Z_SCALING_EXPAND;
 		[NSCursor unhide];
 		}
 
@@ -545,8 +546,8 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 /*	- (void) animationDidEnd: (NSAnimation *) animation
 		{
 		NSLog(@"animationDidEnd");
-		_videoOutput.contentSize = q_2d_fit(MACHINE_SCREEN_SIZE, NSSizeToQ(_fullScreenWindow.frame.size));
-		_videoOutput.scaling = Q_SCALING_NONE;
+		_videoOutput.contentSize = q_2d_fit(MACHINE_SCREEN_SIZE, NSSizeToZ(_fullScreenWindow.frame.size));
+		_videoOutput.scaling = Z_SCALING_NONE;
 		[_videoOutput retain];
 		[_videoOutput removeFromSuperview];
 		_fullScreenWindow.contentView = _videoOutput;
@@ -604,11 +605,11 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 
 	- (void) submitAudioFrame: (void *) frame
 		{
-		void *buffer = q_ring_buffer_production_buffer(_machine.audio_input);
+		void *buffer = z_ring_buffer_production_buffer(_machine.audio_input);
 
 		memcpy(buffer, frame, _machine.audio_input->buffer_size);
 
-		q_ring_buffer_produce(_machine.audio_input);
+		z_ring_buffer_produce(_machine.audio_input);
 		}
 
 
@@ -670,7 +671,7 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 
 	- (IBAction) togglePower: (NSMenuItem *) sender
 		{
-		qboolean state = !_machine.flags.power;
+		zboolean state = !_machine.flags.power;
 
 		machine_power(&_machine, state);
 
@@ -685,7 +686,7 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 
 	- (IBAction) togglePause: (id) sender
 		{
-		qboolean state = !_machine.flags.pause;
+		zboolean state = !_machine.flags.pause;
 
 		machine_pause(&_machine, state);
 
@@ -696,7 +697,7 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 
 	- (IBAction) reset: (id) sender
 		{
-		qboolean pause = _machine.flags.pause;
+		zboolean pause = _machine.flags.pause;
 		machine_reset(&_machine);
 		if (pause) [_videoOutput start];
 		}
@@ -737,7 +738,7 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 
 	- (IBAction) zoomOut: (id) sender
 		{
-		qreal factor = step_down(self.zoom, 0.5);
+		zreal factor = step_down(self.zoom, 0.5);
 
 		self.zoom = factor <= 1.0 ? 1.0 : factor;
 		}
@@ -781,7 +782,7 @@ Q_INLINE qreal step_up(qreal n, qreal step_size)
 		else	{
 			sender.state = NSOnState;
 			void *buffer = calloc(3, 882);
-			q_ring_buffer_initialize(&_audioInputBuffer, buffer, 882, 3);
+			z_ring_buffer_initialize(&_audioInputBuffer, buffer, 882, 3);
 			_machine.audio_input = &_audioInputBuffer;
 			_tapeRecorderWindowController = [[TapeRecorderWindowController alloc] init];
 			[_tapeRecorderWindowController setFrameSize: 882 count: 4];

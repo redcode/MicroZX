@@ -1,30 +1,30 @@
 #ifndef mZX_SNA_h
 #define mZX_SNA_h
 
-#include <Q/formats/hardware state/machine/ZX Spectrum/SNA.h>
-#include <Q/hardware/machine/platform/computer/ZX Spectrum.h>
-#include <Q/hardware/CPU/architecture/Z80.h>
+#include <Z/formats/hardware state/machine/ZX Spectrum/SNA.h>
+#include <Z/hardware/machine/platform/computer/ZX Spectrum.h>
+#include <Z/hardware/CPU/architecture/Z80.h>
 
-QStatus sna_v48k_test(QSNAv48K *object, qsize object_size);
+ZStatus sna_v48k_test(ZSNAv48K *object, zsize object_size);
 
-qsize sna_v48k_encoding_size(
-	QZXSpectrumState*	machine,
-	QZ80State*		cpu,
-	quint*			memory
+zsize sna_v48k_encoding_size(
+	ZZXSpectrumState*	machine,
+	ZZ80State*		cpu,
+	zuint*			memory
 );
 
 void sna_v48k_decode(
-	QSNAv48K*		object,
-	QZXSpectrumState*	machine,
-	QZ80State*		cpu,
-	quint8*			memory
+	ZSNAv48K*		object,
+	ZZXSpectrumState*	machine,
+	ZZ80State*		cpu,
+	zuint8*			memory
 );
 
 void sna_v48k_encode(
-	QSNAv48K*		object,
-	QZXSpectrumState*	machine,
-	QZ80State*		cpu,
-	quint8*			memory
+	ZSNAv48K*		object,
+	ZZXSpectrumState*	machine,
+	ZZ80State*		cpu,
+	zuint8*			memory
 );
 
 

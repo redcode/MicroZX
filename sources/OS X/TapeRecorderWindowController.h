@@ -6,24 +6,24 @@
 
 #import "TapeRecorderWindow.h"
 #import "CoreAudioOutput.h"
-#import <Q/types/data.h>
+#import <Z/types/base.h>
 #import <pthread.h>
 
 typedef struct {
 } AudioIOCB;
 
 typedef struct {
-	qsize	(* test_data)			(void*	    data);
+	zsize	(* test_data)			(void*	    data);
 
-	qsize	(* object_size_for_data)	(void*	    data);
+	zsize	(* object_size_for_data)	(void*	    data);
 
-	qsize	(* set_cb)			(void*	    object,
+	zsize	(* set_cb)			(void*	    object,
 						 AudioIOCB* cb);
 
-	qsize	(* sample_count)		(void*	    object);
+	zsize	(* sample_count)		(void*	    object);
 
-	qsize	(* read)			(void*	    object,
-						 qsize	    sample_count,
+	zsize	(* read)			(void*	    object,
+						 zsize	    sample_count,
 						 void*	    output);
 
 } AudioIOABI;
@@ -31,10 +31,10 @@ typedef struct {
 typedef struct {
 	void*	buffer;
 	void*	samples;
-	qsize	sample_count;
-	qsize	frame_size;
-	qsize	frame_count;
-	qsize	frame_index;
+	zsize	sample_count;
+	zsize	frame_size;
+	zsize	frame_count;
+	zsize	frame_index;
 	IMP	output_method;
 	SEL	output_selector;
 	id	output;
@@ -50,8 +50,8 @@ typedef struct {
 	BOOL	     _playing;
 	pthread_t    _thread;
 }
-	- (void) setFrameSize: (qsize) frameSize
-		 count:	       (qsize) count;
+	- (void) setFrameSize: (zsize) frameSize
+		 count:	       (zsize) count;
 
 	- (void) addOutput: (id)  output
 		 action:    (SEL) action;

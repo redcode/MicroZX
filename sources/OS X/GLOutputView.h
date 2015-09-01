@@ -21,12 +21,12 @@
 	} _flags;
 }
 	@property (nonatomic, readonly) GLOutput*      GLOutput;
-	@property (nonatomic, readonly) QTripleBuffer* buffer;
-	@property (nonatomic, assign)	Q2D	       contentSize;
-	@property (nonatomic, assign)	QKey(SCALING)  scaling;
+	@property (nonatomic, readonly) ZTripleBuffer* buffer;
+	@property (nonatomic, assign)	Z2D	       contentSize;
+	@property (nonatomic, assign)	ZKey(SCALING)  scaling;
 
-	- (void) setResolution:	(Q2DSize) resolution
-		 format:	(quint	) format;
+	- (void) setResolution:	(Z2DSize) resolution
+		 format:	(zuint	) format;
 
 	- (void) start;
 

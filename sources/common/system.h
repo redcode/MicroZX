@@ -1,4 +1,4 @@
-/* QSystem API - time.c
+/* ZSystem API - time.c
 	      __	   __
   _______ ___/ /______ ___/ /__
  / __/ -_) _  / __/ _ \ _  / -_)
@@ -6,21 +6,21 @@
 Copyright © 2006-2014 Manuel Sainz de Baranda y Goñi.
 Released under the terms of the GNU General Public License v3. */
 
-#ifndef __QSystem_time_H__
-#define __QSystem_time_H__
+#ifndef __ZSystem_time_H__
+#define __ZSystem_time_H__
 
-#include <Q/types/base.h>
+#include <Z/types/base.h>
 
-Q_C_SYMBOLS_BEGIN
+Z_C_SYMBOLS_BEGIN
 
-#define Q_SYSTEM_API
+#define Z_SYSTEM_API
 
-Q_SYSTEM_API void    q_initialize_ticks (void);
+Z_SYSTEM_API void    z_initialize_ticks (void);
 
-Q_SYSTEM_API quint64 q_ticks		(void);
+Z_SYSTEM_API zuint64 z_ticks		(void);
 
-Q_SYSTEM_API void    q_wait		(quint64 time);
+Z_SYSTEM_API void    z_wait		(zuint64 time);
 
-Q_C_SYMBOLS_END
+Z_C_SYMBOLS_END
 
-#endif /* __QSystem_time_H__ */
+#endif /* __ZSystem_time_H__ */

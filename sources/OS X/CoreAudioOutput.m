@@ -6,8 +6,8 @@
 
 #import "CoreAudioOutput.h"
 #import <AudioToolbox/AudioToolbox.h>
-#import <Q/types/base.h>
-#import <Q/functions/buffering/QRingBuffer.h>
+#import <Z/types/base.h>
+#import <Z/functions/buffering/ZRingBuffer.h>
 #import "system.h"
 
 
@@ -25,15 +25,15 @@
 		{
 		if (audioOutput->_buffer.fill_count < 2)
 			{
-			ioData->mBuffers[0].mData = q_ring_buffer_consumption_buffer(&audioOutput->_buffer);
+			ioData->mBuffers[0].mData = z_ring_buffer_consumption_buffer(&audioOutput->_buffer);
 			return noErr;
 			}
 
 		while (audioOutput->_buffer.fill_count > 3)
-			q_ring_buffer_try_consume(&audioOutput->_buffer);
+			z_ring_buffer_try_consume(&audioOutput->_buffer);
 
-		ioData->mBuffers[0].mData = q_ring_buffer_consumption_buffer(&audioOutput->_buffer);
-		q_ring_buffer_try_consume(&audioOutput->_buffer);
+		ioData->mBuffers[0].mData = z_ring_buffer_consumption_buffer(&audioOutput->_buffer);
+		z_ring_buffer_try_consume(&audioOutput->_buffer);
 		return noErr;
 		}
 
@@ -45,8 +45,8 @@
 			_sampleRate = 44100;
 			_bufferFrameCount = 2;
 
-			void *buffer = calloc(1, sizeof(qint16) * 882 * 4);
-			q_ring_buffer_initialize(&_buffer, buffer, sizeof(qint16) * 882, 4);
+			void *buffer = calloc(1, Z_INT16_SIZE * 882 * 4);
+			z_ring_buffer_initialize(&_buffer, buffer, Z_INT16_SIZE * 882, 4);
 
 			//---------------------------------------------------------------------------.
 			// Configure the search parameters to find the default playback output unit. |
@@ -129,7 +129,7 @@
 
 
 
-	- (QRingBuffer *) buffer {return &_buffer;}
+	- (ZRingBuffer *) buffer {return &_buffer;}
 
 
 	- (void) dealloc

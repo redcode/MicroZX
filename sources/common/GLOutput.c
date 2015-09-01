@@ -6,10 +6,10 @@
 
 #include <stdlib.h>
 #include "GLOutput.h"
-#include <Q/functions/base/Q2DValue.h>
-#include <Q/functions/base/Q3DValue.h>
-#include <Q/functions/geometry/QRectangle.h>
-#include <Q/functions/buffering/QTripleBuffer.h>
+#include <Z/functions/base/Z2DValue.h>
+#include <Z/functions/base/Z3DValue.h>
+#include <Z/functions/geometry/ZRectangle.h>
+#include <Z/functions/buffering/ZTripleBuffer.h>
 
 static const GLubyte indices_data[] = {0, 1, 2, 3};
 
@@ -21,10 +21,10 @@ static const GLfloat vertices_data[] = {
 static GLuint indices  = 0;
 static GLuint vertices = 0;
 
-static qsize  gpu_shared_data_owner_count = 0;
+static zsize  gpu_shared_data_owner_count = 0;
 
 
-static void set_viewport(QRectangle viewport)
+static void set_viewport(ZRectangle viewport)
 	{
 	glLoadIdentity();
 
@@ -67,11 +67,11 @@ void gl_output_finalize(GLOutput *object)
 	}
 
 
-void gl_output_set_resolution(GLOutput *object, Q2DSize resolution)
+void gl_output_set_resolution(GLOutput *object, Z2DSize resolution)
 	{
-	qsize frame_buffer_size = resolution.x * resolution.y * 4;
+	zsize frame_buffer_size = resolution.x * resolution.y * 4;
 
-	q_triple_buffer_initialize
+	z_triple_buffer_initialize
 		(&object->buffer,
 		 object->buffer.buffers[0] = realloc(object->buffer.buffers[0], frame_buffer_size * 3),
 		 frame_buffer_size);
@@ -88,7 +88,7 @@ void gl_output_set_resolution(GLOutput *object, Q2DSize resolution)
 	}
 
 
-void gl_output_set_content_bounds(GLOutput *object, QRectangle bounds)
+void gl_output_set_content_bounds(GLOutput *object, ZRectangle bounds)
 	{
 	object->content_bounds = bounds;
 
@@ -108,11 +108,11 @@ void gl_output_set_content_bounds(GLOutput *object, QRectangle bounds)
 	}
 
 
-void gl_output_set_content_size(GLOutput *object, Q2D size)
+void gl_output_set_content_size(GLOutput *object, Z2D size)
 	{
-	QRectangle bounds;
+	ZRectangle bounds;
 
-	bounds.point = q_2d_divide_by_scalar(q_2d_subtract(object->viewport.size, size), 2.0);
+	bounds.point = z_2d_divide_by_scalar(z_2d_subtract(object->viewport.size, size), 2.0);
 	bounds.size = size;
 	object->content_bounds = bounds;
 
@@ -129,25 +129,25 @@ void gl_output_set_content_size(GLOutput *object, Q2D size)
 
 void gl_output_set_geometry(
 	GLOutput*     object,
-	QRectangle    viewport,
-	QKey(SCALING) content_scaling
+	ZRectangle    viewport,
+	ZKey(SCALING) content_scaling
 )
 	{
 	set_viewport(object->viewport = viewport);
 
 	switch (content_scaling ? (object->content_scaling = content_scaling) : object->content_scaling)
 		{
-		case Q_SCALING_FIT:
+		case Z_SCALING_FIT:
 		gl_output_set_content_size
 			(object,
-			 q_2d_fit(q_2d((qreal)object->input_width, (qreal)object->input_height), viewport.size));
+			 z_2d_fit(z_2d((zreal)object->input_width, (zreal)object->input_height), viewport.size));
 		break;
 
-		case Q_SCALING_NONE:
+		case Z_SCALING_NONE:
 		gl_output_set_content_bounds(object, object->content_bounds);
 		break;
 
-		case Q_SCALING_EXPAND:
+		case Z_SCALING_EXPAND:
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 		glGetFloatv(GL_MODELVIEW_MATRIX, object->model_view_matrix);
@@ -156,7 +156,7 @@ void gl_output_set_geometry(
 	}
 
 
-void gl_output_set_linear_interpolation(GLOutput *object, qboolean value)
+void gl_output_set_linear_interpolation(GLOutput *object, zboolean value)
 	{
 	GLint filter = value ? GL_LINEAR : GL_NEAREST;
 
@@ -261,14 +261,14 @@ void gl_output_remove_effect(GLOutput *object)
 	}
 
 
-void gl_output_draw(GLOutput *object, qboolean skip_old)
+void gl_output_draw(GLOutput *object, zboolean skip_old)
 	{
-	void *frame = q_triple_buffer_consume(&object->buffer);
+	void *frame = z_triple_buffer_consume(&object->buffer);
 
 	if (frame == NULL)
 		{
 		if (skip_old) return;
-		frame = q_triple_buffer_consumption_buffer(&object->buffer);
+		frame = z_triple_buffer_consumption_buffer(&object->buffer);
 		}
 
 	glEnable(GL_TEXTURE_2D);
@@ -279,7 +279,7 @@ void gl_output_draw(GLOutput *object, qboolean skip_old)
 		 object->input_width, object->input_height,
 		 GL_RGBA, GL_UNSIGNED_BYTE, frame);
 
-	if (object->content_scaling != Q_SCALING_EXPAND)
+	if (object->content_scaling != Z_SCALING_EXPAND)
 		{
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);

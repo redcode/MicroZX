@@ -7,60 +7,60 @@
 #ifndef __mZX_common_Machine_H
 #define __mZX_common_Machine_H
 
-#include <Q/types/base.h>
-#include <Q/types/buffering.h>
+#include <Z/types/base.h>
+#include <Z/types/buffering.h>
 #include <pthread.h>
 #include "ZX Spectrum.h"
 #include "MachineABI.h"
 
-#include <Q/inspection/OS.h>
+#include <Z/inspection/OS.h>
 
 typedef struct {
 	pthread_t      thread;
 	ZXSpectrum*    context;
 	MachineABI*    abi;
-	QTripleBuffer* video_output;
-	QRingBuffer*   audio_output;
+	ZTripleBuffer* video_output;
+	ZRingBuffer*   audio_output;
 
 #	if Q_OS == Q_OS_MAC_OS_X
-		QRingBuffer* audio_input;
+		ZRingBuffer* audio_input;
 #	endif
 
-	quint8		  audio_frame[882];
-	QTripleBuffer*	  keyboard_input;
-	volatile qboolean must_stop;
+	zuint8		  audio_frame[882];
+	ZTripleBuffer*	  keyboard_input;
+	volatile zboolean must_stop;
 
-	struct {quint8 power :1;
-		quint8 pause :1;
+	struct {zuint8 power :1;
+		zuint8 pause :1;
 	} flags;
 } Machine;
 
-Q_C_SYMBOLS_BEGIN
+Z_C_SYMBOLS_BEGIN
 
 void machine_initialize		    (Machine*	    object,
 				     MachineABI*    abi,
-				     QTripleBuffer* video_output,
-				     QRingBuffer*   audio_output);
+				     ZTripleBuffer* video_output,
+				     ZRingBuffer*   audio_output);
 
 void machine_finalize		    (Machine*	    object);
 
 void machine_run_one_frame	    (Machine*	    object);
 
 void machine_power		    (Machine*	    object,
-				     qboolean	    state);
+				     zboolean	    state);
 
 void machine_pause		    (Machine*	    object,
-				     qboolean	    state);
+				     zboolean	    state);
 
 void machine_reset		    (Machine*	    object);
 
 void machine_keyboard_input	    (Machine*	    object,
-				     quint16	    key_code,
-				     qboolean	    key_state);
+				     zuint16	    key_code,
+				     zboolean	    key_state);
 
 void machine_set_audio_input_buffer (Machine*	    object,
-				     QRingBuffer*   audio_input);
+				     ZRingBuffer*   audio_input);
 
-Q_C_SYMBOLS_END
+Z_C_SYMBOLS_END
 
 #endif /* __mZX_common_Machine_H */

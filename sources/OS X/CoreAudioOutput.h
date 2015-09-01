@@ -7,17 +7,17 @@
 #import <Foundation/Foundation.h>
 #import <CoreAudio/CoreAudio.h>
 #import <AudioToolbox/AudioToolbox.h>
-#import <Q/types/buffering.h>
+#import <Z/types/buffering.h>
 
 @interface CoreAudioOutput : NSObject {
 
 	AudioComponentInstance _audioUnit;
-	QRingBuffer	       _buffer;
-	quint		       _bufferFrameCount;
+	ZRingBuffer	       _buffer;
+	zuint		       _bufferFrameCount;
 	double		       _sampleRate;
 	BOOL		       _playing;
 }
-	@property (nonatomic, readonly) QRingBuffer* buffer;
+	@property (nonatomic, readonly) ZRingBuffer* buffer;
 
 	- (void) start;
 	- (void) stop;

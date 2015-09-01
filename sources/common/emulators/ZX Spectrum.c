@@ -7,33 +7,33 @@
 Copyright © 2013 Manuel Sainz de Baranda y Goñi.
 Released under the terms of the GNU General Public License v3. */
 
-#include <Q/hardware/machine/platform/computer/ZX Spectrum.h>
-#include <Q/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum.h>
-#include <Q/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum +.h>
-#include <Q/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum + 128K.h>
-#include <Q/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum +2.h>
-#include <Q/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum +2A.h>
-#include <Q/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum +3.h>
-#include <Q/hardware/machine/model/computer/ZX Spectrum/Inves Spectrum +.h>
-#include <Q/ABIs/emulation.h>
+#include <Z/hardware/machine/platform/computer/ZX Spectrum.h>
+#include <Z/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum.h>
+#include <Z/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum +.h>
+#include <Z/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum + 128K.h>
+#include <Z/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum +2.h>
+#include <Z/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum +2A.h>
+#include <Z/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum +3.h>
+#include <Z/hardware/machine/model/computer/ZX Spectrum/Inves Spectrum +.h>
+#include <Z/ABIs/emulation.h>
 
 #define KB(amount) (1024 * amount)
 
 /* MARK: - Types */
 
 typedef struct {
-	qsize top;
-	qsize bottom;
+	zsize top;
+	zsize bottom;
 } ScreenBorder;
 
 typedef struct {
-	qsize per_int;
-	qsize per_scanline;
-	qsize per_frame;
-	qsize at_int;
-	qsize at_visible_top_border;
-	qsize at_paper_region;
-	qsize at_bottom_border;
+	zsize per_int;
+	zsize per_scanline;
+	zsize per_frame;
+	zsize at_int;
+	zsize at_visible_top_border;
+	zsize at_paper_region;
+	zsize at_bottom_border;
 } Cycles;
 
 typedef struct {
@@ -41,78 +41,78 @@ typedef struct {
 
 /* MARK: - Constants */
 
-Q_PRIVATE ScreenBorder const zx_spectrum_screen_border = {
-	Q_ZX_SPECTRUM_SCREEN_VISIBLE_TOP_BORDER_HEIGHT,
-	Q_ZX_SPECTRUM_SCREEN_BOTTOM_BORDER_HEIGHT
+Z_PRIVATE ScreenBorder const zx_spectrum_screen_border = {
+	Z_ZX_SPECTRUM_SCREEN_VISIBLE_TOP_BORDER_HEIGHT,
+	Z_ZX_SPECTRUM_SCREEN_BOTTOM_BORDER_HEIGHT
 };
 
-Q_PRIVATE Cycles const zx_spectrum_cycles = {
-	Q_ZX_SPECTRUM_CYCLES_PER_INT,
-	Q_ZX_SPECTRUM_CYCLES_PER_SCANLINE,
-	Q_ZX_SPECTRUM_CYCLES_PER_FRAME,
-	Q_ZX_SPECTRUM_CYCLES_AT_INT,
-	Q_ZX_SPECTRUM_CYCLES_AT_VISIBLE_TOP_BORDER,
-	Q_ZX_SPECTRUM_CYCLES_AT_PAPER_REGION,
-	Q_ZX_SPECTRUM_CYCLES_AT_BOTTOM_BORDER
+Z_PRIVATE Cycles const zx_spectrum_cycles = {
+	Z_ZX_SPECTRUM_CYCLES_PER_INT,
+	Z_ZX_SPECTRUM_CYCLES_PER_SCANLINE,
+	Z_ZX_SPECTRUM_CYCLES_PER_FRAME,
+	Z_ZX_SPECTRUM_CYCLES_AT_INT,
+	Z_ZX_SPECTRUM_CYCLES_AT_VISIBLE_TOP_BORDER,
+	Z_ZX_SPECTRUM_CYCLES_AT_PAPER_REGION,
+	Z_ZX_SPECTRUM_CYCLES_AT_BOTTOM_BORDER
 };
 
-Q_PRIVATE Cycles const zx_spectrum_plus_128k_cycles = {
-	Q_ZX_SPECTRUM_PLUS_128K_CYCLES_PER_INT,
-	Q_ZX_SPECTRUM_PLUS_128K_CYCLES_PER_SCANLINE,
-	Q_ZX_SPECTRUM_PLUS_128K_CYCLES_PER_FRAME,
-	Q_ZX_SPECTRUM_PLUS_128K_CYCLES_AT_INT,
-	Q_ZX_SPECTRUM_PLUS_128K_CYCLES_AT_VISIBLE_TOP_BORDER,
-	Q_ZX_SPECTRUM_PLUS_128K_CYCLES_AT_PAPER_REGION,
-	Q_ZX_SPECTRUM_PLUS_128K_CYCLES_AT_BOTTOM_BORDER
+Z_PRIVATE Cycles const zx_spectrum_plus_128k_cycles = {
+	Z_ZX_SPECTRUM_PLUS_128K_CYCLES_PER_INT,
+	Z_ZX_SPECTRUM_PLUS_128K_CYCLES_PER_SCANLINE,
+	Z_ZX_SPECTRUM_PLUS_128K_CYCLES_PER_FRAME,
+	Z_ZX_SPECTRUM_PLUS_128K_CYCLES_AT_INT,
+	Z_ZX_SPECTRUM_PLUS_128K_CYCLES_AT_VISIBLE_TOP_BORDER,
+	Z_ZX_SPECTRUM_PLUS_128K_CYCLES_AT_PAPER_REGION,
+	Z_ZX_SPECTRUM_PLUS_128K_CYCLES_AT_BOTTOM_BORDER
 };
 
-Q_PRIVATE Cycles const zx_spectrum_plus_2a_cycles = {
+Z_PRIVATE Cycles const zx_spectrum_plus_2a_cycles = {
 };
 
-Q_PRIVATE Cycles const pentagon_cycles = {
+Z_PRIVATE Cycles const pentagon_cycles = {
 };
 
-Q_PRIVATE Cycles const scorpion_cycles = {
+Z_PRIVATE Cycles const scorpion_cycles = {
 };
 
-Q_PRIVATE Contention const zx_spectrum_contention = {
+Z_PRIVATE Contention const zx_spectrum_contention = {
 };
 
-Q_PRIVATE Contention const zx_spectrum_plus_128k_contention = {
+Z_PRIVATE Contention const zx_spectrum_plus_128k_contention = {
 };
 
 
 
 
 #define ZX_SPECTRUM_VALUES				\
-	quint8*			memory;			\
+	zuint8*			memory;			\
 	void*			cpu;			\
-	qsize*			cpu_cycles;		\
+	zsize*			cpu_cycles;		\
 	void*			video_output_buffer;	\
-	quint8*			audio_input_buffer;	\
-	qint16*			audio_output_buffer;	\
+	zuint8*			audio_input_buffer;	\
+	zint16*			audio_output_buffer;	\
 							\
-	struct {QEmulatorRun	run;			\
-		QEmulatorPower	power;			\
-		QDo		reset;			\
-		QSwitch		irq;			\
+	struct {ZEmulatorRun	run;			\
+		ZEmulatorPower	power;			\
+		ZDo		reset;			\
+		ZSwitch		irq;			\
 	} cpu_abi;					\
 							\
-	quint8			keyboard[8];		\
-	quint32			border_color;		\
-	qsize			frame_cycles;		\
-	qsize			frames_since_flash;	\
-	qint16			current_audio_sample;	\
-	qsize			audio_sample_index;	\
-	qsize			audio_input_base_index;	\
-	qboolean		accurate;		\
-	QZXSpectrumState	state;			\
+	zuint8			keyboard[8];		\
+	zuint32			border_color;		\
+	zsize			frame_cycles;		\
+	zsize			frames_since_flash;	\
+	zint16			current_audio_sample;	\
+	zsize			audio_sample_index;	\
+	zsize			audio_input_base_index;	\
+	zboolean		accurate;		\
+	ZZXSpectrumState	state;			\
 	const ScreenBorder*	screen_border;		\
 	const Cycles*		cycles;			\
 	const Contention*	contention;		\
-	quint8			port_fe;		\
-	quint8			port_fe_update_cycle;	\
-	quint8*			vram;			\
+	zuint8			port_fe;		\
+	zuint8			port_fe_update_cycle;	\
+	zuint8*			vram;			\
 
 typedef struct {
 	ZX_SPECTRUM_VALUES
@@ -120,9 +120,9 @@ typedef struct {
 
 typedef struct {
 	ZX_SPECTRUM_VALUES
-	quint8*		memory_pages[4];
-	quint8		port_7ffd;
-	qboolean	disable_bank_switching;
+	zuint8*		memory_pages[4];
+	zuint8		port_7ffd;
+	zboolean	disable_bank_switching;
 	void*		psg;
 
 	struct {
@@ -133,17 +133,17 @@ typedef struct {
 #define ROM_BANK(number) (object->memory + (1024 * 16 * (number)))
 
 
-#include <Q/macros/color.h>
+#include <Z/macros/color.h>
 
 #define CPU_RUN(cycles)		object->cpu_abi.run(object->cpu, cycles)
 #define CPU_INT(state)		object->cpu_abi.irq(object->cpu, state)
 #define CPU_RESET		object->cpu_abi.reset(object->cpu)
 #define CPU_POWER(state)	object->cpu_abi.power(object->cpu, state)
-#define RGBA			Q_RGBA32
+#define RGBA			Z_RGBA32
 #define WAVE_HIGH		6550
 #define WAVE_LOW		-6550
 
-Q_PRIVATE quint32 const palette[2][8] = {
+Z_PRIVATE zuint32 const palette[2][8] = {
 	{RGBA(00, 00, 00, 00), RGBA(00, 00, CD, 00),
 	 RGBA(CD, 00, 00, 00), RGBA(CD, 00, CD, 00),
 	 RGBA(00, CD, 00, 00), RGBA(00, CD, CD, 00),
@@ -161,23 +161,23 @@ Q_PRIVATE quint32 const palette[2][8] = {
 /* MARK: - Helpers */
 
 
-Q_PRIVATE void update_audio_output(ZXSpectrum *object, qsize new_index)
+Z_PRIVATE void update_audio_output(ZXSpectrum *object, zsize new_index)
 	{
-	qint16 sample = object->current_audio_sample;
-	qint16 *p = &object->audio_output_buffer[object->audio_sample_index];
-	qint16 *e = &object->audio_output_buffer[new_index > 882 ? 882 : new_index];
+	zint16 sample = object->current_audio_sample;
+	zint16 *p = &object->audio_output_buffer[object->audio_sample_index];
+	zint16 *e = &object->audio_output_buffer[new_index > 882 ? 882 : new_index];
 
 	for (; p != e; p++) *p = sample;
 	object->audio_sample_index = new_index;
 	}
 
 
-Q_PRIVATE void draw_character_row(quint8 *vram, qsize x, qsize y, qsize row, qboolean flash, quint32 *output)
+Z_PRIVATE void draw_character_row(zuint8 *vram, zsize x, zsize y, zsize row, zboolean flash, zuint32 *output)
 	{
-	quint8 character = *(vram + 2048 * (y / 8) + 32 * (y - 8 * (y / 8)) + 256 * row + x);
-	quint8 attribute = *(vram + Q_ZX_SPECTRUM_VIDEO_CHARACTER_RAM_SIZE + 32 * y + x);
-	quint32	f, b;
-	qsize cx;
+	zuint8 character = *(vram + 2048 * (y / 8) + 32 * (y - 8 * (y / 8)) + 256 * row + x);
+	zuint8 attribute = *(vram + Z_ZX_SPECTRUM_VIDEO_CHARACTER_RAM_SIZE + 32 * y + x);
+	zuint32	f, b;
+	zsize cx;
 
 	if (flash && (attribute & 128))
 		{
@@ -214,38 +214,38 @@ Q_PRIVATE void draw_character_row(quint8 *vram, qsize x, qsize y, qsize row, qbo
 /* MARK: - CPU Callbacks: Memory Access */
 
 
-Q_PRIVATE quint8 zx_spectrum_16k_cpu_read(ZXSpectrum *object, quint16 address)
+Z_PRIVATE zuint8 zx_spectrum_16k_cpu_read(ZXSpectrum *object, zuint16 address)
 	{return address < 0x8000 ? object->memory[address] : 0;}
 
 
-Q_PRIVATE void zx_spectrum_16k_cpu_write(
+Z_PRIVATE void zx_spectrum_16k_cpu_write(
 	ZXSpectrum*	object,
-	quint16		address,
-	quint8		value
+	zuint16		address,
+	zuint8		value
 )
 	{if (address > 0x3FFF && address < 0x8000) object->memory[address] = value;}
 
 
-Q_PRIVATE quint8 zx_spectrum_48k_cpu_read(ZXSpectrum *object, quint16 address)
+Z_PRIVATE zuint8 zx_spectrum_48k_cpu_read(ZXSpectrum *object, zuint16 address)
 	{return object->memory[address];}
 
 
-Q_PRIVATE void zx_spectrum_48k_cpu_write(
+Z_PRIVATE void zx_spectrum_48k_cpu_write(
 	ZXSpectrum*	object,
-	quint16		address,
-	quint8		value
+	zuint16		address,
+	zuint8		value
 )
 	{if (address > 0x3FFF) object->memory[address] = value;}
 
 
-Q_PRIVATE quint8 zx_spectrum_plus_128k_cpu_read(ZXSpectrum128K *object, quint16 address)
+Z_PRIVATE zuint8 zx_spectrum_plus_128k_cpu_read(ZXSpectrum128K *object, zuint16 address)
 	{return object->memory_pages[address / KB(16)][address % KB(16)];}
 
 
-Q_PRIVATE void zx_spectrum_plus_128k_cpu_write(
+Z_PRIVATE void zx_spectrum_plus_128k_cpu_write(
 	ZXSpectrum128K*	object,
-	quint16		address,
-	quint8		value
+	zuint16		address,
+	zuint8		value
 )
 	{
 	if (address > 0x3FFF)
@@ -256,22 +256,22 @@ Q_PRIVATE void zx_spectrum_plus_128k_cpu_write(
 /* MARK: - CPU Callbacks: I/O */
 
 
-Q_PRIVATE quint8 zx_spectrum_cpu_in(ZXSpectrum *object, quint16 port)
+Z_PRIVATE zuint8 zx_spectrum_cpu_in(ZXSpectrum *object, zuint16 port)
 	{
-	quint8 value;
+	zuint8 value;
 
 	if (port & 1) switch (port & 0xFF)
 		{
 		/*----.
 		| ULA |
 		'----*/
-		case Q_ZX_SPECTRUM_IO_PORT_ULA:
+		case Z_ZX_SPECTRUM_IO_PORT_ULA:
 		return 0;
 
 		/*------------------.
 		| Kempston Joystick |
 		'------------------*/
-		case Q_ZX_SPECTRUM_IO_PORT_KEMPSTON_JOYSTICK:
+		case Z_ZX_SPECTRUM_IO_PORT_KEMPSTON_JOYSTICK:
 		/* treat this as attached but unused
 		 (for the benefit of Manic Miner) */
 		return 0xFF;
@@ -279,19 +279,19 @@ Q_PRIVATE quint8 zx_spectrum_cpu_in(ZXSpectrum *object, quint16 port)
 		/*----------------.
 		| Fuller Joystick |
 		'----------------*/
-		case Q_ZX_SPECTRUM_IO_PORT_FULLER_JOYSTICK:
+		case Z_ZX_SPECTRUM_IO_PORT_FULLER_JOYSTICK:
 		return 0xFF;
 
 		/*------------------.
 		| Mikrogen Joystick |
 		'------------------*/
-		case Q_ZX_SPECTRUM_IO_PORT_MIKROGEN_JOYSTICK:
+		case Z_ZX_SPECTRUM_IO_PORT_MIKROGEN_JOYSTICK:
 		return 0xFF;
 
 		/*--------------------.
 		| Unassigned I/O port |
 		'--------------------*/
-		default: return Q_ZX_SPECTRUM_UNASSIGNED_IO_PORT_INPUT;
+		default: return Z_ZX_SPECTRUM_UNASSIGNED_IO_PORT_INPUT;
 		}
 
 	/*--------------------------------------------.
@@ -313,7 +313,7 @@ Q_PRIVATE quint8 zx_spectrum_cpu_in(ZXSpectrum *object, quint16 port)
 
 		if (object->audio_input_buffer)
 			{
-			qsize index = ((*object->cpu_cycles + object->frame_cycles) * 882) / object->cycles->per_frame;
+			zsize index = ((*object->cpu_cycles + object->frame_cycles) * 882) / object->cycles->per_frame;
 
 			if (object->audio_input_buffer[object->audio_input_base_index + index] == 0x90)
 				value |= 0x40;
@@ -326,7 +326,7 @@ Q_PRIVATE quint8 zx_spectrum_cpu_in(ZXSpectrum *object, quint16 port)
 	}
 
 
-Q_PRIVATE quint8 zx_spectrum_plus_128k_cpu_in(ZXSpectrum128K *object, quint16 port)
+Z_PRIVATE zuint8 zx_spectrum_plus_128k_cpu_in(ZXSpectrum128K *object, zuint16 port)
 	{
 	if (port == 0xFFFD)
 		{
@@ -337,21 +337,21 @@ Q_PRIVATE quint8 zx_spectrum_plus_128k_cpu_in(ZXSpectrum128K *object, quint16 po
 	}
 
 
-Q_PRIVATE void zx_spectrum_cpu_out(ZXSpectrum *object, quint16 port, quint8 value)
+Z_PRIVATE void zx_spectrum_cpu_out(ZXSpectrum *object, zuint16 port, zuint8 value)
 	{
 	if ((port & 1) == 0)
 		{
 		/*-------------.
 		| Border Color |
 		'-------------*/
-		object->border_color = ((quint32 *)palette)[value & 0x07];
+		object->border_color = ((zuint32 *)palette)[value & 0x07];
 
 		/*----------.
 		| MIC - EAR |
 		'----------*/
 		if ((object->port_fe ^ value) & 24)
 			{
-			qsize new_index = ((*object->cpu_cycles + object->frame_cycles) * 882) / object->cycles->per_frame;
+			zsize new_index = ((*object->cpu_cycles + object->frame_cycles) * 882) / object->cycles->per_frame;
 			update_audio_output(object, new_index);
 			object->current_audio_sample = (value & 0x10) ? WAVE_HIGH : WAVE_LOW;
 			}
@@ -363,7 +363,7 @@ Q_PRIVATE void zx_spectrum_cpu_out(ZXSpectrum *object, quint16 port, quint8 valu
 	}
 
 
-Q_PRIVATE void zx_spectrum_plus_128k_cpu_out(ZXSpectrum128K *object, quint16 port, quint8 value)
+Z_PRIVATE void zx_spectrum_plus_128k_cpu_out(ZXSpectrum128K *object, zuint16 port, zuint8 value)
 	{
 	if (port == 0x7FFD)
 		{
@@ -389,20 +389,20 @@ Q_PRIVATE void zx_spectrum_plus_128k_cpu_out(ZXSpectrum128K *object, quint16 por
 	}
 
 
-Q_PRIVATE quint32 cpu_int_data(ZXSpectrum *object)
+Z_PRIVATE zuint32 cpu_int_data(ZXSpectrum *object)
 	{
 	return 00;
 	}
 
 
-Q_PRIVATE void cpu_halt(ZXSpectrum *object)
+Z_PRIVATE void cpu_halt(ZXSpectrum *object)
 	{
 	}
 
 #include "Z80.h"
 #define CPU(object) ((Z80 *)(object))
 
-Q_PRIVATE void zx_spectrum_initialize(ZXSpectrum *object)
+Z_PRIVATE void zx_spectrum_initialize(ZXSpectrum *object)
 	{
 	object->frames_since_flash = 0;
 	CPU(object->cpu)->cb.read	= (void *)zx_spectrum_48k_cpu_read;
@@ -423,11 +423,11 @@ Q_PRIVATE void zx_spectrum_initialize(ZXSpectrum *object)
 	object->frame_cycles = 0;
 	object->audio_input_buffer = NULL;
 	object->audio_input_base_index = 0;
-	object->vram = object->memory + Q_ZX_SPECTRUM_ADDRESS_VIDEO_CHARACTER_RAM;
+	object->vram = object->memory + Z_ZX_SPECTRUM_ADDRESS_VIDEO_CHARACTER_RAM;
 	}
 
 
-Q_PRIVATE void zx_spectrum_plus_128k_initialize(ZXSpectrum128K *object)
+Z_PRIVATE void zx_spectrum_plus_128k_initialize(ZXSpectrum128K *object)
 	{
 	object->frames_since_flash = 0;
 	CPU(object->cpu)->cb.read	= (void *)zx_spectrum_plus_128k_cpu_read;
@@ -458,23 +458,23 @@ Q_PRIVATE void zx_spectrum_plus_128k_initialize(ZXSpectrum128K *object)
 	}
 
 
-Q_PRIVATE void zx_spectrum_power(ZXSpectrum *object, qboolean state)
+Z_PRIVATE void zx_spectrum_power(ZXSpectrum *object, zboolean state)
 	{CPU_POWER(state);}
 
 
-Q_PRIVATE void zx_spectrum_reset(ZXSpectrum *object)
+Z_PRIVATE void zx_spectrum_reset(ZXSpectrum *object)
 	{CPU_RESET;}
 
 
 #define CYCLES_AT_LINE(region, scanline_index) \
 	(cycles.at_##region + cycles.per_scanline * (scanline_index))
 
-Q_PRIVATE void zx_spectrum_run_one_frame(ZXSpectrum *object)
+Z_PRIVATE void zx_spectrum_run_one_frame(ZXSpectrum *object)
 	{
-	qsize i;
-	qsize cx, cy, row;
-	quint32 *p = object->video_output_buffer, *e;
-	quint32 border_color;
+	zsize i;
+	zsize cx, cy, row;
+	zuint32 *p = object->video_output_buffer, *e;
+	zuint32 border_color;
 	Cycles cycles = *object->cycles;
 	ScreenBorder screen_border = *object->screen_border;
 
@@ -513,27 +513,27 @@ Q_PRIVATE void zx_spectrum_run_one_frame(ZXSpectrum *object)
 
 		border_color = object->border_color;
 
-		for (e = p + Q_ZX_SPECTRUM_SCREEN_WIDTH; p != e; p++)
+		for (e = p + Z_ZX_SPECTRUM_SCREEN_WIDTH; p != e; p++)
 			*p = border_color;
 		}
 
 	/*----------------.
 	| Video scanlines |
 	'----------------*/
-	for (i = 0; i < Q_ZX_SPECTRUM_SCREEN_PAPER_HEIGHT; i++)
+	for (i = 0; i < Z_ZX_SPECTRUM_SCREEN_PAPER_HEIGHT; i++)
 		{
 		object->frame_cycles += CPU_RUN
 			(cycles.per_scanline - (object->frame_cycles - CYCLES_AT_LINE(paper_region, i)));
 
 		border_color = object->border_color;
 
-		for (e = p + Q_ZX_SPECTRUM_SCREEN_LEFT_BORDER_WIDTH; p != e; p++)
+		for (e = p + Z_ZX_SPECTRUM_SCREEN_LEFT_BORDER_WIDTH; p != e; p++)
 			*p = border_color;
 
-		for (cx = 0, cy = i / 8, row = i % 8; cx < Q_ZX_SPECTRUM_SCREEN_PAPER_WIDTH / 8; cx++, p += 8)
+		for (cx = 0, cy = i / 8, row = i % 8; cx < Z_ZX_SPECTRUM_SCREEN_PAPER_WIDTH / 8; cx++, p += 8)
 			draw_character_row(object->vram, cx, cy, row, object->state.flash, p);
 
-		for (e = p + Q_ZX_SPECTRUM_SCREEN_RIGHT_BORDER_WIDTH; p != e; p++)
+		for (e = p + Z_ZX_SPECTRUM_SCREEN_RIGHT_BORDER_WIDTH; p != e; p++)
 			*p = border_color;
 		}
 
@@ -547,7 +547,7 @@ Q_PRIVATE void zx_spectrum_run_one_frame(ZXSpectrum *object)
 
 		border_color = object->border_color;
 
-		for (e = p + Q_ZX_SPECTRUM_SCREEN_WIDTH; p != e; p++)
+		for (e = p + Z_ZX_SPECTRUM_SCREEN_WIDTH; p != e; p++)
 			*p = border_color;
 		}
 
@@ -557,8 +557,8 @@ Q_PRIVATE void zx_spectrum_run_one_frame(ZXSpectrum *object)
 
 	if (object->audio_input_buffer != NULL)
 		{
-		quint8 *input = object->audio_input_buffer + 882;
-		quint index = 882;
+		zuint8 *input = object->audio_input_buffer + 882;
+		zuint index = 882;
 
 		while (index) object->audio_output_buffer[--index] = *--input == 0x90
 			? WAVE_HIGH
@@ -569,7 +569,7 @@ Q_PRIVATE void zx_spectrum_run_one_frame(ZXSpectrum *object)
 	}
 
 
-Q_PRIVATE void zx_spectrum_run_one_scanline(ZXSpectrum *object)
+Z_PRIVATE void zx_spectrum_run_one_scanline(ZXSpectrum *object)
 	{
 	}
 
@@ -577,15 +577,15 @@ Q_PRIVATE void zx_spectrum_run_one_scanline(ZXSpectrum *object)
 #include "MachineABI.h"
 
 
-Q_PRIVATE const ROM zx_spectrum_rom	 = {"ZX Spectrum (Firmware)(ROM)",	0, KB(16)};
-Q_PRIVATE const ROM inves_spectrum_plus_rom = {"Inves Spectrum + (Firmware)(ROM)", 0, KB(16)};
+Z_PRIVATE const ROM zx_spectrum_rom	 = {"ZX Spectrum (Firmware)(ROM)",	0, KB(16)};
+Z_PRIVATE const ROM inves_spectrum_plus_rom = {"Inves Spectrum + (Firmware)(ROM)", 0, KB(16)};
 
-Q_PRIVATE const ROM zx_spectrum_plus_128k_roms[] = {
+Z_PRIVATE const ROM zx_spectrum_plus_128k_roms[] = {
 	{"ZX Spectrum + 128K (Firmware)(ROM 1 of 2)", 0,      KB(16)},
 	{"ZX Spectrum + 128K (Firmware)(ROM 2 of 2)", KB(16), KB(16)}
 };
 
-Q_PRIVATE const ROM zx_spectrum_plus_128k_es_roms[] = {
+Z_PRIVATE const ROM zx_spectrum_plus_128k_es_roms[] = {
 	{"ZX Spectrum + 128K (ES)(Firmware)(ROM 1 of 2)", 0,	  KB(16)},
 	{"ZX Spectrum + 128K (ES)(Firmware)(ROM 2 of 2)", KB(16), KB(16)}
 };
@@ -594,7 +594,7 @@ MachineABI machine_abi_table[] = {
 
 	{.model_name		= "ZX Spectrum 16K (Issue 1)",
 	.context_size		= sizeof(ZXSpectrum),
-	.memory_size		= Q_ZX_SPECTRUM_16K_ISSUE_1_MEMORY_SIZE,
+	.memory_size		= Z_ZX_SPECTRUM_16K_ISSUE_1_MEMORY_SIZE,
 	.roms			= (ROM *)&zx_spectrum_rom,
 	.rom_count		= 1,
 	.initialize		= (void *)zx_spectrum_initialize,
@@ -605,7 +605,7 @@ MachineABI machine_abi_table[] = {
 
 	{.model_name		= "ZX Spectrum 48K (Issue 2)",
 	.context_size		= sizeof(ZXSpectrum),
-	.memory_size		= Q_ZX_SPECTRUM_48K_ISSUE_2_MEMORY_SIZE,
+	.memory_size		= Z_ZX_SPECTRUM_48K_ISSUE_2_MEMORY_SIZE,
 	.roms			= (ROM *)&zx_spectrum_rom,
 	.rom_count		= 1,
 	.initialize		= (void *)zx_spectrum_initialize,
@@ -616,7 +616,7 @@ MachineABI machine_abi_table[] = {
 
 	{.model_name		= "ZX Spectrum 48K (Issue 3)",
 	.context_size		= sizeof(ZXSpectrum),
-	.memory_size		= Q_ZX_SPECTRUM_48K_ISSUE_3_MEMORY_SIZE,
+	.memory_size		= Z_ZX_SPECTRUM_48K_ISSUE_3_MEMORY_SIZE,
 	.roms			= (ROM *)&zx_spectrum_rom,
 	.rom_count		= 1,
 	.initialize		= (void *)zx_spectrum_initialize,
@@ -627,7 +627,7 @@ MachineABI machine_abi_table[] = {
 
 	{.model_name		= "ZX Spectrum +",
 	.context_size		= sizeof(ZXSpectrum),
-	.memory_size		= Q_ZX_SPECTRUM_PLUS_MEMORY_SIZE,
+	.memory_size		= Z_ZX_SPECTRUM_PLUS_MEMORY_SIZE,
 	.roms			= (ROM *)&zx_spectrum_rom,
 	.rom_count		= 1,
 	.initialize		= (void *)zx_spectrum_initialize,
@@ -638,7 +638,7 @@ MachineABI machine_abi_table[] = {
 
 	{.model_name		= "ZX Spectrum + 128K",
 	 .context_size		= sizeof(ZXSpectrum128K),
-	 .memory_size		= Q_ZX_SPECTRUM_PLUS_128K_MEMORY_SIZE,
+	 .memory_size		= Z_ZX_SPECTRUM_PLUS_128K_MEMORY_SIZE,
 	 .roms			= (ROM *)&zx_spectrum_plus_128k_roms[0],
 	 .rom_count		= 2,
 	 .initialize		= (void *)zx_spectrum_plus_128k_initialize,
@@ -649,7 +649,7 @@ MachineABI machine_abi_table[] = {
 
 	{.model_name		= "ZX Spectrum + 128K (ES)",
 	 .context_size		= sizeof(ZXSpectrum128K),
-	 .memory_size		= Q_ZX_SPECTRUM_PLUS_128K_MEMORY_SIZE,
+	 .memory_size		= Z_ZX_SPECTRUM_PLUS_128K_MEMORY_SIZE,
 	 .roms			= (ROM *)&zx_spectrum_plus_128k_es_roms[0],
 	 .rom_count		= 2,
 	 .initialize		= (void *)zx_spectrum_plus_128k_initialize,
@@ -668,7 +668,7 @@ MachineABI machine_abi_table[] = {
 
 	{.model_name		= "Inves Spectrum +",
 	.context_size		= sizeof(ZXSpectrum),
-	.memory_size		= Q_INVES_SPECTRUM_PLUS_MEMORY_SIZE,
+	.memory_size		= Z_INVES_SPECTRUM_PLUS_MEMORY_SIZE,
 	.roms			= (ROM *)&inves_spectrum_plus_rom,
 	.rom_count		= 1,
 	.initialize		= (void *)zx_spectrum_initialize,
@@ -679,6 +679,6 @@ MachineABI machine_abi_table[] = {
 
 };
 
-qsize machine_abi_count = 14;
+zsize machine_abi_count = 14;
 
 /* ZXSpectrum.c EOF */

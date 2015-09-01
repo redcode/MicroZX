@@ -1,4 +1,4 @@
-/* QSystem - time.c
+/* ZSystem - time.c
 	      __	   __
   _______ ___/ /______ ___/ /__
  / __/ -_) _  / __/ _ \ _  / -_)
@@ -10,15 +10,15 @@ Released under the terms of the GNU General Public License v3. */
 #include <time.h>
 #include <sys/time.h>
 #include <errno.h>
-#include <Q/inspection/OS.h>
-#include <Q/types/base.h>
+#include <Z/inspection/OS.h>
+#include <Z/types/base.h>
 
-static qboolean has_monotonic_time = FALSE;
-static qboolean ticks_started = FALSE;
+static zboolean has_monotonic_time = FALSE;
+static zboolean ticks_started = FALSE;
 static struct timeval start_tv;
 
 
-#if Q_OS == Q_OS_MAC_OS_X
+#if Z_OS == Z_OS_MAC_OS_X
 
 #	include <mach/mach_time.h>
 
@@ -26,7 +26,7 @@ static struct timeval start_tv;
 	mach_timebase_info_data_t mach_base_info;
 
 
-	void q_initialize_ticks(void)
+	void z_initialize_ticks(void)
 		{
 		if (!ticks_started)
 			{
@@ -43,15 +43,15 @@ static struct timeval start_tv;
 		}
 
 
-	quint64 q_ticks(void)
+	zuint64 z_ticks(void)
 		{
-		quint64 ticks;
+		zuint64 ticks;
 
-		if (!ticks_started) q_initialize_ticks();
+		if (!ticks_started) z_initialize_ticks();
 
 		if (has_monotonic_time)
 			{
-			quint64 now = mach_absolute_time();
+			zuint64 now = mach_absolute_time();
 			ticks = ((now - start_mach) * mach_base_info.numer) / mach_base_info.denom;
 			}
 
@@ -66,10 +66,10 @@ static struct timeval start_tv;
 		}
 
 
-#elif Q_OS_IS(POSIX)
+#elif Z_OS_IS(POSIX)
 
 
-	void q_initialize_ticks(void)
+	void z_initialize_ticks(void)
 		{
 		if (!ticks_started)
 			{
@@ -79,14 +79,14 @@ static struct timeval start_tv;
 		}
 
 
-	quint64 q_ticks(void)
+	zuint64 z_ticks(void)
 		{
 		struct timeval now;
 
-		if (!ticks_started) q_initialize_ticks();
+		if (!ticks_started) z_initialize_ticks();
 		gettimeofday(&now, NULL);
 
-		return	(quint64)(now.tv_sec - start_tv.tv_sec) * 1000000000 +
+		return	(zuint64)(now.tv_sec - start_tv.tv_sec) * 1000000000 +
 			(now.tv_usec - start_tv.tv_usec)	* 1000;
 		}
 
@@ -94,9 +94,9 @@ static struct timeval start_tv;
 #endif
 
 
-#if Q_OS_IS(POSIX)
+#if Z_OS_IS(POSIX)
 
-	void q_wait(quint64 time)
+	void z_wait(zuint64 time)
 		{
 		int was_error;
 		struct timespec tv;
