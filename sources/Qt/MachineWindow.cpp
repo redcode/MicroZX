@@ -85,7 +85,7 @@ MachineWindow::MachineWindow(QWidget *parent) :	QMainWindow(parent), ui(new Ui::
 	C::MachineABI *abi = &C::machine_abi_table[4];
 
 	C::machine_initialize(&machine, abi, ui->videoOutputView->getBuffer(), &audioOutputBuffer);
-	machine.keyboard_input_buffer = keyboardBuffer;
+	machine.keyboard_input = keyboardBuffer;
 
 	C::qsize index = abi->rom_count;
 	C::ROM *rom;
