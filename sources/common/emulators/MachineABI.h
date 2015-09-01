@@ -8,33 +8,33 @@ Copyright © 2013 RedCode Software. All rights reserved. */
 #ifndef mZX_MachineABI_h
 #define mZX_MachineABI_h
 
-#include <Q/types/generic functions.h>
+#include <Z/types/generic functions.h>
 
-Q_C_SYMBOLS_BEGIN
+Z_C_SYMBOLS_BEGIN
 
 typedef struct {
-	QString* file_name;
-	qsize	 base_address;
-	qsize	 size;
+	ZString* file_name;
+	zsize	 base_address;
+	zsize	 size;
 } ROM;
 
 typedef struct {
-	QString* model_name;
-	qsize	 context_size;
-	qsize	 context_cpu_context_offset;
-	qsize	 memory_size;
-	qsize	 rom_count;
+	ZString* model_name;
+	zsize	 context_size;
+	zsize	 context_cpu_context_offset;
+	zsize	 memory_size;
+	zsize	 rom_count;
 	ROM*	 roms;
-	QDo	 initialize;
-	QSwitch	 power;
-	QDo	 reset;
-	QDo	 run_one_frame;
-	QDo	 run_one_scanline;
+	ZDo	 initialize;
+	ZSwitch	 power;
+	ZDo	 reset;
+	ZDo	 run_one_frame;
+	ZDo	 run_one_scanline;
 } MachineABI;
 
 extern MachineABI machine_abi_table[];
-extern qsize	  machine_abi_count;
+extern zsize	  machine_abi_count;
 
-Q_C_SYMBOLS_END
+Z_C_SYMBOLS_END
 
 #endif

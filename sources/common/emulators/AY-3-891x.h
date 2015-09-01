@@ -7,28 +7,28 @@
 Copyright © 2014 Manuel Sainz de Baranda y Goñi.
 Released under the terms of the GNU General Public License v3. */
 
-#include <Q/hardware/PSG/General Instrument/AY-3-891x.h>
-#include <Q/types/generic functions.h>
+#include <Z/hardware/PSG/General Instrument/AY-3-891x.h>
+#include <Z/types/generic functions.h>
 
 #ifndef __modules_emulation_PSG_AY_3_891x_H__
 #define __modules_emulation_PSG_AY_3_891x_H__
 
 typedef struct {
-	quint8 r[16];
+	zuint8 r[16];
 
-	struct {Q16BitAddressRead8Bit  read;
-		Q16BitAddressWrite8Bit write;
-		Q16BitAddressRead8Bit  in;
-		Q16BitAddressWrite8Bit out;
-		QRead32Bit	       int_data;
-		QSwitch		       halt;
+	struct {Z16BitAddressRead8Bit  read;
+		Z16BitAddressWrite8Bit write;
+		Z16BitAddressRead8Bit  in;
+		Z16BitAddressWrite8Bit out;
+		ZRead32Bit	       int_data;
+		ZSwitch		       halt;
 	} cb;
 } AY3891x;
 
-Q_C_SYMBOLS_BEGIN
+Z_C_SYMBOLS_BEGIN
 
 
 
-Q_C_SYMBOLS_END
+Z_C_SYMBOLS_END
 
 #endif /* __modules_emulation_PSG_AY_3_891x_H__ */

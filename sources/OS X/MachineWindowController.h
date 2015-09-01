@@ -11,7 +11,7 @@
 #import "TapeRecorderWindowController.h"
 #import "ZX Spectrum.h" // Eliminar
 #import "SNA.h"
-#import <Q/types/buffering.h>
+#import <Z/types/buffering.h>
 #import <pthread.h>
 
 @interface MachineWindowController : NSWindowController <NSWindowDelegate, NSAnimationDelegate> {
@@ -32,22 +32,22 @@
 	//----------.
 	// Geometry |
 	//----------'
-	Q2D			_minimumWindowSize;
+	Z2D			_minimumWindowSize;
 
 	//-------------.
 	// I/O Buffers |
 	//-------------'
 	//QTripleBuffer*		_videoOutputBuffer;
 	//QRingBuffer*		_audioOutputBuffer;
-	QTripleBuffer*		_keyboardBuffer;
-	Q64Bit*			_keyboard;
-	Q64Bit			_keyboardState;
+	ZTripleBuffer*		_keyboardBuffer;
+	Z64Bit*			_keyboard;
+	Z64Bit			_keyboardState;
 
 	BOOL			_smooth;
 	GLOutputView*		_videoOutput;
 	CoreAudioOutput*	_audioOutput;
 	BOOL			_keyboardInput;
-	QRingBuffer		_audioInputBuffer;
+	ZRingBuffer		_audioInputBuffer;
 
 	NSTimer*		_pointerVisibilityTimer;
 	NSTrackingArea*		_trackingArea;
@@ -72,8 +72,8 @@
 	} _flags;
 
 	// Temporal
-	qsize	_tapeSampleCount;
-	quint8*	_tapeSamples;
+	zsize	_tapeSampleCount;
+	zuint8*	_tapeSamples;
 	BOOL	_attachInputBuffer;
 }
 	- (id) initWithMachineABI: (MachineABI *) machineABI;

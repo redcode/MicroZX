@@ -8,21 +8,21 @@
 #define __mZX_common_GLOutput_H
 
 #include "OpenGL.h"
-#include <Q/types/mathematics.h>
-#include <Q/types/buffering.h>
-#include <Q/keys/layout.h>
-#include <Q/macros/key.h>
+#include <Z/types/mathematics.h>
+#include <Z/types/buffering.h>
+#include <Z/keys/layout.h>
+#include <Z/macros/key.h>
 
 typedef struct {
-	QString* name;
-	qsize	 owner_count;
-	qsize	 context_size;
-	QString* vertex_shader_file_name;
-	QString* vertex_shader_source;
+	ZString* name;
+	zsize	 owner_count;
+	zsize	 context_size;
+	ZString* vertex_shader_file_name;
+	ZString* vertex_shader_source;
 	GLint	 vertex_shader_source_size;
 	GLuint	 vertex_shader;
-	QString* fragment_shader_file_name;
-	QString* fragment_shader_source;
+	ZString* fragment_shader_file_name;
+	ZString* fragment_shader_source;
 	GLint	 fragment_shader_source_size;
 	GLuint	 fragment_shader;
 	GLuint	 program;
@@ -41,10 +41,10 @@ typedef struct {
 typedef struct {
 	GLsizei	        input_width;
 	GLsizei		input_height;
-	QTripleBuffer	buffer;
-	QRectangle      viewport;
-	QRectangle      content_bounds;
-	QKey(SCALING)   content_scaling;
+	ZTripleBuffer	buffer;
+	ZRectangle      viewport;
+	ZRectangle      content_bounds;
+	ZKey(SCALING)   content_scaling;
 	GLfloat	        model_view_matrix[16];
 	GLuint		texture;
 	GLOutputEffect* effect;
@@ -53,24 +53,24 @@ typedef struct {
 
 #define GL_OUTPUT(p) ((GLOutput *)(p))
 
-Q_C_SYMBOLS_BEGIN
+Z_C_SYMBOLS_BEGIN
 
 void gl_output_initialize	  (GLOutput*	   object);
 
 void gl_output_finalize		  (GLOutput*	   object);
 
 void gl_output_set_resolution	  (GLOutput*	   object,
-				   Q2DSize	   resolution);
+				   Z2DSize	   resolution);
 
 void gl_output_set_content_bounds (GLOutput*	   object,
-				   QRectangle	   bounds);
+				   ZRectangle	   bounds);
 
 void gl_output_set_content_size	  (GLOutput*	   object,
-				   Q2D		   size);
+				   Z2D		   size);
 
 void gl_output_set_geometry	  (GLOutput*	   object,
-				   QRectangle	   viewport,
-				   QKey(SCALING)   content_scaling);
+				   ZRectangle	   viewport,
+				   ZKey(SCALING)   content_scaling);
 
 void gl_output_set_effect	  (GLOutput*	   object,
 				   GLOutputEffect* effect,
@@ -79,10 +79,10 @@ void gl_output_set_effect	  (GLOutput*	   object,
 void gl_output_remove_effect	  (GLOutput*	   object);
 
 void gl_output_draw		  (GLOutput*	   object,
-				   qboolean	   skip_old);
+				   zboolean	   skip_old);
 
-void gl_output_set_linear_interpolation(GLOutput *object, qboolean value);
+void gl_output_set_linear_interpolation(GLOutput *object, zboolean value);
 
-Q_C_SYMBOLS_END
+Z_C_SYMBOLS_END
 
 #endif /* __mZX_common_GLOutput_H */

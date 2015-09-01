@@ -5,9 +5,9 @@
 |_*/
 
 #import "GLOutputView.h"
-#import <Q/functions/geometry/QRectangle.h>
-#import <Q/functions/buffering/QTripleBuffer.h>
-#import <Q/macros/casting.h>
+#import <Z/functions/geometry/ZRectangle.h>
+#import <Z/functions/buffering/ZTripleBuffer.h>
+#import <Z/macros/casting.h>
 #import <pthread.h>
 #import <stdlib.h>
 
@@ -30,7 +30,7 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 
 
 	static GLOutputView**	activeOutputs_     = NULL;
-	static qsize		activeOutputCount_ = 0;
+	static zsize		activeOutputCount_ = 0;
 	static pthread_mutex_t	mutex_		   = PTHREAD_MUTEX_INITIALIZER;
 	static CVDisplayLinkRef	displayLink_;
 
@@ -45,7 +45,7 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 	)
 		{
 		pthread_mutex_lock(&mutex_);
-		qsize index = activeOutputCount_;
+		zsize index = activeOutputCount_;
 
 		while (index)
 			{
@@ -87,7 +87,7 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 
 			SET_CONTEXT;
 			gl_output_initialize(&_GLOutput);
-			gl_output_set_geometry(&_GLOutput, Q_CAST(NSRect, QRectangle, self.bounds), Q_SCALING_EXPAND);
+			gl_output_set_geometry(&_GLOutput, Z_CAST(NSRect, ZRectangle, self.bounds), Z_SCALING_EXPAND);
 			RESTORE_CONTEXT;
 			/*gl_output_set_effect(&_GLOutput, &effect, NULL);
 
@@ -172,7 +172,7 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 			if (_flags.reshaped)
 				{
 				[_GLContext update];
-				gl_output_set_geometry(&_GLOutput, Q_CAST(NSRect, QRectangle, self.bounds), Q_SCALING_SAME);
+				gl_output_set_geometry(&_GLOutput, Z_CAST(NSRect, ZRectangle, self.bounds), Z_SCALING_SAME);
 				}
 
 			gl_output_draw(&_GLOutput, FALSE);
@@ -188,12 +188,12 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 #	pragma mark - Accessors
 
 	- (GLOutput	 *) GLOutput	{return &_GLOutput;}
-	- (QTripleBuffer *) buffer	{return &_GLOutput.buffer;}
-	- (Q2D		  ) contentSize {return _GLOutput.content_bounds.size;}
-	- (QKey(SCALING)  ) scaling	{return _GLOutput.content_scaling;}
+	- (ZTripleBuffer *) buffer	{return &_GLOutput.buffer;}
+	- (Z2D		  ) contentSize {return _GLOutput.content_bounds.size;}
+	- (ZKey(SCALING)  ) scaling	{return _GLOutput.content_scaling;}
 
 
-	- (void) setContentSize: (Q2D) contentSize
+	- (void) setContentSize: (Z2D) contentSize
 		{
 		if (_flags.active) pthread_mutex_lock(&mutex_);
 		SET_CONTEXT;
@@ -203,11 +203,11 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 		}
 
 
-	- (void) setScaling: (QKey(SCALING)) scaling
+	- (void) setScaling: (ZKey(SCALING)) scaling
 		{
 		if (_flags.active) pthread_mutex_lock(&mutex_);
 		SET_CONTEXT;
-		gl_output_set_geometry(&_GLOutput, Q_CAST(NSRect, QRectangle, self.bounds), scaling);
+		gl_output_set_geometry(&_GLOutput, Z_CAST(NSRect, ZRectangle, self.bounds), scaling);
 		RESTORE_CONTEXT;
 		if (_flags.active) pthread_mutex_unlock(&mutex_);
 		}
@@ -216,8 +216,8 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 #	pragma mark - Public
 
 
-	- (void) setResolution: (Q2DSize) resolution
-		 format:	(quint	) format
+	- (void) setResolution: (Z2DSize) resolution
+		 format:	(zuint	) format
 		{
 		SET_CONTEXT;
 		gl_output_set_resolution(&_GLOutput, resolution);
@@ -261,7 +261,7 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 
 			if (activeOutputCount_ > 1)
 				{
-				qsize index = activeOutputCount_--;
+				zsize index = activeOutputCount_--;
 
 				while (activeOutputs_[--index] != self);
 				memmove(activeOutputs_ + index, activeOutputs_ + index + 1, sizeof(void *) * (activeOutputCount_ - index));

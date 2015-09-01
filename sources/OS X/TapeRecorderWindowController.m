@@ -5,7 +5,7 @@
 |_*/
 
 #import "TapeRecorderWindowController.h"
-#import <Q/formats/storage medium image/audio/TZX.h>
+#import <Z/formats/storage medium image/audio/TZX.h>
 #import <CoreAudio/CoreAudio.h>
 #import <time.h>
 
@@ -49,7 +49,7 @@ void *tape_recorder_play(TapeRecorder *object)
 
 	- (void) playFrame
 		{
-		((void (*)(id,SEL, quint8 *))_tapeRecorder.output_method)(_tapeRecorder.output, _tapeRecorder.output_selector, _tapeRecorder.samples + _tapeRecorder.frame_size * _tapeRecorder.frame_index);
+		((void (*)(id,SEL, zuint8 *))_tapeRecorder.output_method)(_tapeRecorder.output, _tapeRecorder.output_selector, _tapeRecorder.samples + _tapeRecorder.frame_size * _tapeRecorder.frame_index);
 		_tapeRecorder.frame_index++;
 		//NSLog(@"playFrame");
 		}
@@ -133,11 +133,11 @@ void *tape_recorder_play(TapeRecorder *object)
 		}
 
 
-	- (void) setFrameSize: (qsize) frameSize
-		 count:	       (qsize) frameCount
+	- (void) setFrameSize: (zsize) frameSize
+		 count:	       (zsize) frameCount
 		{
 		if (_tapeRecorder.buffer != NULL) free(_tapeRecorder.buffer);
-		_tapeRecorder.buffer = malloc(sizeof(quint8) * frameSize * frameCount);
+		_tapeRecorder.buffer = malloc(Z_UINT8_SIZE * frameSize * frameCount);
 
 		_tapeRecorder.frame_count = frameCount;
 		_tapeRecorder.frame_size = frameSize;

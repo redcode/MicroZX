@@ -7,21 +7,21 @@
 #ifndef __mZX_common_OpenGL_H
 #define __mZX_common_OpenGL_H
 
-#include <Q/inspection/OS.h>
-#undef Q_OS_SYMBIAN
-#if Q_OS == Q_OS_MAC_OS_X
+#include <Z/inspection/OS.h>
+#undef Z_OS_SYMBIAN
+#if Z_OS == Z_OS_MAC_OS_X
 
 #	include <OpenGL/gl.h>
 #	include <OpenGL/OpenGL.h>
 
-#elif Q_OS == Q_OS_IOS
+#elif Z_OS == Z_OS_IOS
 
 #	include <OpenGLES/ES2/gl.h>
 #	include <OpenGLES/ES2/glext.h>
 
 #	define USE_GL_ES
 
-#elif Q_OS == Q_OS_LINUX
+#elif Z_OS == Z_OS_LINUX
 
 #	define GL_GLEXT_PROTOTYPES
 #	include <GL/gl.h>

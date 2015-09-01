@@ -8,11 +8,11 @@ Copyright © 2014 Manuel Sainz de Baranda y Goñi.
 Released under the terms of the GNU General Public License v3. */
 
 #include "AY-3-891x.h"
-#include <Q/macros/value.h>
+#include <Z/macros/value.h>
 
 #define R(index) object->r[index]
 
-static const quint8 levels[16] = {
+static const zuint8 levels[16] = {
 	0x00, 0x03, 0x05, 0x07,
 	0x0A, 0x0F, 0x15, 0x23,
 	0x2B, 0x43, 0x5A, 0x73,
@@ -37,7 +37,7 @@ static const quint8 levels[16] = {
 #define Q_AY_3_891X_IO_PORT_A_DATA_STORE		14
 #define Q_AY_3_891X_IO_PORT_B_DATA_STORE		15*/
 
-void power(AY3891x *object, qboolean state)
+void power(AY3891x *object, zboolean state)
 	{
 	}
 
@@ -47,7 +47,7 @@ void reset(AY3891x *object)
 	}
 
 
-qsize run(AY3891x *object, qsize cycles)
+zsize run(AY3891x *object, zsize cycles)
 	{
 
 	return cycles;

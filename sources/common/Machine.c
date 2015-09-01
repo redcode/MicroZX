@@ -10,52 +10,52 @@
 #include "Machine.h"
 #include "system.h"
 #include "Z80.h"
-#include <Q/functions/buffering/QTripleBuffer.h>
-#include <Q/functions/buffering/QRingBuffer.h>
+#include <Z/functions/buffering/ZTripleBuffer.h>
+#include <Z/functions/buffering/ZRingBuffer.h>
 
 
 /*--------------------------------.
 | Emulation thread main function. |
 '--------------------------------*/
-Q_PRIVATE void *emulate(Machine *object)
+Z_PRIVATE void *emulate(Machine *object)
 	{
-	quint64 frames_per_second = 50;
-	quint64 frame_ticks	  = 1000000000 / frames_per_second;
-	quint64 next_frame_tick   = q_ticks();
-	quint64 delta;
-	quint	maximum_frameskip = 5;
-	quint	loops;
+	zuint64 frames_per_second = 50;
+	zuint64 frame_ticks	  = 1000000000 / frames_per_second;
+	zuint64 next_frame_tick   = z_ticks();
+	zuint64 delta;
+	zuint	maximum_frameskip = 5;
+	zuint	loops;
 	void*	buffer;
-	quint64* keyboard;
+	zuint64* keyboard;
 
 	while (!object->must_stop)
 		{
 		loops = 0;
 
 		do object->abi->run_one_frame(object->context);
-		while ((next_frame_tick += frame_ticks) < q_ticks() && ++loops < maximum_frameskip);
+		while ((next_frame_tick += frame_ticks) < z_ticks() && ++loops < maximum_frameskip);
 
 		//-----------------.
 		// Produce output. |
 		//-----------------'
-		if ((buffer = q_ring_buffer_try_produce(object->audio_output)) != NULL)
+		if ((buffer = z_ring_buffer_try_produce(object->audio_output)) != NULL)
 			object->context->audio_output_buffer = buffer;
 
-		object->context->video_output_buffer = q_triple_buffer_produce(object->video_output);
+		object->context->video_output_buffer = z_triple_buffer_produce(object->video_output);
 
 		//----------------.
 		// Consume input. |
 		//----------------'
-		if ((keyboard = q_triple_buffer_consume(object->keyboard_input)) != NULL)
+		if ((keyboard = z_triple_buffer_consume(object->keyboard_input)) != NULL)
 			{object->context->state.keyboard.value_uint64 = *keyboard;}
 
 		if (object->audio_input != NULL)
 			{
-			while ((buffer = q_ring_buffer_try_consume(object->audio_input)) == NULL)
+			while ((buffer = z_ring_buffer_try_consume(object->audio_input)) == NULL)
 				{
 				//printf("skip");
 				next_frame_tick += frame_ticks / 4;
-				q_wait(frame_ticks / 4);
+				z_wait(frame_ticks / 4);
 				}
 
 			object->context->audio_input_buffer = buffer;
@@ -64,7 +64,7 @@ Q_PRIVATE void *emulate(Machine *object)
 		//----------------------------------------.
 		// Schedule next iteration time and wait. |
 		//----------------------------------------'
-		if ((delta = next_frame_tick - q_ticks()) <= frame_ticks) q_wait(delta);
+		if ((delta = next_frame_tick - z_ticks()) <= frame_ticks) z_wait(delta);
 		//else printf("delta => %lu, next => %lu\n", delta, next_frame_tick);
 		}
 
@@ -72,7 +72,7 @@ Q_PRIVATE void *emulate(Machine *object)
 	}
 
 
-Q_PRIVATE void start(Machine *object)
+Z_PRIVATE void start(Machine *object)
 	{
 	object->must_stop = FALSE;
 	pthread_attr_t attributes;
@@ -82,7 +82,7 @@ Q_PRIVATE void start(Machine *object)
 	}
 
 
-Q_PRIVATE void stop(Machine *object)
+Z_PRIVATE void stop(Machine *object)
 	{
 	object->must_stop = TRUE;
 	pthread_join(object->thread, NULL);
@@ -93,8 +93,8 @@ Q_PRIVATE void stop(Machine *object)
 void machine_initialize(
 	Machine*       object,
 	MachineABI*    abi,
-	QTripleBuffer* video_output,
-	QRingBuffer*   audio_output
+	ZTripleBuffer* video_output,
+	ZRingBuffer*   audio_output
 )
 	{
 	object->abi	     = abi;
@@ -116,8 +116,8 @@ void machine_initialize(
 	context->cpu_cycles    = &context->cpu->cycles;
 	context->memory	       = calloc(1, abi->memory_size);
 
-	context->video_output_buffer = q_triple_buffer_production_buffer(video_output);
-	context->audio_output_buffer = q_ring_buffer_production_buffer	(audio_output);
+	context->video_output_buffer = z_triple_buffer_production_buffer(video_output);
+	context->audio_output_buffer = z_ring_buffer_production_buffer	(audio_output);
 	abi->initialize(context);
 	}
 
@@ -134,7 +134,7 @@ void machine_run_one_frame(Machine *object)
 	}
 
 
-void machine_power(Machine *object, qboolean state)
+void machine_power(Machine *object, zboolean state)
 	{
 	if (state != object->flags.power)
 		{
@@ -147,8 +147,8 @@ void machine_power(Machine *object, qboolean state)
 			}
 
 		else	{
-			qsize rom_count = object->abi->rom_count, index = 0;
-			qsize offset = 0;
+			zsize rom_count = object->abi->rom_count, index = 0;
+			zsize offset = 0;
 			ROM *rom;
 
 			if (!object->flags.pause) stop(object);
@@ -169,7 +169,7 @@ void machine_power(Machine *object, qboolean state)
 	}
 
 
-void machine_pause(Machine *object, qboolean state)
+void machine_pause(Machine *object, zboolean state)
 	{
 	if (object->flags.power && state != object->flags.pause)
 		{
@@ -199,7 +199,7 @@ void machine_reset(Machine *object)
 	}
 
 
-void machine_keyboard_input(Machine *object, quint16 key_code, qboolean key_state)
+void machine_keyboard_input(Machine *object, zuint16 key_code, zboolean key_state)
 	{
 	}
 

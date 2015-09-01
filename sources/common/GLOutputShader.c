@@ -8,7 +8,7 @@ Copyright © 2013-2014 Manuel Sainz de Baranda y Goñi.
 Released under the terms of the GNU General Public License v3. */
 
 #include "OpenGL.h"
-#include <Q/types/base.h>
+#include <Z/types/base.h>
 
 /*
 
