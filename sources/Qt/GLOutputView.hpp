@@ -10,10 +10,7 @@
 #include <QGLWidget>
 #include <QEvent>
 #include <pthread.h>
-
-namespace C {
-#	include <GLOutput.h>
-}
+#include <GLOutput.h>
 
 class GLOutputView : public QGLWidget {Q_OBJECT
 	private:
@@ -25,7 +22,7 @@ class GLOutputView : public QGLWidget {Q_OBJECT
 	static volatile bool   mustStop;
 
 	QGLContext* GLContext;
-	C::GLOutput GLOutput;
+	GLOutput GLOutput;
 
 	struct {bool reshaped	       :1;
 		bool active	       :1;
@@ -44,11 +41,11 @@ class GLOutputView : public QGLWidget {Q_OBJECT
 	void resizeGL(int w, int h);
 	int heightForWidth(int width) const;
 	static void drawActiveViews();
-	C::QTripleBuffer *getBuffer() {return &GLOutput.buffer;}
-	C::Q2D contentSize();
-	void setContentSize(C::Q2D content_size);
-	void setScaling(QKey(SCALING) scaling);
-	void setResolutionAndFormat(C::Q2DSize resolution, C::quint format);
+	ZTripleBuffer *getBuffer() {return &GLOutput.buffer;}
+	Z2D contentSize();
+	void setContentSize(Z2D content_size);
+	void setScaling(ZKey(SCALING) scaling);
+	void setResolutionAndFormat(Z2DSize resolution, zuint format);
 	void start();
 	void stop();
 	void setLinearInterpolation(bool enabled);

@@ -6,10 +6,8 @@
 
 #include "AboutDialog.hpp"
 #include "ui_AboutDialog.h"
+#include <Z/inspection/compiler.h>
 
-namespace Q {
-#	include <Q/inspection/compiler.h>
-}
 
 
 AboutDialog::AboutDialog(QWidget *parent) : QDialog(parent), ui(new Ui::AboutDialog)
@@ -19,7 +17,7 @@ AboutDialog::AboutDialog(QWidget *parent) : QDialog(parent), ui(new Ui::AboutDia
 	setFixedSize(width(), height());
 	setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	this->setStyleSheet("QToolButton {border:none; color:#0000ff;} QToolButton:hover {text-decoration:underline;}");
-	ui->compilationTimeLabel->setText("Compiled on " __DATE__ " " __TIME__ " UTC with " Q_COMPILER_STRING " v" Q_COMPILER_VERSION_STRING);
+	ui->compilationTimeLabel->setText("Compiled on " __DATE__ " " __TIME__ " UTC with " Z_COMPILER_STRING " v" Z_COMPILER_VERSION_STRING);
 	}
 
 

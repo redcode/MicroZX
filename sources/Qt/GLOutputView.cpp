@@ -8,16 +8,13 @@
 #include <stdlib.h>
 #include <GL/glx.h>
 #include <stdio.h>
+#include <Z/functions/geometry/constructors.h>
+#include <Z/functions/base/Q2DValue.h>
+#include <Z/functions/buffering/QTripleBuffer.h>
+#include <Z/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum.h>
+#include "system.h"
 
-namespace C {
-#	include <Q/functions/geometry/constructors.h>
-#	include <Q/functions/base/Q2DValue.h>
-#	include <Q/functions/buffering/QTripleBuffer.h>
-#	include <Q/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum.h>
-#	include "system.h"
-}
-
-#define BOUNDS C::q_rectangle(0.0, 0.0, (C::qreal)this->width(), (C::qreal)this->height())
+#define BOUNDS z_rectangle(0.0, 0.0, (zreal)this->width(), (zreal)this->height())
 
 GLOutputView**	GLOutputView::activeViews     = NULL;
 size_t		GLOutputView::activeViewCount = 0;
@@ -36,28 +33,28 @@ static void *drawing_thread_entry(void *)
 
 void GLOutputView::drawActiveViews()
 	{
-	C::quint64 frames_per_second = 60;
-	C::quint64 frame_ticks	     = 1000000000 / frames_per_second;
-	C::quint64 next_frame_tick   = C::q_ticks();
-	C::quint64 delta;
+	zuint64 frames_per_second = 60;
+	zuint64 frame_ticks	  = 1000000000 / frames_per_second;
+	zuint64 next_frame_tick   = z_ticks();
+	zuint64 delta;
 
 	while (!mustStop)
 		{
 		pthread_mutex_lock(&mutex);
 
-		for (C::qsize index = activeViewCount; index;)
+		for (zsize index = activeViewCount; index;)
 			{
 			GLOutputView *view = activeViews[--index];
 			view->makeCurrent();
-			C::gl_output_draw(&view->GLOutput, FALSE);
+			gl_output_draw(&view->GLOutput, FALSE);
 			view->doneCurrent();
 			view->update();
 			}
 
 		pthread_mutex_unlock(&mutex);
 
-		if ((delta = (next_frame_tick += frame_ticks) - C::q_ticks()) <= frame_ticks)
-			C::q_wait(delta);
+		if ((delta = (next_frame_tick += frame_ticks) - z_ticks()) <= frame_ticks)
+			z_wait(delta);
 		}
 	}
 
@@ -74,8 +71,8 @@ GLOutputView::GLOutputView(QWidget *parent) : QGLWidget(parent)
 	GLContext = (QGLContext *)context();
 
 	makeCurrent();
-	C::gl_output_initialize(&GLOutput);
-	C::gl_output_set_geometry(&GLOutput, BOUNDS, Q_SCALING_FIT);
+	gl_output_initialize(&GLOutput);
+	gl_output_set_geometry(&GLOutput, BOUNDS, Q_SCALING_FIT);
 	doneCurrent();
 	qDebug("GLOutputView::constructor");
 	}
@@ -119,9 +116,9 @@ void GLOutputView::paintEvent(QPaintEvent *event)
 void GLOutputView::paintGL()
 	{
 	if (flags.reshaped)
-		C::gl_output_set_geometry(&GLOutput, BOUNDS, Q_SCALING_SAME);
+		gl_output_set_geometry(&GLOutput, BOUNDS, Z_SCALING_SAME);
 
-	C::gl_output_draw(&GLOutput, FALSE);
+	gl_output_draw(&GLOutput, FALSE);
 	flags.reshaped = FALSE;
 	}
 
@@ -140,34 +137,34 @@ int GLOutputView::heightForWidth(int width) const
 	}
 
 
-C::Q2D GLOutputView::contentSize()
+Z2D GLOutputView::contentSize()
 	{
 	return GLOutput.content_bounds.size;
 	}
 
 
-void GLOutputView::setContentSize(C::Q2D contentSize)
+void GLOutputView::setContentSize(Z2D contentSize)
 	{
 	if (flags.active) pthread_mutex_lock(&mutex);
-	C::gl_output_set_content_size(&GLOutput, contentSize);
+	gl_output_set_content_size(&GLOutput, contentSize);
 	if (flags.active) pthread_mutex_unlock(&mutex);
 	}
 
 
-void GLOutputView::setScaling(QKey(SCALING) scaling)
+void GLOutputView::setScaling(ZKey(SCALING) scaling)
 	{
 	if (flags.active) pthread_mutex_lock(&mutex);
-	C::gl_output_set_geometry(&GLOutput, BOUNDS, scaling);
+	gl_output_set_geometry(&GLOutput, BOUNDS, scaling);
 	if (flags.active) pthread_mutex_unlock(&mutex);
 	}
 
 
-void GLOutputView::setResolutionAndFormat(C::Q2DSize resolution, C::quint format)
+void GLOutputView::setResolutionAndFormat(Z2DSize resolution, zuint format)
 	{
 	Q_UNUSED(format);
 	makeCurrent();
 	qDebug("GLOutputView::setResolutionAndFormat");
-	C::gl_output_set_resolution(&GLOutput, resolution);
+	gl_output_set_resolution(&GLOutput, resolution);
 	doneCurrent();
 	}
 
@@ -238,7 +235,7 @@ void GLOutputView::stop()
 void GLOutputView::setLinearInterpolation(bool enabled)
 	{
 	if (flags.active) pthread_mutex_lock(&mutex);
-	C::gl_output_set_linear_interpolation(&GLOutput, enabled);
+	gl_output_set_linear_interpolation(&GLOutput, enabled);
 	if (flags.active) pthread_mutex_unlock(&mutex);
 	}
 

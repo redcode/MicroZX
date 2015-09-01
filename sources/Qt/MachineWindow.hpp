@@ -10,11 +10,8 @@
 #include <QMainWindow>
 #include <QFrame>
 #include <QTimer>
-
-namespace C {
-#	include <Q/types/buffering.h>
-#	include "Machine.h"
-}
+#include <Z/types/buffering.h>
+#include "Machine.h"
 
 namespace Ui {class MachineWindow;}
 
@@ -26,15 +23,15 @@ class MachineWindow : public QMainWindow {Q_OBJECT
 
 	private:
 	Ui::MachineWindow* ui;
-	C::Machine	  machine;
-	void*		  memory;
-	pthread_t	  thread;
-	C::QRingBuffer	  audioOutputBuffer;
-	C::QTripleBuffer* keyboardBuffer;
-	C::Q64Bit*	  keyboard;
-	C::Q64Bit	  keyboardState;
-	QFrame*		  fullScreenMenuFrame;
-	volatile bool	  mustStop;
+	Machine		   machine;
+	void*		   memory;
+	pthread_t	   thread;
+	ZRingBuffer	   audioOutputBuffer;
+	ZTripleBuffer*	   keyboardBuffer;
+	Z64Bit*		   keyboard;
+	Z64Bit		   keyboardState;
+	QFrame*		   fullScreenMenuFrame;
+	volatile bool	   mustStop;
 
 	struct {bool running :1;
 	} flags;

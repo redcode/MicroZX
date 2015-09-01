@@ -13,19 +13,16 @@
 #include <QKeyEvent>
 #include <QFileDialog>
 #include <math.h>
+#include <Z/keys/layout.h>
+#include <Z/functions/buffering/ZTripleBuffer.h>
+#include <Z/functions/buffering/ZRingBuffer.h>
+#include <Z/functions/geometry/ZRectangle.h>
+#include <Z/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum.h>
+#include "system.h"
+#include <Z/types/time.h>
+#include "MachineABI.h"
 
-namespace C {
-#	include <Q/keys/layout.h>
-#	include <Q/functions/buffering/QTripleBuffer.h>
-#	include <Q/functions/buffering/QRingBuffer.h>
-#	include <Q/functions/geometry/QRectangle.h>
-#	include <Q/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum.h>
-#	include "system.h"
-#	include <Q/types/time.h>
-#	include "MachineABI.h"
-}
-
-#define MACHINE_SCREEN_SIZE C::q_2d((C::qreal)Q_ZX_SPECTRUM_SCREEN_WIDTH, (C::qreal)Q_ZX_SPECTRUM_SCREEN_HEIGHT)
+#define MACHINE_SCREEN_SIZE z_2d((zreal)Z_ZX_SPECTRUM_SCREEN_WIDTH, (zreal)Z_ZX_SPECTRUM_SCREEN_HEIGHT)
 
 
 static AboutDialog* aboutDialog = NULL;
@@ -34,8 +31,8 @@ static AboutDialog* aboutDialog = NULL;
 double MachineWindow::currentZoom()
 	{
 	return isFullScreen()
-		? ui->videoOutputView->contentSize().x / double(Q_ZX_SPECTRUM_SCREEN_WIDTH)
-		: double(ui->videoOutputView->width()) / double(Q_ZX_SPECTRUM_SCREEN_WIDTH);
+		? ui->videoOutputView->contentSize().x / double(Z_ZX_SPECTRUM_SCREEN_WIDTH)
+		: double(ui->videoOutputView->width()) / double(Z_ZX_SPECTRUM_SCREEN_WIDTH);
 	}
 
 
@@ -43,12 +40,12 @@ void MachineWindow::setZoom(double zoom)
 	{
 	if (isFullScreen())
 		{
-		C::Q2D boundsSize = C::q_2d(ui->videoOutputView->width(), ui->videoOutputView->height());
-		C::Q2D zoomedSize = C::q_2d(double(Q_ZX_SPECTRUM_SCREEN_WIDTH) * zoom, double(Q_ZX_SPECTRUM_SCREEN_HEIGHT) * zoom);
+		Z2D boundsSize = z_2d(ui->videoOutputView->width(), ui->videoOutputView->height());
+		Z2D zoomedSize = z_2d(zreal(Z_ZX_SPECTRUM_SCREEN_WIDTH) * zoom, zreal(Z_ZX_SPECTRUM_SCREEN_HEIGHT) * zoom);
 
-		ui->videoOutputView->setContentSize(C::q_2d_contains(boundsSize, zoomedSize)
+		ui->videoOutputView->setContentSize(z_2d_contains(boundsSize, zoomedSize)
 			? zoomedSize
-			: C::q_2d_fit(MACHINE_SCREEN_SIZE, boundsSize));
+			: z_2d_fit(MACHINE_SCREEN_SIZE, boundsSize));
 		}
 
 	else	{
@@ -73,22 +70,22 @@ MachineWindow::MachineWindow(QWidget *parent) :	QMainWindow(parent), ui(new Ui::
 	//---------------------------------------'
 
 	ui->videoOutputView->setResolutionAndFormat
-		(C::q_2d_value(SIZE)(Q_ZX_SPECTRUM_SCREEN_WIDTH, Q_ZX_SPECTRUM_SCREEN_HEIGHT), 0);
+		(z_2d_type(SIZE)(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT), 0);
 
-	keyboardBuffer = (C::QTripleBuffer *)malloc(sizeof(C::QTripleBuffer));
-	C::q_triple_buffer_initialize(keyboardBuffer, malloc(sizeof(C::quint64) * 3), sizeof(C::quint64));
-	keyboard = (C::Q64Bit *)q_triple_buffer_production_buffer(keyboardBuffer);
-	memset(keyboardBuffer->buffers[0], 0xFF, sizeof(C::quint64) * 3);
+	keyboardBuffer = (ZTripleBuffer *)malloc(sizeof(ZTripleBuffer));
+	z_triple_buffer_initialize(keyboardBuffer, malloc(sizeof(zuint64) * 3), sizeof(zuint64));
+	keyboard = (Z64Bit *)z_triple_buffer_production_buffer(keyboardBuffer);
+	memset(keyboardBuffer->buffers[0], 0xFF, sizeof(zuint64) * 3);
 
-	C::q_ring_buffer_initialize(&audioOutputBuffer, malloc(sizeof(C::qint16) * 882 * 4), sizeof(C::qint16) * 882, 4);
+	z_ring_buffer_initialize(&audioOutputBuffer, malloc(sizeof(zint16) * 882 * 4), sizeof(zint16) * 882, 4);
 
-	C::MachineABI *abi = &C::machine_abi_table[4];
+	MachineABI *abi = &machine_abi_table[4];
 
-	C::machine_initialize(&machine, abi, ui->videoOutputView->getBuffer(), &audioOutputBuffer);
+	machine_initialize(&machine, abi, ui->videoOutputView->getBuffer(), &audioOutputBuffer);
 	machine.keyboard_input = keyboardBuffer;
 
-	C::qsize index = abi->rom_count;
-	C::ROM *rom;
+	zsize index = abi->rom_count;
+	ROM *rom;
 
 	while (index)
 		{
@@ -111,7 +108,7 @@ MachineWindow::MachineWindow(QWidget *parent) :	QMainWindow(parent), ui(new Ui::
 			}
 		}
 
-	keyboardState.value_uint64 = Q_UINT64(0xFFFFFFFFFFFFFFFF);
+	keyboardState.value_uint64 = Z_UINT64(0xFFFFFFFFFFFFFFFF);
 	setWindowTitle(QString(abi->model_name));
 	}
 
@@ -218,7 +215,7 @@ void MachineWindow::keyPressEvent(QKeyEvent* event)
 		}
 
 	keyboard->value_uint64 = keyboardState.value_uint64;
-	keyboard = (C::Q64Bit *)C::q_triple_buffer_produce(keyboardBuffer);
+	keyboard = (Z64Bit *)z_triple_buffer_produce(keyboardBuffer);
 	}
 
 
@@ -286,7 +283,7 @@ void MachineWindow::keyReleaseEvent(QKeyEvent* event)
 		}
 
 	keyboard->value_uint64 = keyboardState.value_uint64;
-	keyboard = (C::Q64Bit *)C::q_triple_buffer_produce(keyboardBuffer);
+	keyboard = (Z64Bit *)z_triple_buffer_produce(keyboardBuffer);
 	}
 
 
@@ -302,11 +299,11 @@ void MachineWindow::resizeEvent(QResizeEvent *)
 	{
 	if (isFullScreen())
 		{
-		ui->videoOutputView->setScaling(Q_SCALING_NONE);
+		ui->videoOutputView->setScaling(Z_SCALING_NONE);
 
-		ui->videoOutputView->setContentSize(C::q_2d_fit
-			(C::q_2d(Q_ZX_SPECTRUM_SCREEN_WIDTH, Q_ZX_SPECTRUM_SCREEN_HEIGHT),
-			 C::q_2d(ui->videoOutputView->width(), ui->videoOutputView->height())));
+		ui->videoOutputView->setContentSize(z_2d_fit
+			(z_2d(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT),
+			 z_2d(ui->videoOutputView->width(), ui->videoOutputView->height())));
 
 		fullScreenMenuFrame->setGeometry(0.0, 0.0, ui->videoOutputView->width(), ui->menuBar->height());
 		fullScreenMenuFrame->show();
@@ -345,7 +342,7 @@ void MachineWindow::on_actionMachinePower_toggled(bool enabled)
 
 	bool state = !machine.flags.power;
 
-	C::machine_power(&machine, state);
+	machine_power(&machine, state);
 
 	if (state) ui->videoOutputView->start();
 
@@ -361,7 +358,7 @@ void MachineWindow::on_actionMachinePause_toggled(bool enabled)
 	Q_UNUSED(enabled);
 	bool state = !machine.flags.pause;
 
-	C::machine_pause(&machine, state);
+	machine_pause(&machine, state);
 
 	if (state) ui->videoOutputView->stop();
 	else ui->videoOutputView->start();
@@ -373,7 +370,7 @@ void MachineWindow::on_actionMachineReset_triggered()
 	ui->actionMachinePause->setChecked(false);
 
 	bool pause = machine.flags.pause;
-	C::machine_reset(&machine);
+	machine_reset(&machine);
 	if (pause) ui->videoOutputView->start();
 	}
 
@@ -395,7 +392,7 @@ void MachineWindow::on_actionViewFullScreen_toggled(bool enabled)
 	else	{
 		//setMenuBar(ui->menubar);
 		ui->menuBar->show();
-		ui->videoOutputView->setScaling(Q_SCALING_FIT);
+		ui->videoOutputView->setScaling(Z_SCALING_FIT);
 		if (fullScreenMenuFrame->isHidden()) QApplication::restoreOverrideCursor();
 		setMenuBar(ui->menuBar);
 		//fullScreenMenuFrame->layout()->setMenuBar(NULL);
