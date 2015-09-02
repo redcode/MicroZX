@@ -9,8 +9,8 @@
 #include <GL/glx.h>
 #include <stdio.h>
 #include <Z/functions/geometry/constructors.h>
-#include <Z/functions/base/Q2DValue.h>
-#include <Z/functions/buffering/QTripleBuffer.h>
+#include <Z/functions/base/Z2DValue.h>
+#include <Z/functions/buffering/ZTripleBuffer.h>
 #include <Z/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum.h>
 #include "system.h"
 
@@ -46,7 +46,7 @@ void GLOutputView::drawActiveViews()
 			{
 			GLOutputView *view = activeViews[--index];
 			view->makeCurrent();
-			gl_output_draw(&view->GLOutput, FALSE);
+			gl_output_draw(&view->output, FALSE);
 			view->doneCurrent();
 			view->update();
 			}
@@ -71,8 +71,8 @@ GLOutputView::GLOutputView(QWidget *parent) : QGLWidget(parent)
 	GLContext = (QGLContext *)context();
 
 	makeCurrent();
-	gl_output_initialize(&GLOutput);
-	gl_output_set_geometry(&GLOutput, BOUNDS, Q_SCALING_FIT);
+	gl_output_initialize(&output);
+	gl_output_set_geometry(&output, BOUNDS, Z_SCALING_FIT);
 	doneCurrent();
 	qDebug("GLOutputView::constructor");
 	}
@@ -82,10 +82,10 @@ GLOutputView::~GLOutputView()
 	{
 	stop();
 	pthread_mutex_lock(&mutex);
-	gl_output_finalize(&GLOutput);
+	gl_output_finalize(&output);
 	//[_pixelFormat release];
 	//[_GLContext release];
-	free(GLOutput.buffer.buffers[0]);
+	free(output.buffer.buffers[0]);
 	pthread_mutex_unlock(&mutex);
 	//[super dealloc];
 	qDebug("~GLOutputView()");
@@ -116,10 +116,11 @@ void GLOutputView::paintEvent(QPaintEvent *event)
 void GLOutputView::paintGL()
 	{
 	if (flags.reshaped)
-		gl_output_set_geometry(&GLOutput, BOUNDS, Z_SCALING_SAME);
+		gl_output_set_geometry(&output, BOUNDS, Z_SCALING_SAME);
 
-	gl_output_draw(&GLOutput, FALSE);
+	gl_output_draw(&output, FALSE);
 	flags.reshaped = FALSE;
+	//qDebug("paintGL()");
 	}
 
 
@@ -139,14 +140,14 @@ int GLOutputView::heightForWidth(int width) const
 
 Z2D GLOutputView::contentSize()
 	{
-	return GLOutput.content_bounds.size;
+	return output.content_bounds.size;
 	}
 
 
 void GLOutputView::setContentSize(Z2D contentSize)
 	{
 	if (flags.active) pthread_mutex_lock(&mutex);
-	gl_output_set_content_size(&GLOutput, contentSize);
+	gl_output_set_content_size(&output, contentSize);
 	if (flags.active) pthread_mutex_unlock(&mutex);
 	}
 
@@ -154,7 +155,7 @@ void GLOutputView::setContentSize(Z2D contentSize)
 void GLOutputView::setScaling(ZKey(SCALING) scaling)
 	{
 	if (flags.active) pthread_mutex_lock(&mutex);
-	gl_output_set_geometry(&GLOutput, BOUNDS, scaling);
+	gl_output_set_geometry(&output, BOUNDS, scaling);
 	if (flags.active) pthread_mutex_unlock(&mutex);
 	}
 
@@ -164,7 +165,7 @@ void GLOutputView::setResolutionAndFormat(Z2DSize resolution, zuint format)
 	Q_UNUSED(format);
 	makeCurrent();
 	qDebug("GLOutputView::setResolutionAndFormat");
-	gl_output_set_resolution(&GLOutput, resolution);
+	gl_output_set_resolution(&output, resolution);
 	doneCurrent();
 	}
 
@@ -226,6 +227,7 @@ void GLOutputView::stop()
 
 			flags.active = FALSE;
 			pthread_mutex_unlock(&mutex);
+			qDebug("stop()");
 			}
 
 		flags.startWhenPossible = FALSE;
@@ -235,7 +237,7 @@ void GLOutputView::stop()
 void GLOutputView::setLinearInterpolation(bool enabled)
 	{
 	if (flags.active) pthread_mutex_lock(&mutex);
-	gl_output_set_linear_interpolation(&GLOutput, enabled);
+	gl_output_set_linear_interpolation(&output, enabled);
 	if (flags.active) pthread_mutex_unlock(&mutex);
 	}
 

@@ -51,8 +51,6 @@ typedef struct {
 	void*		effect_context;
 } GLOutput;
 
-#define GL_OUTPUT(p) ((GLOutput *)(p))
-
 Z_C_SYMBOLS_BEGIN
 
 void gl_output_initialize	  (GLOutput*	   object);

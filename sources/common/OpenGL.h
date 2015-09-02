@@ -8,7 +8,7 @@
 #define __mZX_common_OpenGL_H
 
 #include <Z/inspection/OS.h>
-#undef Z_OS_SYMBIAN
+
 #if Z_OS == Z_OS_MAC_OS_X
 
 #	include <OpenGL/gl.h>

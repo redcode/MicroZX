@@ -49,7 +49,7 @@ Z_PRIVATE void *emulate(Machine *object)
 		if ((keyboard = z_triple_buffer_consume(object->keyboard_input)) != NULL)
 			{object->context->state.keyboard.value_uint64 = *keyboard;}
 
-#if Q_OS == Q_OS_MAC_OS_X
+#if Z_OS == Z_OS_MAC_OS_X
 		if (object->audio_input != NULL)
 			{
 			while ((buffer = z_ring_buffer_try_consume(object->audio_input)) == NULL)
