@@ -157,7 +157,7 @@ Z_INLINE zreal step_up(zreal n, zreal step_size)
 				NSMakeRect(0.0, 0.0, SCREEN_SIZE_X, SCREEN_SIZE_Y)];
 
 			[_videoOutput
-				setResolution: z_2d_value(SIZE)(SCREEN_SIZE_X, SCREEN_SIZE_Y)
+				setResolution: z_2d_type(SIZE)(SCREEN_SIZE_X, SCREEN_SIZE_Y)
 				format:	       0];
 
 			_videoOutput.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;

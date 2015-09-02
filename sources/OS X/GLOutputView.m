@@ -51,7 +51,7 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 			{
 			GLOutputView *view = activeOutputs_[--index];
 			CGLSetCurrentContext(view->_CGLContext);
-			gl_output_draw(&view->_GLOutput, TRUE);
+			gl_output_draw(&view->_output, TRUE);
 			}
 
 		CGLSetCurrentContext(NULL);
@@ -86,8 +86,8 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 			_CGLContext = _GLContext.CGLContextObj;
 
 			SET_CONTEXT;
-			gl_output_initialize(&_GLOutput);
-			gl_output_set_geometry(&_GLOutput, Z_CAST(NSRect, ZRectangle, self.bounds), Z_SCALING_EXPAND);
+			gl_output_initialize(&_output);
+			gl_output_set_geometry(&_output, Z_CAST(NSRect, ZRectangle, self.bounds), Z_SCALING_EXPAND);
 			RESTORE_CONTEXT;
 			/*gl_output_set_effect(&_GLOutput, &effect, NULL);
 
@@ -124,7 +124,7 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 		[self stop];
 		pthread_mutex_lock(&mutex_);
 		SET_CONTEXT;
-		gl_output_finalize(&_GLOutput);
+		gl_output_finalize(&_output);
 		RESTORE_CONTEXT;
 		[_pixelFormat release];
 		[_GLContext release];
@@ -172,10 +172,10 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 			if (_flags.reshaped)
 				{
 				[_GLContext update];
-				gl_output_set_geometry(&_GLOutput, Z_CAST(NSRect, ZRectangle, self.bounds), Z_SCALING_SAME);
+				gl_output_set_geometry(&_output, Z_CAST(NSRect, ZRectangle, self.bounds), Z_SCALING_SAME);
 				}
 
-			gl_output_draw(&_GLOutput, FALSE);
+			gl_output_draw(&_output, FALSE);
 			_flags.reshaped = NO;
 			//}
 
@@ -187,17 +187,17 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 
 #	pragma mark - Accessors
 
-	- (GLOutput	 *) GLOutput	{return &_GLOutput;}
-	- (ZTripleBuffer *) buffer	{return &_GLOutput.buffer;}
-	- (Z2D		  ) contentSize {return _GLOutput.content_bounds.size;}
-	- (ZKey(SCALING)  ) scaling	{return _GLOutput.content_scaling;}
+	- (GLOutput	 *) GLOutput	{return &_output;}
+	- (ZTripleBuffer *) buffer	{return &_output.buffer;}
+	- (Z2D		  ) contentSize {return _output.content_bounds.size;}
+	- (ZKey(SCALING)  ) scaling	{return _output.content_scaling;}
 
 
 	- (void) setContentSize: (Z2D) contentSize
 		{
 		if (_flags.active) pthread_mutex_lock(&mutex_);
 		SET_CONTEXT;
-		gl_output_set_content_size(&_GLOutput, contentSize);
+		gl_output_set_content_size(&_output, contentSize);
 		RESTORE_CONTEXT;
 		if (_flags.active) pthread_mutex_unlock(&mutex_);
 		}
@@ -207,7 +207,7 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 		{
 		if (_flags.active) pthread_mutex_lock(&mutex_);
 		SET_CONTEXT;
-		gl_output_set_geometry(&_GLOutput, Z_CAST(NSRect, ZRectangle, self.bounds), scaling);
+		gl_output_set_geometry(&_output, Z_CAST(NSRect, ZRectangle, self.bounds), scaling);
 		RESTORE_CONTEXT;
 		if (_flags.active) pthread_mutex_unlock(&mutex_);
 		}
@@ -220,7 +220,7 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 		 format:	(zuint	) format
 		{
 		SET_CONTEXT;
-		gl_output_set_resolution(&_GLOutput, resolution);
+		gl_output_set_resolution(&_output, resolution);
 		RESTORE_CONTEXT;
 		}
 
@@ -291,7 +291,7 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 		{
 		if (!_flags.active)
 			{
-			memset(_GLOutput.buffer.buffers[0], 0, _GLOutput.input_height * _GLOutput.input_width * 4 * 3);
+			memset(_output.buffer.buffers[0], 0, _output.input_height * _output.input_width * 4 * 3);
 
 			self.needsDisplay = YES;
 			}
@@ -302,7 +302,7 @@ void draw_effect(void *context, GLsizei texture_width, GLsizei texture_height)
 		{
 		if (_flags.active) pthread_mutex_lock(&mutex_);
 		SET_CONTEXT;
-		gl_output_set_linear_interpolation(&_GLOutput, value);
+		gl_output_set_linear_interpolation(&_output, value);
 		RESTORE_CONTEXT;
 		if (_flags.active) pthread_mutex_unlock(&mutex_);
 		}

@@ -13,7 +13,7 @@
 	NSOpenGLContext*     _GLContext;
 	CGLContextObj	     _CGLContext;
 	NSOpenGLPixelFormat* _pixelFormat;
-	GLOutput	     _GLOutput;
+	GLOutput	     _output;
 
 	struct {BOOL reshaped :1;
 		BOOL active   :1;
