@@ -51,10 +51,9 @@ GLOutputView::~GLOutputView()
 void GLOutputView::initializeGL()
 	{
 	qDebug("GLOutputView::initializeGL");
-//	QGLFormat format(QGL::SampleBuffers);
-//	format.setSwapInterval(1); // vsync
-//	setFormat(format);
-
+	//QGLFormat format(QGL::SampleBuffers);
+	//format.setSwapInterval(1); // vsync
+	//setFormat(format);
 
 	flags.OpenGLReady = TRUE;
 	if (flags.startWhenPossible) this->start();
@@ -129,7 +128,7 @@ void GLOutputView::start()
 		timer->setInterval(1000 / 60);
 		connect(timer, SIGNAL(timeout()), this, SLOT(updateGL()));
 		timer->start();
-	}
+		}
 
 	else flags.startWhenPossible = TRUE;
 	}
@@ -140,6 +139,7 @@ void GLOutputView::stop()
 	if (flags.active)
 		{
 		timer->stop();
+		delete timer;
 		flags.active = FALSE;
 		qDebug("stop()");
 		}

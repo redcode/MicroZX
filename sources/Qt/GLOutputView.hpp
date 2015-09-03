@@ -9,7 +9,6 @@
 
 #include <QGLWidget>
 #include <QTimer>
-#include <pthread.h>
 #include "GLOutput.h"
 
 class GLOutputView : public QGLWidget {Q_OBJECT

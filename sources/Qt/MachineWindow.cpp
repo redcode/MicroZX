@@ -110,11 +110,16 @@ MachineWindow::MachineWindow(QWidget *parent) :	QMainWindow(parent), ui(new Ui::
 
 	keyboardState.value_uint64 = Z_UINT64(0xFFFFFFFFFFFFFFFF);
 	setWindowTitle(QString(abi->model_name));
+
+	machine_power(&machine, ON);
+	ui->videoOutputView->start();
 	}
 
 
 MachineWindow::~MachineWindow()
 	{
+	ui->videoOutputView->stop();
+	machine_power(&machine, OFF);
 	//if (flags.running) stopMachine();
 	delete ui;
 	}
