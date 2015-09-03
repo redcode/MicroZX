@@ -4,8 +4,8 @@
 |   ____________/\__\ Released under the GNU General Public License v3.
 |_*/
 
-#ifndef __NEStalin_Qt_MachineWindow_HPP
-#define __NEStalin_Qt_MachineWindow_HPP
+#ifndef __mZX_Qt_MachineWindow_HPP
+#define __mZX_Qt_MachineWindow_HPP
 
 #include <QMainWindow>
 #include <QFrame>
@@ -64,4 +64,4 @@ class MachineWindow : public QMainWindow {Q_OBJECT
 	void on_actionHelpAbout_triggered();
 };
 
-#endif // __NEStalin_Qt_MachineWindow_HPP
+#endif // __mZX_Qt_MachineWindow_HPP
