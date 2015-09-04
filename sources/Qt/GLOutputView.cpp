@@ -6,7 +6,6 @@
 
 #include "GLOutputView.hpp"
 #include <stdlib.h>
-#include <GL/glx.h>
 #include <stdio.h>
 #include <Z/functions/geometry/constructors.h>
 #include <Z/functions/base/Z2DValue.h>
@@ -20,11 +19,7 @@
 
 GLOutputView::GLOutputView(QWidget *parent) : QGLWidget(parent)
 	{
-	//buffer.buffers[0]	= NULL;
-	flags.active		= false;
-	flags.reshaped		= false;
-	flags.OpenGLReady	= false;
-	flags.startWhenPossible = false;
+	active = false;
 	//setAttribute(Qt::WA_PaintOutsidePaintEvent, true);
 
 	GLContext = (QGLContext *)context();
@@ -35,7 +30,6 @@ GLOutputView::GLOutputView(QWidget *parent) : QGLWidget(parent)
 	gl_output_initialize(&output);
 	gl_output_set_geometry(&output, BOUNDS, Z_SCALING_FIT);
 	doneCurrent();
-	qDebug("GLOutputView::constructor");
 	}
 
 
@@ -43,39 +37,26 @@ GLOutputView::~GLOutputView()
 	{
 	stop();
 	gl_output_finalize(&output);
-	free(output.buffer.buffers[0]);
-	qDebug("~GLOutputView()");
 	}
 
 
 void GLOutputView::initializeGL()
 	{
-	qDebug("GLOutputView::initializeGL");
 	//QGLFormat format(QGL::SampleBuffers);
 	//format.setSwapInterval(1); // vsync
 	//setFormat(format);
-
-	flags.OpenGLReady = TRUE;
-	if (flags.startWhenPossible) this->start();
 	}
 
 
 void GLOutputView::paintGL()
 	{
-	//qDebug("paintGL()");
-	if (flags.reshaped)
-		gl_output_set_geometry(&output, BOUNDS, Z_SCALING_SAME);
-
 	gl_output_draw(&output, FALSE);
-	flags.reshaped = FALSE;
 	}
 
 
-void GLOutputView::resizeGL(int w, int h)
+void GLOutputView::resizeGL(int width, int height)
 	{
-	Q_UNUSED(w);
-	Q_UNUSED(h);
-	flags.reshaped = TRUE;
+	gl_output_set_geometry(&output, z_rectangle(0.0, 0.0, width, height), Z_SCALING_SAME);
 	}
 
 
@@ -111,7 +92,6 @@ void GLOutputView::setResolutionAndFormat(Z2DSize resolution, zuint format)
 	{
 	Q_UNUSED(format);
 	makeCurrent();
-	qDebug("GLOutputView::setResolutionAndFormat");
 	gl_output_set_resolution(&output, resolution);
 	doneCurrent();
 	}
@@ -119,38 +99,31 @@ void GLOutputView::setResolutionAndFormat(Z2DSize resolution, zuint format)
 
 void GLOutputView::start()
 	{
-	qDebug("start");
-	if (flags.OpenGLReady)
+	if (!active)
 		{
-		qDebug("OpenGL is ready");
-		flags.active = TRUE;
+		active = TRUE;
 		timer = new QTimer();
 		timer->setInterval(1000 / 60);
 		connect(timer, SIGNAL(timeout()), this, SLOT(updateGL()));
 		timer->start();
 		}
-
-	else flags.startWhenPossible = TRUE;
 	}
 
 
 void GLOutputView::stop()
 	{
-	if (flags.active)
+	if (active)
 		{
 		timer->stop();
 		delete timer;
-		flags.active = FALSE;
-		qDebug("stop()");
+		active = FALSE;
 		}
-
-	flags.startWhenPossible = FALSE;
 	}
 
 
 void GLOutputView::blank()
 	{
-	if (!flags.active)
+	if (!active)
 		{
 		memset(output.buffer.buffers[0], 0, output.input_height * output.input_width * 4 * 3);
 		updateGL();

@@ -22,7 +22,7 @@ typedef struct {
 	ZTripleBuffer* video_output;
 	ZRingBuffer*   audio_output;
 
-#	if Q_OS == Q_OS_MAC_OS_X
+#	if Z_OS == Z_OS_MAC_OS_X
 		ZRingBuffer* audio_input;
 #	endif
 
