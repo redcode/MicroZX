@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>μZX</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../../common/images.qrc">
+    <normaloff>:/icons/Application Icon.png</normaloff>:/icons/Application Icon.png</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <property name="minimumSize">
     <size>
@@ -69,6 +73,8 @@
     <addaction name="separator"/>
     <addaction name="actionMachineSaveScreenshot"/>
     <addaction name="actionRecord_Movie"/>
+    <addaction name="separator"/>
+    <addaction name="actionPreferences"/>
     <addaction name="separator"/>
     <addaction name="actionFileQuit"/>
    </widget>
@@ -214,6 +220,10 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../../common/images.qrc">
+     <normaloff>:/icons/Menu - CPU Debugger.png</normaloff>:/icons/Menu - CPU Debugger.png</iconset>
+   </property>
    <property name="text">
     <string>CPU</string>
    </property>
@@ -340,6 +350,10 @@
    </property>
   </action>
   <action name="actionMachineSaveScreenshot">
+   <property name="icon">
+    <iconset resource="../../common/images.qrc">
+     <normaloff>:/icons/Menu - Save Screenshot.png</normaloff>:/icons/Menu - Save Screenshot.png</iconset>
+   </property>
    <property name="text">
     <string>Save Screenshot</string>
    </property>
@@ -366,6 +380,10 @@
    </property>
   </action>
   <action name="actionWindowEditTitle">
+   <property name="icon">
+    <iconset resource="../../common/images.qrc">
+     <normaloff>:/icons/Menu - Edit Title.png</normaloff>:/icons/Menu - Edit Title.png</iconset>
+   </property>
    <property name="text">
     <string>Edit Title...</string>
    </property>
@@ -508,6 +526,10 @@
    <property name="checkable">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../../common/images.qrc">
+     <normaloff>:/icons/Menu - Movie.png</normaloff>:/icons/Menu - Movie.png</iconset>
+   </property>
    <property name="text">
     <string>Movie</string>
    </property>
@@ -521,6 +543,10 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../../common/images.qrc">
+     <normaloff>:/icons/Menu - CPU Debugger.png</normaloff>:/icons/Menu - CPU Debugger.png</iconset>
+   </property>
    <property name="text">
     <string>ULA</string>
    </property>
@@ -528,6 +554,10 @@
   <action name="actionPSG">
    <property name="checkable">
     <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../common/images.qrc">
+     <normaloff>:/icons/Menu - CPU Debugger.png</normaloff>:/icons/Menu - CPU Debugger.png</iconset>
    </property>
    <property name="text">
     <string>PSG</string>
@@ -553,6 +583,10 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../../common/images.qrc">
+     <normaloff>:/icons/Menu - Debugger.png</normaloff>:/icons/Menu - Debugger.png</iconset>
+   </property>
    <property name="text">
     <string>Debugger</string>
    </property>
@@ -563,6 +597,15 @@
    </property>
    <property name="text">
     <string>Smooth</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="icon">
+    <iconset resource="../../common/images.qrc">
+     <normaloff>:/icons/Menu - Preferences.png</normaloff>:/icons/Menu - Preferences.png</iconset>
+   </property>
+   <property name="text">
+    <string>Preferences</string>
    </property>
   </action>
  </widget>
