@@ -353,7 +353,7 @@ void MachineWindow::on_actionMachinePower_toggled(bool enabled)
 
 	else	{
 		ui->videoOutputView->stop();
-		//ui->videoOutputView->blank();
+		ui->videoOutputView->blank();
 		}
 	}
 

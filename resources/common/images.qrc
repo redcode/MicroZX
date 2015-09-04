@@ -16,5 +16,6 @@
         <file>icons/Application Icon.png</file>
         <file>icons/Menu - Debugger.png</file>
         <file>icons/Menu - Edit Title.png</file>
+        <file>icons/Menu - Keyboard.png</file>
     </qresource>
 </RCC>

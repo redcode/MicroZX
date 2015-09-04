@@ -148,6 +148,16 @@ void GLOutputView::stop()
 	}
 
 
+void GLOutputView::blank()
+	{
+	if (!flags.active)
+		{
+		memset(output.buffer.buffers[0], 0, output.input_height * output.input_width * 4 * 3);
+		updateGL();
+		}
+	}
+
+
 void GLOutputView::setLinearInterpolation(bool enabled)
 	{
 	makeCurrent();

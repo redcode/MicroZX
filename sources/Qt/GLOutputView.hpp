@@ -41,6 +41,7 @@ class GLOutputView : public QGLWidget {Q_OBJECT
 	void setResolutionAndFormat(Z2DSize resolution, zuint format);
 	void start();
 	void stop();
+	void blank();
 	void setLinearInterpolation(bool enabled);
 };
 

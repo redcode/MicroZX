@@ -111,7 +111,6 @@
     <addaction name="actionSaveState"/>
     <addaction name="actionLoadState"/>
     <addaction name="actionSavedStates"/>
-    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -566,6 +565,10 @@
   <action name="actionKeyboard">
    <property name="checkable">
     <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../common/images.qrc">
+     <normaloff>:/icons/Menu - Keyboard.png</normaloff>:/icons/Menu - Keyboard.png</iconset>
    </property>
    <property name="text">
     <string>Keyboard</string>
