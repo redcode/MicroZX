@@ -413,9 +413,9 @@ void MachineWindow::on_actionViewZoomIn_triggered()
 
 void MachineWindow::on_actionViewZoomOut_triggered()
 	{
-	double factor = floor(currentZoom() / 0.5) * 0.5 - 0.5;
+	double zoom = ceil(currentZoom() / 0.5) * 0.5 - 0.5;
 
-	setZoom(factor <= 1.0 ? 1.0 : factor);
+	setZoom(zoom <= 1.0 ? 1.0 : zoom);
 	}
 
 

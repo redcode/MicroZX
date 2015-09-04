@@ -48,7 +48,7 @@ typedef struct {
 Z_INLINE zreal step_down(zreal n, zreal step_size)
 	{
 	zreal factor = n / step_size;
-	zreal step = floor(factor);
+	zreal step = ceil(factor);
 
 	return step < factor ? step * step_size : step * step_size - step_size;
 	}
@@ -738,9 +738,9 @@ Z_INLINE zreal step_up(zreal n, zreal step_size)
 
 	- (IBAction) zoomOut: (id) sender
 		{
-		zreal factor = step_down(self.zoom, 0.5);
+		zreal zoom = step_down(self.zoom, 0.5);
 
-		self.zoom = factor <= 1.0 ? 1.0 : factor;
+		self.zoom = zoom <= 1.0 ? 1.0 : zoom;
 		}
 
 
