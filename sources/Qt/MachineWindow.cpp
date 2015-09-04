@@ -22,7 +22,7 @@
 #include <Z/types/time.h>
 #include "MachineABI.h"
 
-#define MACHINE_SCREEN_SIZE z_2d((zreal)Z_ZX_SPECTRUM_SCREEN_WIDTH, (zreal)Z_ZX_SPECTRUM_SCREEN_HEIGHT)
+#define MACHINE_SCREEN_SIZE z_2d(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT)
 
 
 static AboutDialog* aboutDialog = NULL;
@@ -424,6 +424,12 @@ void MachineWindow::on_actionViewZoomOut_triggered()
 void MachineWindow::on_actionView1x_triggered() {setZoom(1.0);}
 void MachineWindow::on_actionView2x_triggered() {setZoom(2.0);}
 void MachineWindow::on_actionView3x_triggered() {setZoom(3.0);}
+
+
+void MachineWindow::on_actionSmooth_toggled(bool enabled)
+	{
+	ui->videoOutputView->setLinearInterpolation(enabled);
+	}
 
 
 void MachineWindow::on_actionHelpAbout_triggered()

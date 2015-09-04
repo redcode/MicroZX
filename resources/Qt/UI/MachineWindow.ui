@@ -120,8 +120,6 @@
      <property name="title">
       <string>Effect</string>
      </property>
-     <addaction name="actionLinear_Interpolation"/>
-     <addaction name="separator"/>
      <addaction name="actionNone"/>
      <addaction name="actionScanlines"/>
     </widget>
@@ -449,12 +447,15 @@
     <string>FPS</string>
    </property>
   </action>
-  <action name="actionLinear_Interpolation">
+  <action name="actionSmooth">
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>Linear Interpolation</string>
+    <string>Smooth</string>
    </property>
   </action>
   <action name="actionPattern_Tables">
@@ -592,14 +593,6 @@
    </property>
    <property name="text">
     <string>Debugger</string>
-   </property>
-  </action>
-  <action name="actionSmooth">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Smooth</string>
    </property>
   </action>
   <action name="actionPreferences">
