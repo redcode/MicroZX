@@ -13,10 +13,9 @@
 
 class GLOutputView : public QGLWidget {Q_OBJECT
 	private:
-	QTimer*	    timer;
-	QGLContext* GLContext;
-	GLOutput    output;
-	bool	    active;
+	QTimer*	 timer;
+	GLOutput output;
+	bool	 active;
 
 	public:
 	explicit GLOutputView(QWidget *parent = 0);

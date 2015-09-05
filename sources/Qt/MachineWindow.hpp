@@ -61,7 +61,8 @@ class MachineWindow : public QMainWindow {Q_OBJECT
 	void on_actionView1x_triggered();
 	void on_actionView2x_triggered();
 	void on_actionView3x_triggered();
-	void on_actionSmooth_toggled(bool);
+	void on_actionViewSmooth_toggled(bool);
+	void on_actionWindowEditTitle_triggered();
 	void on_actionHelpAbout_triggered();
 };
 

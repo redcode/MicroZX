@@ -12,6 +12,7 @@
 #include <QMessageBox>
 #include <QKeyEvent>
 #include <QFileDialog>
+#include <QInputDialog>
 #include <math.h>
 #include <Z/keys/layout.h>
 #include <Z/functions/buffering/ZTripleBuffer.h>
@@ -424,9 +425,25 @@ void MachineWindow::on_actionView2x_triggered() {setZoom(2.0);}
 void MachineWindow::on_actionView3x_triggered() {setZoom(3.0);}
 
 
-void MachineWindow::on_actionSmooth_toggled(bool enabled)
+void MachineWindow::on_actionViewSmooth_toggled(bool enabled)
 	{
 	ui->videoOutputView->setLinearInterpolation(enabled);
+	}
+
+
+void MachineWindow::on_actionWindowEditTitle_triggered()
+	{
+	bool ok;
+	QInputDialog dialog(this);
+
+	dialog.setWindowFlags((dialog.windowFlags() & ~Qt::WindowMaximizeButtonHint));
+
+	QString text = dialog.getText
+		(this, QString(" "),
+		 tr("Window title:"), QLineEdit::Normal,
+		 windowTitle(), &ok);
+
+	if (ok) setWindowTitle(text.isEmpty() ? QString(machine.abi->model_name) : text);
 	}
 
 

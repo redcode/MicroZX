@@ -20,10 +20,6 @@
 GLOutputView::GLOutputView(QWidget *parent) : QGLWidget(parent)
 	{
 	active = false;
-	//setAttribute(Qt::WA_PaintOutsidePaintEvent, true);
-
-	GLContext = (QGLContext *)context();
-
 	timer = new QTimer();
 
 	makeCurrent();
