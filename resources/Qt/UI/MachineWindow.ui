@@ -134,9 +134,6 @@
      <addaction name="actionScanlines"/>
     </widget>
     <addaction name="actionViewFullScreen"/>
-    <addaction name="actionFPS"/>
-    <addaction name="actionMenu_Bar"/>
-    <addaction name="actionViewStatusBar"/>
     <addaction name="separator"/>
     <addaction name="actionViewZoomIn"/>
     <addaction name="actionViewZoomOut"/>
@@ -606,6 +603,10 @@
   <action name="actionTape_Recorder">
    <property name="checkable">
     <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../common/images.qrc">
+     <normaloff>:/icons/Menu - Tape Recorder.png</normaloff>:/icons/Menu - Tape Recorder.png</iconset>
    </property>
    <property name="text">
     <string>Tape Recorder</string>

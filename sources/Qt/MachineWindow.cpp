@@ -37,7 +37,7 @@ double MachineWindow::currentZoom()
 	}
 
 
-void MachineWindow::setZoom(double zoom)
+void MachineWindow::setZoom(zreal zoom)
 	{
 	if (isFullScreen())
 		{
@@ -50,6 +50,12 @@ void MachineWindow::setZoom(double zoom)
 		}
 
 	else	{
+		QRect frame = geometry();
+
+		frame.setHeight(frame.height() - ui->videoOutputView->height() + int(zreal(Z_ZX_SPECTRUM_SCREEN_HEIGHT) * zoom));
+		frame.setWidth(zreal(Z_ZX_SPECTRUM_SCREEN_WIDTH) * zoom);
+
+		setGeometry(frame);
 		}
 	}
 
@@ -414,7 +420,7 @@ void MachineWindow::on_actionViewZoomIn_triggered()
 
 void MachineWindow::on_actionViewZoomOut_triggered()
 	{
-	double zoom = ceil(currentZoom() / 0.5) * 0.5 - 0.5;
+	zreal zoom = ceil(currentZoom() / 0.5) * 0.5 - 0.5;
 
 	setZoom(zoom <= 1.0 ? 1.0 : zoom);
 	}

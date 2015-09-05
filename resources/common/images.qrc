@@ -17,5 +17,6 @@
         <file>icons/Menu - Debugger.png</file>
         <file>icons/Menu - Edit Title.png</file>
         <file>icons/Menu - Keyboard.png</file>
+        <file>icons/Menu - Tape Recorder.png</file>
     </qresource>
 </RCC>

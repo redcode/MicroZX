@@ -39,7 +39,7 @@ class MachineWindow : public QMainWindow {Q_OBJECT
 	void runMachine();
 	void stopMachine();
 	double currentZoom();
-	void setZoom(double);
+	void setZoom(zreal);
 
 	protected:
 	void keyPressEvent	   (QKeyEvent*);
