@@ -12,6 +12,7 @@
 #include <QTimer>
 #include <Z/types/buffering.h>
 #include "Machine.h"
+#include "AudioOutput.hpp"
 
 namespace Ui {class MachineWindow;}
 
@@ -23,6 +24,7 @@ class MachineWindow : public QMainWindow {Q_OBJECT
 
 	private:
 	Ui::MachineWindow* ui;
+	AudioOutput*	   audioOutput;
 	Machine		   machine;
 	void*		   memory;
 	pthread_t	   thread;

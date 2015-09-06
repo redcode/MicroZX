@@ -1,0 +1,30 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ROMs/Inves Spectrum + (Firmware)(ROM).rom</file>
+        <file>ROMs/ZX Interface 1 v.1 (Firmware)(ROM).rom</file>
+        <file>ROMs/ZX Interface 1 v.2 (Firmware)(ROM).rom</file>
+        <file>ROMs/ZX Spectrum (Firmware)(ROM).rom</file>
+        <file>ROMs/ZX Spectrum + 128K (ES)(Firmware)(ROM 1 of 2).rom</file>
+        <file>ROMs/ZX Spectrum + 128K (ES)(Firmware)(ROM 2 of 2).rom</file>
+        <file>ROMs/ZX Spectrum + 128K (Firmware)(ROM 1 of 2).rom</file>
+        <file>ROMs/ZX Spectrum + 128K (Firmware)(ROM 2 of 2).rom</file>
+        <file>ROMs/ZX Spectrum +2 (ES)(Firmware)(ROM 1 of 2).rom</file>
+        <file>ROMs/ZX Spectrum +2 (ES)(Firmware)(ROM 2 of 2).rom</file>
+        <file>ROMs/ZX Spectrum +2 (Firmware)(ROM 1 of 2).rom</file>
+        <file>ROMs/ZX Spectrum +2 (Firmware)(ROM 2 of 2).rom</file>
+        <file>ROMs/ZX Spectrum +2 (FR)(Firmware)(ROM 1 of 2).rom</file>
+        <file>ROMs/ZX Spectrum +2 (FR)(Firmware)(ROM 2 of 2).rom</file>
+        <file>ROMs/ZX Spectrum +3 (ES)(Firmware)(ROM 1 of 4).rom</file>
+        <file>ROMs/ZX Spectrum +3 (ES)(Firmware)(ROM 2 of 4).rom</file>
+        <file>ROMs/ZX Spectrum +3 (ES)(Firmware)(ROM 3 of 4).rom</file>
+        <file>ROMs/ZX Spectrum +3 (ES)(Firmware)(ROM 4 of 4).rom</file>
+        <file>ROMs/ZX Spectrum +3 v4.0 (ES)(Firmware)(ROM 1 of 4).rom</file>
+        <file>ROMs/ZX Spectrum +3 v4.0 (ES)(Firmware)(ROM 2 of 4).rom</file>
+        <file>ROMs/ZX Spectrum +3 v4.0 (ES)(Firmware)(ROM 3 of 4).rom</file>
+        <file>ROMs/ZX Spectrum +3 v4.0 (ES)(Firmware)(ROM 4 of 4).rom</file>
+        <file>ROMs/ZX Spectrum +3 v4.1 (ES)(Firmware)(ROM 1 of 4).rom</file>
+        <file>ROMs/ZX Spectrum +3 v4.1 (ES)(Firmware)(ROM 2 of 4).rom</file>
+        <file>ROMs/ZX Spectrum +3 v4.1 (ES)(Firmware)(ROM 3 of 4).rom</file>
+        <file>ROMs/ZX Spectrum +3 v4.1 (ES)(Firmware)(ROM 4 of 4).rom</file>
+    </qresource>
+</RCC>

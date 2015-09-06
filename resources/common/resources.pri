@@ -1,2 +1,3 @@
 RESOURCES += \
-	$$P_RESOURCES_COMMON/images.qrc
+	$$P_RESOURCES_COMMON/images.qrc \
+	$$P_RESOURCES_COMMON/ROMs.qrc

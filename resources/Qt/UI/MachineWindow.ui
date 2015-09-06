@@ -110,11 +110,18 @@
      <addaction name="action3"/>
      <addaction name="action4"/>
     </widget>
+    <widget class="QMenu" name="menuAudio_2">
+     <property name="title">
+      <string>Audio</string>
+     </property>
+     <addaction name="actionEnabled"/>
+     <addaction name="actionListend_on_Line_In"/>
+    </widget>
     <addaction name="actionMachinePower"/>
     <addaction name="actionMachinePause"/>
     <addaction name="actionMachineReset"/>
     <addaction name="separator"/>
-    <addaction name="actionMachineAudio"/>
+    <addaction name="menuAudio_2"/>
     <addaction name="menuVideo"/>
     <addaction name="menuFrameskip"/>
     <addaction name="separator"/>
@@ -133,6 +140,12 @@
      <addaction name="actionNone"/>
      <addaction name="actionScanlines"/>
     </widget>
+    <widget class="QMenu" name="menuColor_Palette">
+     <property name="title">
+      <string>Color Palette</string>
+     </property>
+     <addaction name="actionDefault"/>
+    </widget>
     <addaction name="actionViewFullScreen"/>
     <addaction name="separator"/>
     <addaction name="actionViewZoomIn"/>
@@ -142,8 +155,9 @@
     <addaction name="actionView2x"/>
     <addaction name="actionView3x"/>
     <addaction name="separator"/>
-    <addaction name="actionViewSmooth"/>
+    <addaction name="menuColor_Palette"/>
     <addaction name="menuEffect"/>
+    <addaction name="actionViewSmooth"/>
    </widget>
    <widget class="QMenu" name="menuWindow">
     <property name="title">
@@ -340,17 +354,6 @@
   <action name="actionFileProperties">
    <property name="text">
     <string>Properties...</string>
-   </property>
-  </action>
-  <action name="actionMachineAudio">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Audio</string>
    </property>
   </action>
   <action name="actionMachineSaveScreenshot">
@@ -651,6 +654,41 @@
   <action name="actionZX_Spectrum">
    <property name="text">
     <string>ZX Spectrum +</string>
+   </property>
+  </action>
+  <action name="actionEnable">
+   <property name="text">
+    <string>Enable</string>
+   </property>
+  </action>
+  <action name="actionEnabled">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Enabled</string>
+   </property>
+  </action>
+  <action name="actionListend_on_Line_In">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Listen to Line-In</string>
+   </property>
+  </action>
+  <action name="actionDefault">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Default</string>
    </property>
   </action>
  </widget>

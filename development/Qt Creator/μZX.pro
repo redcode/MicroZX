@@ -7,7 +7,7 @@
 QMAKE_CXXFLAGS += -DEMULATION_CPU_Z80_NO_SLOTS
 QMAKE_CFLAGS   += -DEMULATION_CPU_Z80_NO_SLOTS
 
-QT += core guiQT opengl
+QT += core guiQT opengl multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

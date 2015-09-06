@@ -79,6 +79,8 @@ MachineWindow::MachineWindow(QWidget *parent) :	QMainWindow(parent), ui(new Ui::
 	ui->videoOutputView->setResolutionAndFormat
 		(z_2d_type(SIZE)(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT), 0);
 
+	audioOutput = new AudioOutput(this);
+
 	keyboardBuffer = (ZTripleBuffer *)malloc(sizeof(ZTripleBuffer));
 	z_triple_buffer_initialize(keyboardBuffer, malloc(sizeof(zuint64) * 3), sizeof(zuint64));
 	keyboard = (Z64Bit *)z_triple_buffer_production_buffer(keyboardBuffer);
@@ -88,7 +90,7 @@ MachineWindow::MachineWindow(QWidget *parent) :	QMainWindow(parent), ui(new Ui::
 
 	MachineABI *abi = &machine_abi_table[4];
 
-	machine_initialize(&machine, abi, ui->videoOutputView->getBuffer(), &audioOutputBuffer);
+	machine_initialize(&machine, abi, ui->videoOutputView->buffer(), &audioOutput->buffer);
 	machine.keyboard_input = keyboardBuffer;
 
 	zsize index = abi->rom_count;
@@ -119,12 +121,15 @@ MachineWindow::MachineWindow(QWidget *parent) :	QMainWindow(parent), ui(new Ui::
 	setWindowTitle(QString(abi->model_name));
 	machine_power(&machine, ON);
 	ui->videoOutputView->start();
+	audioOutput->start();
 	}
 
 
 MachineWindow::~MachineWindow()
 	{
 	ui->videoOutputView->stop();
+	audioOutput->stop();
+	delete audioOutput;
 	machine_power(&machine, OFF);
 	delete ui;
 	}
