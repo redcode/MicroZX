@@ -9,10 +9,15 @@
 
 #include <Z/types/buffering.h>
 #include <alsa/asoundlib.h>
+#include <pthread.h>
 
 typedef struct {
-	snd_pcm_t *device;
-	ZRingBuffer buffer;
+	pthread_t	  thread;
+	snd_pcm_t*	  device;
+	ZRingBuffer	  buffer;
+	volatile zboolean must_stop;
+	zboolean	  playing;
+	zsize		  offset;
 } ALSAOutput;
 
 Z_C_SYMBOLS_BEGIN
