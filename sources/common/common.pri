@@ -1,10 +1,10 @@
 SOURCES += \
-	$$P_SOURCES_COMMON/system.c \
-	$$P_SOURCES_COMMON/GLOutput.c \
-	$$P_SOURCES_COMMON/Machine.c \
+	$$P_SOURCES/common/system.c \
+	$$P_SOURCES/common/GLOutput.c \
+	$$P_SOURCES/common/Machine.c \
 
 HEADERS += \
-	$$P_SOURCES_COMMON/OpenGL.h \
-	$$P_SOURCES_COMMON/system.h \
-	$$P_SOURCES_COMMON/GLOutput.h \
-	$$P_SOURCES_COMMON/Machine.h \
+	$$P_SOURCES/common/OpenGL.h \
+	$$P_SOURCES/common/system.h \
+	$$P_SOURCES/common/GLOutput.h \
+	$$P_SOURCES/common/Machine.h \

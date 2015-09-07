@@ -12,7 +12,7 @@
 #include <QTimer>
 #include <Z/types/buffering.h>
 #include "Machine.h"
-#include "AudioOutput.hpp"
+#include "ALSAOutput.h"
 
 namespace Ui {class MachineWindow;}
 
@@ -24,7 +24,7 @@ class MachineWindow : public QMainWindow {Q_OBJECT
 
 	private:
 	Ui::MachineWindow* ui;
-	AudioOutput*	   audioOutput;
+	ALSAOutput	   audioOutput;
 	Machine		   machine;
 	void*		   memory;
 	pthread_t	   thread;

@@ -1,15 +1,13 @@
 
 SOURCES += \
-	$$P_SOURCES_QT/main.cpp \
-	$$P_SOURCES_QT/GLOutputView.cpp \
-	$$P_SOURCES_QT/MachineWindow.cpp \
-	$$P_SOURCES_QT/MainWindow.cpp \
-	$$P_SOURCES_QT/AudioOutput.cpp \
-	$$P_SOURCES_QT/AboutDialog.cpp
+	$$P_SOURCES/Qt/main.cpp \
+	$$P_SOURCES/Qt/GLOutputView.cpp \
+	$$P_SOURCES/Qt/MachineWindow.cpp \
+	$$P_SOURCES/Qt/MainWindow.cpp \
+	$$P_SOURCES/Qt/AboutDialog.cpp \
 
 HEADERS += \
-	$$P_SOURCES_QT/GLOutputView.hpp \
-	$$P_SOURCES_QT/MachineWindow.hpp \
-	$$P_SOURCES_QT/MainWindow.hpp \
-	$$P_SOURCES_QT/AudioOutput.hpp \
-	$$P_SOURCES_QT/AboutDialog.hpp
+	$$P_SOURCES/Qt/GLOutputView.hpp \
+	$$P_SOURCES/Qt/MachineWindow.hpp \
+	$$P_SOURCES/Qt/MainWindow.hpp \
+	$$P_SOURCES/Qt/AboutDialog.hpp \

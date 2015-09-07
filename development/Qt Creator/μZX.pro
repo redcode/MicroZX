@@ -11,26 +11,25 @@ QT += core guiQT opengl multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-LIBS += -lX11
+LIBS += -lX11 -lasound
 
 TARGET = μZX
 TEMPLATE = app
 
 P_SOURCES		   = ../../sources
-P_SOURCES_COMMON	   = $$P_SOURCES/common
-P_SOURCES_COMMON_EMULATORS = $$P_SOURCES/common/emulators
-P_SOURCES_QT		   = $$P_SOURCES/Qt
 P_RESOURCES		   = ../../resources
 P_RESOURCES_COMMON	   = $$P_RESOURCES/common
 P_RESOURCES_QT_UI	   = $$P_RESOURCES/Qt/UI
 
 INCLUDEPATH += \
-	$$P_SOURCES_COMMON \
-	$$P_SOURCES_COMMON_EMULATORS \
-	$$P_SOURCES_QT \
+	$$P_SOURCES/common \
+	$$P_SOURCES/common/emulators \
+	$$P_SOURCES/Linux \
+	$$P_SOURCES/Qt \
 
-include(../../sources/common/common.pri)
-include(../../sources/common/emulators/emulators.pri)
-include(../../sources/Qt/Qt.pri)
-include(../../resources/Qt/UI/UI.pri)
-include(../../resources/common/resources.pri)
+include($$P_SOURCES/common/common.pri)
+include($$P_SOURCES/common/emulators/emulators.pri)
+include($$P_SOURCES/Linux/Linux.pri)
+include($$P_SOURCES/Qt/Qt.pri)
+include($$P_RESOURCES/Qt/UI/UI.pri)
+include($$P_RESOURCES/common/resources.pri)

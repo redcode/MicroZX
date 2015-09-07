@@ -12,7 +12,6 @@
 #include <pthread.h>
 #include "ZX Spectrum.h"
 #include "MachineABI.h"
-
 #include <Z/inspection/OS.h>
 
 typedef struct {

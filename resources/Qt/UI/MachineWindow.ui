@@ -633,7 +633,7 @@
      <normaloff>:/icons/Menu - Preferences.png</normaloff>:/icons/Menu - Preferences.png</iconset>
    </property>
    <property name="text">
-    <string>Preferences</string>
+    <string>Preferences...</string>
    </property>
   </action>
   <action name="actionZX_Spectrum_16K_Issue_1">

@@ -1,8 +1,8 @@
 SOURCES += \
-	$$P_SOURCES_COMMON_EMULATORS/Z80.c \
-	"$$P_SOURCES_COMMON_EMULATORS/ZX Spectrum.c" \
+	$$P_SOURCES/common/emulators/Z80.c \
+	"$$P_SOURCES/common/emulators/ZX Spectrum.c" \
 
 HEADERS += \
-	$$P_SOURCES_COMMON_EMULATORS/Z80.h \
-	"$$P_SOURCES_COMMON_EMULATORS/ZX Spectrum.h" \
-	$$P_SOURCES_COMMON_EMULATORS/MachineABI.h \
+	$$P_SOURCES/common/emulators/Z80.h \
+	"$$P_SOURCES/common/emulators/ZX Spectrum.h" \
+	$$P_SOURCES/common/emulators/MachineABI.h \
