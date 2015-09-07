@@ -5,6 +5,7 @@
 |_*/
 
 #include <Z/functions/buffering/ZRingBuffer.h>
+#include "system.h"
 #include <stdlib.h>
 #include "ALSAOutput.h"
 
@@ -13,62 +14,23 @@
 
 static void *play(ALSAOutput *object)
 	{
-	int error;
-	snd_pcm_sframes_t sample_count;
-	zint16 *frame;
+	while (object->buffer.fill_count < 2)
+		{
+		z_wait(1000000000 / 50 + 1000000000 / 100);
+		}
 
 	while (!object->must_stop)
 		{
-		if ((error = snd_pcm_wait(object->device, 1000)) < 0)
-			{
-			fprintf(stderr, "poll failed (%s)\n", strerror(errno));
-			break;
-			}
-
-		if ((sample_count = snd_pcm_avail_update(object->device)) < 0)
-			{
-			if (sample_count == -EPIPE)
-				{
-				fprintf(stderr, "an xrun occured\n");
-				break;
-			}
-
-			else	{
-				fprintf	(stderr, "unknown ALSA avail update return value (%d)\n",
-					 sample_count);
-				break;
-				}
-			}
-
-		//printf("samples => %d\n", sample_count);
-
-		if (sample_count > 882) sample_count = 882;
-
-
-
 		if (object->buffer.fill_count < 2)
-			{
-			frame = z_ring_buffer_consumption_buffer(&object->buffer);
+			snd_pcm_writei(object->device, z_ring_buffer_consumption_buffer(&object->buffer), 882);
 
-			if ((error = snd_pcm_writei(object->device, frame, 441)) < 0)
-				{
-				fprintf(stderr, "write failed (%s)\n", snd_strerror(error));
-				}
+		else	{
+			while (object->buffer.fill_count > 3)
+				z_ring_buffer_try_consume(&object->buffer);
 
-			continue;
+			snd_pcm_writei(object->device, z_ring_buffer_consumption_buffer(&object->buffer), 882);
+			z_ring_buffer_try_consume(&object->buffer);
 			}
-
-		while (object->buffer.fill_count > 3)
-			z_ring_buffer_consume(&object->buffer);
-
-		frame = z_ring_buffer_consumption_buffer(&object->buffer);
-
-		if ((error = snd_pcm_writei(object->device, frame, 441)) < 0)
-			{
-			fprintf(stderr, "write failed (%s)\n", snd_strerror(error));
-			}
-
-		z_ring_buffer_try_consume(&object->buffer);
 		}
 
 	return NULL;
@@ -95,22 +57,21 @@ void alsa_output_start(ALSAOutput *object)
 	if (!object->playing)
 		{
 		void *parameters;
-
 		snd_pcm_t *device;
 		unsigned int rate = 44100;
 		snd_pcm_uframes_t size = 882 * 2 * 2;
 
 		int error = snd_pcm_open(&device, "default", SND_PCM_STREAM_PLAYBACK, 0);
-		snd_pcm_hw_params_malloc((snd_pcm_hw_params_t **)&parameters);
-		snd_pcm_hw_params_any(device, parameters);
-		snd_pcm_hw_params_set_access(device, parameters, SND_PCM_ACCESS_RW_INTERLEAVED);
 
 		/*----------------------------------------.
 		| Configure device's hardware parameters. |
 		'----------------------------------------*/
+		snd_pcm_hw_params_malloc((snd_pcm_hw_params_t **)&parameters);
+		snd_pcm_hw_params_any(device, parameters);
+		snd_pcm_hw_params_set_access(device, parameters, SND_PCM_ACCESS_RW_INTERLEAVED);
 		snd_pcm_hw_params_set_format(device, parameters, SND_PCM_FORMAT_S16_LE);
 		snd_pcm_hw_params_set_rate_near(device, parameters, &rate, (int *)NULL);
-		snd_pcm_hw_params_set_channels(device, parameters, 2);
+		snd_pcm_hw_params_set_channels(device, parameters, 1);
 		snd_pcm_hw_params_set_buffer_size_near(device, parameters, &size);
 		size = 882 * 2;
 		snd_pcm_hw_params_set_period_size(device, parameters, size, 0);
@@ -122,8 +83,9 @@ void alsa_output_start(ALSAOutput *object)
 		'----------------------------------------*/
 		snd_pcm_sw_params_malloc((snd_pcm_sw_params_t **)&parameters);
 		snd_pcm_sw_params_current(device, parameters);
-		snd_pcm_sw_params_set_start_threshold(device, parameters, size);
-		snd_pcm_sw_params_set_avail_min(device, parameters, size);
+		snd_pcm_sw_params_set_start_threshold(device, parameters, 882);
+		snd_pcm_sw_params_set_avail_min(device, parameters, 882);
+		//snd_pcm_sw_params_set_avail_max(device, parameters, size);
 		snd_pcm_sw_params(device, parameters);
 		snd_pcm_sw_params_free(parameters);
 

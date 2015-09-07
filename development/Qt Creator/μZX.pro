@@ -13,6 +13,9 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 LIBS += -lX11 -lasound
 
+##QMAKE_CFLAGS += -march=bdver1 -O2 -pipe -fno-stack-protector
+##QMAKE_CXXFLAGS += -march=bdver1 -O2 -pipe -fno-stack-protector
+
 TARGET = μZX
 TEMPLATE = app
 

@@ -17,7 +17,6 @@ typedef struct {
 	ZRingBuffer	  buffer;
 	volatile zboolean must_stop;
 	zboolean	  playing;
-	zsize		  offset;
 } ALSAOutput;
 
 Z_C_SYMBOLS_BEGIN

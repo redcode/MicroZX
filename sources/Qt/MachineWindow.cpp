@@ -396,7 +396,6 @@ void MachineWindow::on_actionViewFullScreen_toggled(bool enabled)
 	{
 	if (enabled)
 		{
-		qDebug("FULL");
 		showFullScreen();
 		fullScreenMenuFrame = new QFrame(this);
 		fullScreenMenuFrame->setAutoFillBackground(true);
