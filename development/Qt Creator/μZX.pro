@@ -7,7 +7,7 @@
 QMAKE_CXXFLAGS += -DEMULATION_CPU_Z80_NO_SLOTS
 QMAKE_CFLAGS   += -DEMULATION_CPU_Z80_NO_SLOTS
 
-QT += core guiQT opengl multimedia
+QT += core guiQT opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,6 +25,7 @@ P_RESOURCES_COMMON	   = $$P_RESOURCES/common
 P_RESOURCES_QT_UI	   = $$P_RESOURCES/Qt/UI
 
 INCLUDEPATH += \
+	/usr/include/C++ \
 	$$P_SOURCES/common \
 	$$P_SOURCES/common/emulators \
 	$$P_SOURCES/Linux \

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>299</height>
+    <height>388</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>114</y>
+     <y>204</y>
      <width>400</width>
      <height>18</height>
     </rect>
@@ -46,7 +46,7 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>134</y>
+     <y>224</y>
      <width>400</width>
      <height>16</height>
     </rect>
@@ -70,7 +70,7 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>174</y>
+     <y>264</y>
      <width>400</width>
      <height>26</height>
     </rect>
@@ -95,7 +95,7 @@ Released under the terms of the GNU General Public License v3</string>
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>274</y>
+     <y>364</y>
      <width>400</width>
      <height>16</height>
     </rect>
@@ -119,7 +119,7 @@ Released under the terms of the GNU General Public License v3</string>
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>209</y>
+     <y>299</y>
      <width>80</width>
      <height>55</height>
     </rect>
@@ -165,7 +165,7 @@ Released under the terms of the GNU General Public License v3</string>
    <property name="geometry">
     <rect>
      <x>160</x>
-     <y>209</y>
+     <y>299</y>
      <width>80</width>
      <height>55</height>
     </rect>
@@ -211,7 +211,7 @@ Released under the terms of the GNU General Public License v3</string>
    <property name="geometry">
     <rect>
      <x>240</x>
-     <y>209</y>
+     <y>299</y>
      <width>80</width>
      <height>55</height>
     </rect>
@@ -257,7 +257,7 @@ Released under the terms of the GNU General Public License v3</string>
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>150</y>
+     <y>240</y>
      <width>400</width>
      <height>16</height>
     </rect>
@@ -275,6 +275,25 @@ Released under the terms of the GNU General Public License v3</string>
    </property>
    <property name="textInteractionFlags">
     <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>10</y>
+     <width>261</width>
+     <height>181</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="../../common/images.qrc">:/icons/Application Icon.png</pixmap>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
  </widget>

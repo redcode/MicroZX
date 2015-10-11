@@ -138,6 +138,7 @@
       <string>Effect</string>
      </property>
      <addaction name="actionNone"/>
+     <addaction name="actionViewSmooth"/>
      <addaction name="actionScanlines"/>
     </widget>
     <widget class="QMenu" name="menuColor_Palette">
@@ -157,7 +158,6 @@
     <addaction name="separator"/>
     <addaction name="menuColor_Palette"/>
     <addaction name="menuEffect"/>
-    <addaction name="actionViewSmooth"/>
    </widget>
    <widget class="QMenu" name="menuWindow">
     <property name="title">
@@ -334,6 +334,9 @@
    </property>
   </action>
   <action name="actionScanlines">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Scanlines</string>
    </property>
@@ -563,6 +566,9 @@
    </property>
   </action>
   <action name="actionNone">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>None</string>
    </property>

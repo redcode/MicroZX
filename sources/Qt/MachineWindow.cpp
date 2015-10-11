@@ -361,9 +361,14 @@ void MachineWindow::on_actionMachinePower_toggled(bool enabled)
 
 	machine_power(&machine, state);
 
-	if (state) ui->videoOutputView->start();
+	if (state)
+		{
+		alsa_output_start(&audioOutput);
+		ui->videoOutputView->start();
+		}
 
 	else	{
+		alsa_output_stop(&audioOutput);
 		ui->videoOutputView->stop();
 		ui->videoOutputView->blank();
 		}
@@ -377,8 +382,15 @@ void MachineWindow::on_actionMachinePause_toggled(bool enabled)
 
 	machine_pause(&machine, state);
 
-	if (state) ui->videoOutputView->stop();
-	else ui->videoOutputView->start();
+	if (state)
+		{
+		ui->videoOutputView->stop();
+		alsa_output_stop(&audioOutput);
+		}
+	else	{
+		alsa_output_start(&audioOutput);
+		ui->videoOutputView->start();
+		}
 	}
 
 
