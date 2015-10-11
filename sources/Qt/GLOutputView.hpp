@@ -9,13 +9,14 @@
 
 #include <QGLWidget>
 #include <QTimer>
-#include "GLOutput.h"
+#include "GLOutput.hpp"
+#include <Z/classes/base/Value2D.hpp>
 
 class GLOutputView : public QGLWidget {Q_OBJECT
 	private:
-	QTimer*	 timer;
-	GLOutput output;
-	bool	 active;
+	QTimer*	  timer;
+	GLOutput* output;
+	bool	  active;
 
 	public:
 	explicit GLOutputView(QWidget *parent = 0);
@@ -26,10 +27,10 @@ class GLOutputView : public QGLWidget {Q_OBJECT
 	int heightForWidth(int width) const;
 	static void drawActiveViews();
 	ZTripleBuffer *buffer() {return &output.buffer;}
-	Z2D contentSize();
-	void setContentSize(Z2D content_size);
+	ZKit::Value2D<Real> contentSize();
+	void setContentSize(ZKit::Value2D<Real> content_size);
 	void setScaling(ZKey(SCALING) scaling);
-	void setResolutionAndFormat(Z2DSize resolution, zuint format);
+	void setResolutionAndFormat(ZKit::Value2D<ZKit::Size> resolution, ZKit::UInt format);
 	void start();
 	void stop();
 	void blank();

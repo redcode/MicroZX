@@ -7,14 +7,15 @@
 #include "GLOutputView.hpp"
 #include <stdlib.h>
 #include <stdio.h>
-#include <Z/functions/geometry/constructors.h>
-#include <Z/functions/base/Z2DValue.h>
+#include <Z/classes/geometry/Rectangle.hpp>
 #include <Z/functions/buffering/ZTripleBuffer.h>
 #include <Z/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum.h>
 #include "system.h"
 #include <QTimer>
 
-#define BOUNDS z_rectangle(0.0, 0.0, (zreal)this->width(), (zreal)this->height())
+#define BOUNDS Rectangle<Real>(0.0, 0.0, Real(this->width()), Real(this->height()))
+
+using namespace ZKit;
 
 
 GLOutputView::GLOutputView(QWidget *parent) : QGLWidget(parent)
@@ -23,8 +24,8 @@ GLOutputView::GLOutputView(QWidget *parent) : QGLWidget(parent)
 	timer = new QTimer();
 
 	makeCurrent();
-	gl_output_initialize(&output);
-	gl_output_set_geometry(&output, BOUNDS, Z_SCALING_FIT);
+	output = new GLOutput();
+	output->set_geometry(BOUNDS, Z_SCALING_FIT);
 	doneCurrent();
 	}
 
@@ -32,7 +33,7 @@ GLOutputView::GLOutputView(QWidget *parent) : QGLWidget(parent)
 GLOutputView::~GLOutputView()
 	{
 	stop();
-	gl_output_finalize(&output);
+	delete output;
 	}
 
 
@@ -46,13 +47,13 @@ void GLOutputView::initializeGL()
 
 void GLOutputView::paintGL()
 	{
-	gl_output_draw(&output, FALSE);
+	output->draw(FALSE);
 	}
 
 
 void GLOutputView::resizeGL(int width, int height)
 	{
-	gl_output_set_geometry(&output, z_rectangle(0.0, 0.0, width, height), Z_SCALING_SAME);
+	output->set_geometry(Rectangle<Real>(0.0, 0.0, width, height), Z_SCALING_SAME);
 	}
 
 
@@ -62,16 +63,16 @@ int GLOutputView::heightForWidth(int width) const
 	}
 
 
-Z2D GLOutputView::contentSize()
+Value2D<Real> GLOutputView::contentSize()
 	{
-	return output.content_bounds.size;
+	return output->content_bounds.size;
 	}
 
 
-void GLOutputView::setContentSize(Z2D contentSize)
+void GLOutputView::setContentSize(Value2D<Real> contentSize)
 	{
 	makeCurrent();
-	gl_output_set_content_size(&output, contentSize);
+	output->set_content_size(contentSize);
 	doneCurrent();
 	}
 
@@ -79,16 +80,16 @@ void GLOutputView::setContentSize(Z2D contentSize)
 void GLOutputView::setScaling(ZKey(SCALING) scaling)
 	{
 	makeCurrent();
-	gl_output_set_geometry(&output, BOUNDS, scaling);
+	output->set_geometry(BOUNDS, scaling);
 	doneCurrent();
 	}
 
 
-void GLOutputView::setResolutionAndFormat(Z2DSize resolution, zuint format)
+void GLOutputView::setResolutionAndFormat(Value2D<Size> resolution, UInt format)
 	{
 	Q_UNUSED(format);
 	makeCurrent();
-	gl_output_set_resolution(&output, resolution);
+	output->set_resolution(resolution);
 	doneCurrent();
 	}
 
@@ -121,7 +122,7 @@ void GLOutputView::blank()
 	{
 	if (!active)
 		{
-		memset(output.buffer.buffers[0], 0, output.input_height * output.input_width * 4 * 3);
+		memset(output->buffer.buffers[0], 0, output->input_height * output->input_width * 4 * 3);
 		updateGL();
 		}
 	}
@@ -130,7 +131,7 @@ void GLOutputView::blank()
 void GLOutputView::setLinearInterpolation(bool enabled)
 	{
 	makeCurrent();
-	gl_output_set_linear_interpolation(&output, enabled);
+	output->set_linear_interpolation(enabled);
 	doneCurrent();
 	}
 

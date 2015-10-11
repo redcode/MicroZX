@@ -23,7 +23,9 @@
 #include <Z/types/time.h>
 #include "MachineABI.h"
 
-#define MACHINE_SCREEN_SIZE z_2d(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT)
+using namespace ZKit;
+
+#define MACHINE_SCREEN_SIZE Value2D<Real>(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT)
 
 
 static AboutDialog* aboutDialog = NULL;
@@ -77,7 +79,7 @@ MachineWindow::MachineWindow(QWidget *parent) :	QMainWindow(parent), ui(new Ui::
 	//---------------------------------------'
 
 	ui->videoOutputView->setResolutionAndFormat
-		(z_2d_type(SIZE)(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT), 0);
+		(Value2D<SIZE>(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT), 0);
 
 	alsa_output_initialize(&audioOutput);
 
@@ -91,8 +93,8 @@ MachineWindow::MachineWindow(QWidget *parent) :	QMainWindow(parent), ui(new Ui::
 
 	MachineABI *abi = &machine_abi_table[4];
 
-	machine_initialize(&machine, abi, ui->videoOutputView->buffer(), &audioOutput.buffer);
-	machine.keyboard_input = keyboardBuffer;
+	machine = new Machine(abi, ui->videoOutputView->buffer(), &audioOutput.buffer);
+	machine->keyboard_input = keyboardBuffer;
 
 	zsize index = abi->rom_count;
 	ROM *rom;
@@ -121,7 +123,7 @@ MachineWindow::MachineWindow(QWidget *parent) :	QMainWindow(parent), ui(new Ui::
 	keyboardState.value_uint64 = Z_UINT64(0xFFFFFFFFFFFFFFFF);
 	setWindowTitle(QString(abi->model_name));
 	ui->videoOutputView->start();
-	machine_power(&machine, ON);
+	machine->power(ON);
 	alsa_output_start(&audioOutput);
 	}
 
@@ -132,7 +134,7 @@ MachineWindow::~MachineWindow()
 	alsa_output_stop(&audioOutput);
 	alsa_output_finalize(&audioOutput);
 	//delete audioOutput;
-	machine_power(&machine, OFF);
+	machine->power(OFF);
 	delete ui;
 	}
 
@@ -357,9 +359,9 @@ void MachineWindow::on_actionMachinePower_toggled(bool enabled)
 	ui->actionMachinePause->setEnabled(enabled);
 	ui->actionMachineReset->setEnabled(enabled);
 
-	bool state = !machine.flags.power;
+	bool state = !machine->flags.power;
 
-	machine_power(&machine, state);
+	machine->power(state);
 
 	if (state)
 		{
@@ -378,9 +380,9 @@ void MachineWindow::on_actionMachinePower_toggled(bool enabled)
 void MachineWindow::on_actionMachinePause_toggled(bool enabled)
 	{
 	Q_UNUSED(enabled);
-	bool state = !machine.flags.pause;
+	bool state = !machine->flags.pause;
 
-	machine_pause(&machine, state);
+	machine->pause(state);
 
 	if (state)
 		{
@@ -398,8 +400,8 @@ void MachineWindow::on_actionMachineReset_triggered()
 	{
 	ui->actionMachinePause->setChecked(false);
 
-	bool pause = machine.flags.pause;
-	machine_reset(&machine);
+	bool pause = machine->flags.pause;
+	machine->reset();
 	if (pause) ui->videoOutputView->start();
 	}
 
@@ -467,7 +469,7 @@ void MachineWindow::on_actionWindowEditTitle_triggered()
 		 tr("Window title:"), QLineEdit::Normal,
 		 windowTitle(), &ok);
 
-	if (ok) setWindowTitle(text.isEmpty() ? QString(machine.abi->model_name) : text);
+	if (ok) setWindowTitle(text.isEmpty() ? QString(machine->abi->model_name) : text);
 	}
 
 
