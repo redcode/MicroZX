@@ -12,16 +12,19 @@
 #import "NSView+RedCode.h"
 
 #include "system.h"
+#import <Z/classes/geometry/Rectangle.hpp>
 #import <Z/functions/buffering/ZTripleBuffer.h>
 #import <Z/functions/buffering/ZRingBuffer.h>
 #import <Z/functions/geometry/ZRectangle.h>
-#import <Z/macros/casting.h>
+#import <Z/functions/casting.hpp>
 
 #define kScreenZoomIncrement	1.5
 #define SCREEN_SIZE_X		Z_JOIN_2(Z_ZX_SPECTRUM_SCREEN_WIDTH, .0)
 #define SCREEN_SIZE_Y		Z_JOIN_2(Z_ZX_SPECTRUM_SCREEN_HEIGHT, .0)
-#define SCREEN_SIZE		z_2d((zreal)Z_ZX_SPECTRUM_SCREEN_WIDTH, (zreal)Z_ZX_SPECTRUM_SCREEN_HEIGHT)
+#define SCREEN_SIZE		Value2D<Real>(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT)
 #define NS_SCREEN_SIZE		NSMakeSize(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT)
+
+using namespace ZKit;
 
 typedef struct {
 	struct {zuint8 row  :3;
@@ -45,16 +48,16 @@ typedef struct {
 	  Z_JOIN_2(Z_ZX_SPECTRUM_KEY_MASK_, KEY_NAME)}}
 
 
-Z_INLINE zreal step_down(zreal n, zreal step_size)
+Z_INLINE Real step_down(Real n, Real step_size)
 	{
-	zreal factor = n / step_size;
-	zreal step = ceil(factor);
+	Real factor = n / step_size;
+	Real step = ceil(factor);
 
 	return step < factor ? step * step_size : step * step_size - step_size;
 	}
 
 
-Z_INLINE zreal step_up(zreal n, zreal step_size)
+Z_INLINE Real step_up(Real n, Real step_size)
 	{return floor(n / step_size) * step_size + step_size;}
 
 
@@ -106,25 +109,31 @@ Z_INLINE zreal step_up(zreal n, zreal step_size)
 		{
 		if (_flags.isFullScreen)
 			{
-			Z2D boundsSize = Z_CAST(NSSize, Z2D, _videoOutput.bounds.size);
-			Z2D zoomedSize = z_2d(SCREEN_SIZE_X * zoom, SCREEN_SIZE_Y * zoom);
+			Value2D<Real> boundsSize = hard_cast<Value2D<Real>, NSSize>(_videoOutput.bounds.size);
+			Value2D<Real> zoomedSize = SCREEN_SIZE * zoom;
 
-			_videoOutput.contentSize = z_2d_contains(boundsSize, zoomedSize)
+			_videoOutput.contentSize = boundsSize.contains(zoomedSize)
 				? zoomedSize
-				: z_2d_fit(SCREEN_SIZE, boundsSize);
+				: SCREEN_SIZE.fit(boundsSize);
 			}
 
 		else	{
 			NSWindow *window = self.window;
-			ZRectangle screenFrame = Z_CAST(NSRect, ZRectangle, window.screen.visibleFrame);
-			Z2D borderSize = Z_CAST(NSSize, Z2D, window.borderSize);
-			Z2D newSize = z_2d(borderSize.x + SCREEN_SIZE_X * zoom, borderSize.y + SCREEN_SIZE_Y * zoom);
 
-			[window animateIntoScreenFrame: Z_CAST(ZRectangle, NSRect, screenFrame)
-				fromTopCenterToSize:	Z_CAST
-					(Z2D, NSSize, z_2d_contains(screenFrame.size, newSize)
+			Rectangle<Real> screenFrame = hard_cast<Rectangle<Real>, NSRect>(window.screen.visibleFrame);
+			Value2D<Real> borderSize = hard_cast<Value2D<Real>, NSSize>(window.borderSize);
+			Value2D<Real> newSize	 = borderSize + SCREEN_SIZE * zoom;
+
+			[window animateIntoScreenFrame: hard_cast<NSRect, Rectangle<Real> >(screenFrame)
+				fromTopCenterToSize:	hard_cast<NSSize, Value2D<Real> >
+					(screenFrame.size.contains(newSize)
 						? newSize
-						: z_2d_add(z_2d_fit(SCREEN_SIZE, z_2d_subtract(screenFrame.size, borderSize)), borderSize))];
+						: SCREEN_SIZE.fit(screenFrame.size - borderSize) + borderSize)];
+
+			Z2D size = screenFrame.size;
+			Rectangle<Real> r(size, size);
+			Value2D<Real> r2(screenFrame.point);
+			(screenFrame.size += size).contains(size);
 			}
 		}
 
@@ -157,7 +166,7 @@ Z_INLINE zreal step_up(zreal n, zreal step_size)
 				NSMakeRect(0.0, 0.0, SCREEN_SIZE_X, SCREEN_SIZE_Y)];
 
 			[_videoOutput
-				setResolution: z_2d_type(SIZE)(SCREEN_SIZE_X, SCREEN_SIZE_Y)
+				setResolution: Value2D<ZKit::Size>(SCREEN_SIZE_X, SCREEN_SIZE_Y)
 				format:	       0];
 
 			_videoOutput.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
@@ -169,18 +178,18 @@ Z_INLINE zreal step_up(zreal n, zreal step_size)
 			//_audioOutput = [[ALOutputPlayer alloc] init];
 
 
-			_keyboardBuffer = malloc(sizeof(ZTripleBuffer));
+			_keyboardBuffer = (ZTripleBuffer *)malloc(sizeof(ZTripleBuffer));
 			z_triple_buffer_initialize(_keyboardBuffer, malloc(Z_UINT64_SIZE * 3), Z_UINT64_SIZE);
-			_keyboard = z_triple_buffer_production_buffer(_keyboardBuffer);
+			_keyboard = (Z64Bit *)z_triple_buffer_production_buffer(_keyboardBuffer);
 			memset(_keyboardBuffer->buffers[0], 0xFF, Z_UINT64_SIZE * 3);
 
-			machine_initialize(&_machine, machineABI, _videoOutput.buffer, _audioOutput.buffer);
-			_machine.keyboard_input = _keyboardBuffer;
+			_machine = new Machine(machineABI, _videoOutput.buffer, _audioOutput.buffer);
+			_machine->keyboard_input = _keyboardBuffer;
 
 			/*-----------------.
 			| Load needed ROMs |
 			'-----------------*/
-			zsize index = machineABI->rom_count;
+			ZKit::Size index = machineABI->rom_count;
 			NSBundle *bundle = [NSBundle mainBundle];
 			ROM *rom;
 
@@ -193,12 +202,12 @@ Z_INLINE zreal step_up(zreal n, zreal step_size)
 					ofType:		 @"rom"
 					inDirectory:	 @"ROMs"]];
 
-				memcpy(_machine.context->memory + rom->base_address, [ROM bytes], rom->size);
+				memcpy(_machine->context->memory + rom->base_address, [ROM bytes], rom->size);
 				}
 
 			//machineABI->initialize(_machine);
 
-			_keyboardState.value_uint64 = Z_UINT64(0xFFFFFFFFFFFFFFFF);
+			_keyboardState.value_uint64 = Type<ZKit::UInt64>::maximum;
 
 			/*NSData *data = [NSData dataWithContentsOfFile: @"/Users/manuel/Desktop/Batman.sna"];
 			ZSNAv48K *sna = (ZSNAv48K *)[data bytes];
@@ -223,14 +232,14 @@ Z_INLINE zreal step_up(zreal n, zreal step_size)
 		{
 		[_videoOutput stop];
 		[_audioOutput stop];
-		machine_power(&_machine, OFF);
+		_machine->power(OFF);
 		[titleWindow release];
 		[_tapeRecorderWindowController release];
 		[_pointerVisibilityTimer invalidate];
 		[_videoOutput release];
 		[_audioOutput release];
 		[_fullScreenWindow release];
-		machine_finalize(&_machine);
+		delete _machine;
 		free(_keyboardBuffer->buffers[0]);
 		free(_keyboardBuffer);
 		[super dealloc];
@@ -249,15 +258,15 @@ Z_INLINE zreal step_up(zreal n, zreal step_size)
 		)
 			[window setCollectionBehavior: [window collectionBehavior] | NSWindowCollectionBehaviorFullScreenPrimary];
 
-		_minimumWindowSize = z_2d_add(SCREEN_SIZE, Z_CAST(NSSize, Z2D, window.borderSize));
-		window.title = [NSString stringWithUTF8String: _machine.abi->model_name];
+		_minimumWindowSize = SCREEN_SIZE + hard_cast<Value2D<Real>, NSSize>(window.borderSize);
+		window.title = [NSString stringWithUTF8String: _machine->abi->model_name];
 		[window.contentView addSubview: _videoOutput];
 		[window setContentAspectRatio: contentSize];
 		[window setContentMinSize: contentSize];
 
 		[_videoOutput start];
 		[_audioOutput start];
-		machine_power(&_machine, ON);
+		_machine->power(ON);
 		}
 
 
@@ -268,22 +277,22 @@ Z_INLINE zreal step_up(zreal n, zreal step_size)
 		if ([self respondsToSelector: action])
 			{
 			if (action == @selector(togglePower:))
-				menuItem.state = _machine.flags.power ? NSOnState : NSOffState;
+				menuItem.state = _machine->flags.power ? NSOnState : NSOffState;
 
 			else if (action == @selector(togglePause:))
 				{
-				if (!_machine.flags.power)
+				if (!_machine->flags.power)
 					{
 					menuItem.state = NSOffState;
 					return NO;
 					}
 
-				menuItem.state = _machine.flags.pause ? NSOnState : NSOffState;
+				menuItem.state = _machine->flags.pause ? NSOnState : NSOffState;
 				}
 
 			else if (action == @selector(reset:) || action == @selector(saveState:))
 				{
-				if (!_machine.flags.power) return NO;
+				if (!_machine->flags.power) return NO;
 				}
 
 			return YES;
@@ -371,7 +380,7 @@ Z_INLINE zreal step_up(zreal n, zreal step_size)
 			}
 
 		_keyboard->value_uint64 = _keyboardState.value_uint64;
-		_keyboard = z_triple_buffer_produce(_keyboardBuffer);
+		_keyboard = (Z64Bit *)z_triple_buffer_produce(_keyboardBuffer);
 		}
 
 
@@ -439,7 +448,7 @@ Z_INLINE zreal step_up(zreal n, zreal step_size)
 			}
 
 		_keyboard->value_uint64 = _keyboardState.value_uint64;
-		_keyboard = z_triple_buffer_produce(_keyboardBuffer);
+		_keyboard = (Z64Bit *)z_triple_buffer_produce(_keyboardBuffer);
 		}
 
 
@@ -457,7 +466,7 @@ Z_INLINE zreal step_up(zreal n, zreal step_size)
 			}
 
 		_keyboard->value_uint64 = _keyboardState.value_uint64;
-		_keyboard = z_triple_buffer_produce(_keyboardBuffer);
+		_keyboard = (Z64Bit *)z_triple_buffer_produce(_keyboardBuffer);
 		}
 
 
@@ -605,11 +614,10 @@ Z_INLINE zreal step_up(zreal n, zreal step_size)
 
 	- (void) submitAudioFrame: (void *) frame
 		{
-		void *buffer = z_ring_buffer_production_buffer(_machine.audio_input);
+		void *buffer = z_ring_buffer_production_buffer(_machine->audio_input);
 
-		memcpy(buffer, frame, _machine.audio_input->buffer_size);
-
-		z_ring_buffer_produce(_machine.audio_input);
+		memcpy(buffer, frame, _machine->audio_input->buffer_size);
+		z_ring_buffer_produce(_machine->audio_input);
 		}
 
 
@@ -671,9 +679,9 @@ Z_INLINE zreal step_up(zreal n, zreal step_size)
 
 	- (IBAction) togglePower: (NSMenuItem *) sender
 		{
-		zboolean state = !_machine.flags.power;
+		zboolean state = !_machine->flags.power;
 
-		machine_power(&_machine, state);
+		_machine->power(state);
 
 		if (state) [_videoOutput start];
 
@@ -686,10 +694,9 @@ Z_INLINE zreal step_up(zreal n, zreal step_size)
 
 	- (IBAction) togglePause: (id) sender
 		{
-		zboolean state = !_machine.flags.pause;
+		zboolean state = !_machine->flags.pause;
 
-		machine_pause(&_machine, state);
-
+		_machine->pause(state);
 		if (state) [_videoOutput stop];
 		else [_videoOutput start];
 		}
@@ -697,8 +704,9 @@ Z_INLINE zreal step_up(zreal n, zreal step_size)
 
 	- (IBAction) reset: (id) sender
 		{
-		zboolean pause = _machine.flags.pause;
-		machine_reset(&_machine);
+		zboolean pause = _machine->flags.pause;
+
+		_machine->reset();
 		if (pause) [_videoOutput start];
 		}
 
@@ -776,14 +784,14 @@ Z_INLINE zreal step_up(zreal n, zreal step_size)
 			[_tapeRecorderWindowController release];
 			_tapeRecorderWindowController = nil;
 		//	ring_buffer_destroy(_machine.audio_input_buffer);
-			_machine.audio_input = NULL;
+			_machine->audio_input = NULL;
 			}
 
 		else	{
 			sender.state = NSOnState;
 			void *buffer = calloc(3, 882);
 			z_ring_buffer_initialize(&_audioInputBuffer, buffer, 882, 3);
-			_machine.audio_input = &_audioInputBuffer;
+			_machine->audio_input = &_audioInputBuffer;
 			_tapeRecorderWindowController = [[TapeRecorderWindowController alloc] init];
 			[_tapeRecorderWindowController setFrameSize: 882 count: 4];
 			[_tapeRecorderWindowController addOutput: self action: @selector(submitAudioFrame:)];
@@ -818,7 +826,7 @@ Z_INLINE zreal step_up(zreal n, zreal step_size)
 	- (IBAction) editWindowTitle: (id) sender
 		{
 		NSString *currentTitle = self.window.title;
-		NSString *placeHolder = [NSString stringWithUTF8String: _machine.abi->model_name];
+		NSString *placeHolder = [NSString stringWithUTF8String: _machine->abi->model_name];
 
 		[titleTextField.cell setPlaceholderString: placeHolder];
 		[titleTextField setStringValue: [currentTitle isEqualToString: placeHolder] ? @"" : currentTitle];
@@ -841,7 +849,7 @@ Z_INLINE zreal step_up(zreal n, zreal step_size)
 
 		self.window.title = (title && ![title isEqualToString: @""])
 			? title
-			: [NSString stringWithUTF8String: _machine.abi->model_name];
+			: [NSString stringWithUTF8String: _machine->abi->model_name];
 
 		[NSApp endSheet: titleWindow];
 		[titleWindow orderOut: self];

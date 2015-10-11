@@ -4,16 +4,15 @@
 |   ____________/\__\ Released under the GNU General Public License v3.
 |_*/
 
-#include <stdlib.h>
-#include "GLOutput.h"
-#include <Z/functions/base/Z2DValue.h>
-#include <Z/functions/base/Z3DValue.h>
-#include <Z/functions/geometry/ZRectangle.h>
+#include "GLOutput.hpp"
 #include <Z/functions/buffering/ZTripleBuffer.h>
+#include <stdlib.h>
 
-static const GLubyte indices_data[] = {0, 1, 2, 3};
+using namespace ZKit;
 
-static const GLfloat vertices_data[] = {
+static GLubyte const indices_data[] = {0, 1, 2, 3};
+
+static GLfloat const vertices_data[] = {
 	-1.0f, -1.0f, 1.0f, -1.0f,
 	-1.0f,  1.0f, 1.0f,  1.0f
 };
@@ -21,10 +20,10 @@ static const GLfloat vertices_data[] = {
 static GLuint indices  = 0;
 static GLuint vertices = 0;
 
-static zsize  gpu_shared_data_owner_count = 0;
+static Size gpu_shared_data_owner_count = 0;
 
 
-static void set_viewport(ZRectangle viewport)
+static void set_viewport(Rectangle<Real> viewport)
 	{
 	glLoadIdentity();
 
@@ -40,14 +39,14 @@ static void set_viewport(ZRectangle viewport)
 	}
 
 
-void gl_output_initialize(GLOutput *object)
+GLOutput::GLOutput()
 	{
-	object->effect = NULL;
-	object->buffer.buffers[0] = NULL;
+	effect = NULL;
+	buffer.buffers[0] = NULL;
 
 	glEnable(GL_TEXTURE_2D);
-	glGenTextures(1, &object->texture);
-	glBindTexture(GL_TEXTURE_2D, object->texture);
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -59,118 +58,108 @@ void gl_output_initialize(GLOutput *object)
 	}
 
 
-void gl_output_finalize(GLOutput *object)
+GLOutput::~GLOutput()
 	{
-	if (object->effect != NULL) gl_output_remove_effect(object);
-	glDeleteTextures(1, &object->texture);
-	free(object->buffer.buffers[0]);
+	if (effect != NULL) remove_effect();
+	glDeleteTextures(1, &texture);
+	free(buffer.buffers[0]);
 	}
 
 
-void gl_output_set_resolution(GLOutput *object, Z2DSize resolution)
+void GLOutput::set_resolution(Value2D<Size> resolution)
 	{
-	zsize frame_buffer_size = resolution.x * resolution.y * 4;
+	Size frame_buffer_size = resolution.inner_product() * 4;
 
 	z_triple_buffer_initialize
-		(&object->buffer,
-		 object->buffer.buffers[0] = realloc(object->buffer.buffers[0], frame_buffer_size * 3),
+		(&buffer,
+		 buffer.buffers[0] = realloc(buffer.buffers[0], frame_buffer_size * 3),
 		 frame_buffer_size);
 
 	glEnable(GL_TEXTURE_2D);
 
 	glTexImage2D
 		(GL_TEXTURE_2D, 0, GL_RGBA,
-		 object->input_width  = (GLsizei)resolution.x,
-		 object->input_height = (GLsizei)resolution.y,
+		 input_width  = (GLsizei)resolution.x,
+		 input_height = (GLsizei)resolution.y,
 		 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
 	glDisable(GL_TEXTURE_2D);
 	}
 
 
-void gl_output_set_content_bounds(GLOutput *object, ZRectangle bounds)
+void GLOutput::set_content_bounds(Rectangle<Real> bounds)
 	{
-	object->content_bounds = bounds;
+	content_bounds = bounds;
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
 	glTranslated
-		(-1.0 + (bounds.point.x + bounds.size.x / 2.0) / object->viewport.size.x * 2.0,
-		 -1.0 + (bounds.point.y + bounds.size.y / 2.0) / object->viewport.size.y * 2.0,
+		(-1.0 + (bounds.point.x + bounds.size.x / 2.0) / viewport.size.x * 2.0,
+		 -1.0 + (bounds.point.y + bounds.size.y / 2.0) / viewport.size.y * 2.0,
 		 0.0);
 
-	glScaled(bounds.size.x / object->viewport.size.x,
-		 bounds.size.y / object->viewport.size.y,
+	glScaled(bounds.size.x / viewport.size.x,
+		 bounds.size.y / viewport.size.y,
 		 1.0);
 
-	glGetFloatv(GL_MODELVIEW_MATRIX, object->model_view_matrix);
+	glGetFloatv(GL_MODELVIEW_MATRIX, model_view_matrix);
 	}
 
 
-void gl_output_set_content_size(GLOutput *object, Z2D size)
+void GLOutput::set_content_size(Value2D<Real> size)
 	{
-	ZRectangle bounds;
-
-	bounds.point = z_2d_divide_by_scalar(z_2d_subtract(object->viewport.size, size), 2.0);
-	bounds.size = size;
-	object->content_bounds = bounds;
+	content_bounds = Rectangle<Real>(viewport.size - size / 2.0, size);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	glScaled(bounds.size.x / object->viewport.size.x,
-		 bounds.size.y / object->viewport.size.y,
+	glScaled(content_bounds.size.x / viewport.size.x,
+		 content_bounds.size.y / viewport.size.y,
 		 1.0);
 
-	glGetFloatv(GL_MODELVIEW_MATRIX, object->model_view_matrix);
+	glGetFloatv(GL_MODELVIEW_MATRIX, model_view_matrix);
 	}
 
 
-void gl_output_set_geometry(
-	GLOutput*     object,
-	ZRectangle    viewport,
-	ZKey(SCALING) content_scaling
-)
+void GLOutput::set_geometry(Rectangle<Real> viewport, ZKey(SCALING) content_scaling)
 	{
-	set_viewport(object->viewport = viewport);
+	set_viewport(this->viewport = viewport);
 
-	switch (content_scaling ? (object->content_scaling = content_scaling) : object->content_scaling)
+	switch (content_scaling ? (content_scaling = content_scaling) : content_scaling)
 		{
 		case Z_SCALING_FIT:
-		gl_output_set_content_size
-			(object,
-			 z_2d_fit(z_2d((zreal)object->input_width, (zreal)object->input_height), viewport.size));
+		set_content_size(Value2D<Real>(input_width, input_height).fit(viewport.size));
 		break;
 
 		case Z_SCALING_NONE:
-		gl_output_set_content_bounds(object, object->content_bounds);
+		set_content_bounds(content_bounds);
 		break;
 
 		case Z_SCALING_EXPAND:
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
-		glGetFloatv(GL_MODELVIEW_MATRIX, object->model_view_matrix);
+		glGetFloatv(GL_MODELVIEW_MATRIX, model_view_matrix);
 		break;
 		}
 	}
 
 
-void gl_output_set_linear_interpolation(GLOutput *object, zboolean value)
+void GLOutput::set_linear_interpolation(Boolean value)
 	{
 	GLint filter = value ? GL_LINEAR : GL_NEAREST;
 
-	glBindTexture(GL_TEXTURE_2D, object->texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
 	}
 
 
-void gl_output_set_effect(GLOutput *object, GLOutputEffect *effect, void *effect_context)
+void GLOutput::set_effect(GLOutputEffect *effect, void *effect_context)
 	{
-	if (object->effect != effect)
+	if (this->effect != effect)
 		{
-		gl_output_remove_effect(object);
+		remove_effect();
 
 		if (!gpu_shared_data_owner_count++)
 			{
@@ -183,9 +172,9 @@ void gl_output_set_effect(GLOutput *object, GLOutputEffect *effect, void *effect
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_data), indices_data, GL_STATIC_DRAW);
 			}
 
-		object->effect_context = effect_context;
+		this->effect_context = effect_context;
 
-		if (!(object->effect = effect)->owner_count++)
+		if (!(this->effect = effect)->owner_count++)
 			{
 			GLuint vertex_shader;
 			GLuint fragment_shader;
@@ -237,11 +226,11 @@ void gl_output_set_effect(GLOutput *object, GLOutputEffect *effect, void *effect
 	}
 
 
-void gl_output_remove_effect(GLOutput *object)
+void GLOutput::remove_effect()
 	{
-	if (object->effect != NULL)
+	if (this->effect != NULL)
 		{
-		GLOutputEffect *effect = object->effect;
+		GLOutputEffect *effect = this->effect;
 
 		if (!--effect->owner_count)
 			{
@@ -256,19 +245,19 @@ void gl_output_remove_effect(GLOutput *object)
 			glDeleteBuffers(1, &vertices);
 			}
 
-		object->effect = NULL;
+		this->effect = NULL;
 		}
 	}
 
 
-void gl_output_draw(GLOutput *object, zboolean skip_old)
+void GLOutput::draw(Boolean skip_old)
 	{
-	void *frame = z_triple_buffer_consume(&object->buffer);
+	void *frame = z_triple_buffer_consume(&buffer);
 
 	if (frame == NULL)
 		{
 		if (skip_old) return;
-		frame = z_triple_buffer_consumption_buffer(&object->buffer);
+		frame = z_triple_buffer_consumption_buffer(&buffer);
 		}
 
 	glEnable(GL_TEXTURE_2D);
@@ -276,19 +265,19 @@ void gl_output_draw(GLOutput *object, zboolean skip_old)
 
 	glTexSubImage2D
 		(GL_TEXTURE_2D, 0, 0, 0,
-		 object->input_width, object->input_height,
+		 input_width, input_height,
 		 GL_RGBA, GL_UNSIGNED_BYTE, frame);
 
-	if (object->content_scaling != Z_SCALING_EXPAND)
+	if (content_scaling != Z_SCALING_EXPAND)
 		{
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		}
 
-	if (object->effect == NULL)
+	if (this->effect == NULL)
 		{
 		glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-		glBindTexture(GL_TEXTURE_2D, object->texture);
+		glBindTexture(GL_TEXTURE_2D, texture);
 
 		glBegin(GL_TRIANGLE_STRIP);
 			glTexCoord2f(0.0f, 1.0f); glVertex2f(-1.0f, -1.0f);
@@ -299,12 +288,12 @@ void gl_output_draw(GLOutput *object, zboolean skip_old)
 		}
 
 	else	{
-		GLOutputEffect *effect = object->effect;
+		GLOutputEffect *effect = this->effect;
 
 		glUseProgram(effect->program);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, object->texture);
-		glUniformMatrix4fv(effect->transform_uniform, 1, GL_FALSE, object->model_view_matrix);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glUniformMatrix4fv(effect->transform_uniform, 1, GL_FALSE, model_view_matrix);
 
 		glBindBuffer(GL_ARRAY_BUFFER, vertices);
 		glVertexAttribPointer(effect->vertex_attribute, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 2, (void *)0);
@@ -312,7 +301,7 @@ void gl_output_draw(GLOutput *object, zboolean skip_old)
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices);
 
 		if (effect->abi.draw == NULL) glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_BYTE, (void *)0);
-		else effect->abi.draw(object->effect_context, object->input_width, object->input_height);
+		else effect->abi.draw(effect_context, input_width, input_height);
 
 		glDisableVertexAttribArray(effect->vertex_attribute);
 		}

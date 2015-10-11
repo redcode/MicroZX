@@ -6,27 +6,28 @@
 
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/QuartzCore.h>
-#import "GLOutput.h"
+#import "GLOutput.hpp"
+#import <Z/classes/base/Value2D.hpp>
 
 @interface GLOutputView : NSView {
 
 	NSOpenGLContext*     _GLContext;
 	CGLContextObj	     _CGLContext;
 	NSOpenGLPixelFormat* _pixelFormat;
-	GLOutput	     _output;
+	GLOutput*	     _output;
 
 	struct {BOOL reshaped :1;
 		BOOL active   :1;
 		BOOL blank    :1;
 	} _flags;
 }
-	@property (nonatomic, readonly) GLOutput*      GLOutput;
-	@property (nonatomic, readonly) ZTripleBuffer* buffer;
-	@property (nonatomic, assign)	Z2D	       contentSize;
+	@property (nonatomic, readonly) GLOutput*		  GLOutput;
+	@property (nonatomic, readonly) ZTripleBuffer*		  buffer;
+	@property (nonatomic, assign)	ZKit::Value2D<ZKit::Real> contentSize;
 	@property (nonatomic, assign)	ZKey(SCALING)  scaling;
 
-	- (void) setResolution:	(Z2DSize) resolution
-		 format:	(zuint	) format;
+	- (void) setResolution:	(ZKit::Value2D<ZKit::Size>) resolution
+		 format:	(ZKit::UInt		  ) format;
 
 	- (void) start;
 

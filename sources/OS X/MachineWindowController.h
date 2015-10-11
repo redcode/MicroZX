@@ -5,7 +5,7 @@
 |_*/
 
 #import <Foundation/Foundation.h>
-#import "Machine.h"
+#import "Machine.hpp"
 #import "GLOutputView.h"
 #import "CoreAudioOutput.h"
 #import "TapeRecorderWindowController.h"
@@ -13,6 +13,7 @@
 #import "SNA.h"
 #import <Z/types/buffering.h>
 #import <pthread.h>
+#import <Z/classes/base/Value2D.hpp>
 
 @interface MachineWindowController : NSWindowController <NSWindowDelegate, NSAnimationDelegate> {
 
@@ -27,17 +28,17 @@
 	//-----------.
 	// Emulation |
 	//-----------'
-	Machine			_machine;
+	Machine*		_machine;
 
 	//----------.
 	// Geometry |
 	//----------'
-	Z2D			_minimumWindowSize;
+	ZKit::Value2D<ZKit::Real> _minimumWindowSize;
 
 	//-------------.
 	// I/O Buffers |
 	//-------------'
-	//QTripleBuffer*		_videoOutputBuffer;
+	//QTripleBuffer*	_videoOutputBuffer;
 	//QRingBuffer*		_audioOutputBuffer;
 	ZTripleBuffer*		_keyboardBuffer;
 	Z64Bit*			_keyboard;
@@ -72,9 +73,9 @@
 	} _flags;
 
 	// Temporal
-	zsize	_tapeSampleCount;
-	zuint8*	_tapeSamples;
-	BOOL	_attachInputBuffer;
+	ZKit::Size   _tapeSampleCount;
+	ZKit::UInt8* _tapeSamples;
+	BOOL	     _attachInputBuffer;
 }
 	- (id) initWithMachineABI: (MachineABI *) machineABI;
 

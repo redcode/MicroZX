@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		645DAEA61B3B2C5400C9AB10 /* system.c in Sources */ = {isa = PBXBuildFile; fileRef = 645DAEA51B3B2C5400C9AB10 /* system.c */; };
-		645DAEA91B3C750C00C9AB10 /* Machine.c in Sources */ = {isa = PBXBuildFile; fileRef = 645DAEA11B3B213D00C9AB10 /* Machine.c */; };
-		64BB31211B3D248700AE1D99 /* MachineWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64BB31201B3D248700AE1D99 /* MachineWindowController.m */; };
+		645DAEA91B3C750C00C9AB10 /* Machine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 645DAEA11B3B213D00C9AB10 /* Machine.cpp */; };
+		64BB31211B3D248700AE1D99 /* MachineWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 64BB31201B3D248700AE1D99 /* MachineWindowController.mm */; };
 		64DEF6811B797EF4000F4F01 /* KeyboardWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64DEF6801B797EF4000F4F01 /* KeyboardWindowController.m */; };
 		64DEF6841B7A44C3000F4F01 /* Tape Recorder Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 64DEF6831B7A44C3000F4F01 /* Tape Recorder Button.png */; };
 		64DEF6861B7A47D1000F4F01 /* Tape Recorder Record Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 64DEF6851B7A47D1000F4F01 /* Tape Recorder Record Button.png */; };
@@ -17,7 +17,7 @@
 		64DEF68C1B7A4C83000F4F01 /* Tape Recorder Button - Pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 64DEF68B1B7A4C83000F4F01 /* Tape Recorder Button - Pressed.png */; };
 		64DEF6901B7A4EFD000F4F01 /* Tape Recorder Button Separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 64DEF68F1B7A4EFD000F4F01 /* Tape Recorder Button Separator.png */; };
 		64F5DDAA1A28E03C00D29077 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DDA91A28E03C00D29077 /* Images.xcassets */; };
-		64F5DE0B1A28E83A00D29077 /* GLOutput.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE061A28E83A00D29077 /* GLOutput.c */; };
+		64F5DE0B1A28E83A00D29077 /* GLOutput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE061A28E83A00D29077 /* GLOutput.cpp */; };
 		64F5DE0C1A28E83A00D29077 /* GLOutputShader.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE071A28E83A00D29077 /* GLOutputShader.c */; };
 		64F5DE0E1A28E84B00D29077 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64F5DE0D1A28E84B00D29077 /* OpenGL.framework */; };
 		64F5DE101A28E89800D29077 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64F5DE0F1A28E89800D29077 /* AudioToolbox.framework */; };
@@ -33,10 +33,10 @@
 		64F5DE2D1A28E99000D29077 /* NSWindow+RedCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE261A28E99000D29077 /* NSWindow+RedCode.m */; };
 		64F5DE2E1A28E99000D29077 /* NSView+RedCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE281A28E99000D29077 /* NSView+RedCode.m */; };
 		64F5DE481A28E9B100D29077 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE331A28E9B100D29077 /* main.m */; };
-		64F5DE491A28E9B100D29077 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE351A28E9B100D29077 /* MainController.m */; };
+		64F5DE491A28E9B100D29077 /* MainController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE351A28E9B100D29077 /* MainController.mm */; };
 		64F5DE4B1A28E9B100D29077 /* TapeRecorderWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE391A28E9B100D29077 /* TapeRecorderWindowController.m */; };
 		64F5DE4C1A28E9B100D29077 /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE3B1A28E9B100D29077 /* PreferencesWindowController.m */; };
-		64F5DE4E1A28E9B100D29077 /* GLOutputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE3F1A28E9B100D29077 /* GLOutputView.m */; };
+		64F5DE4E1A28E9B100D29077 /* GLOutputView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE3F1A28E9B100D29077 /* GLOutputView.mm */; };
 		64F5DE4F1A28E9B100D29077 /* CoreAudioOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE411A28E9B100D29077 /* CoreAudioOutput.m */; };
 		64F5DE511A28E9B100D29077 /* TapeRecorderWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE451A28E9B100D29077 /* TapeRecorderWindow.m */; };
 		64F5DE521A28E9B100D29077 /* Window.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE471A28E9B100D29077 /* Window.m */; };
@@ -62,12 +62,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		645DAEA11B3B213D00C9AB10 /* Machine.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Machine.c; sourceTree = "<group>"; };
-		645DAEA21B3B213D00C9AB10 /* Machine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Machine.h; sourceTree = "<group>"; };
+		645DAEA11B3B213D00C9AB10 /* Machine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Machine.cpp; sourceTree = "<group>"; };
+		645DAEA21B3B213D00C9AB10 /* Machine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Machine.hpp; sourceTree = "<group>"; };
 		645DAEA41B3B2C5400C9AB10 /* system.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = system.h; sourceTree = "<group>"; };
 		645DAEA51B3B2C5400C9AB10 /* system.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = system.c; sourceTree = "<group>"; };
 		64BB311F1B3D248700AE1D99 /* KeyCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyCodes.h; sourceTree = "<group>"; };
-		64BB31201B3D248700AE1D99 /* MachineWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MachineWindowController.m; sourceTree = "<group>"; };
+		64BB31201B3D248700AE1D99 /* MachineWindowController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MachineWindowController.mm; sourceTree = "<group>"; };
 		64DEF67F1B797EF4000F4F01 /* KeyboardWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardWindowController.h; sourceTree = "<group>"; };
 		64DEF6801B797EF4000F4F01 /* KeyboardWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardWindowController.m; sourceTree = "<group>"; };
 		64DEF6831B7A44C3000F4F01 /* Tape Recorder Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tape Recorder Button.png"; sourceTree = "<group>"; };
@@ -80,8 +80,8 @@
 		64F5DDA91A28E03C00D29077 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		64F5DDFC1A28E83A00D29077 /* MachineABI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MachineABI.h; sourceTree = "<group>"; };
 		64F5DDFE1A28E83A00D29077 /* OpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGL.h; sourceTree = "<group>"; };
-		64F5DE051A28E83A00D29077 /* GLOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLOutput.h; sourceTree = "<group>"; };
-		64F5DE061A28E83A00D29077 /* GLOutput.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLOutput.c; sourceTree = "<group>"; };
+		64F5DE051A28E83A00D29077 /* GLOutput.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GLOutput.hpp; sourceTree = "<group>"; };
+		64F5DE061A28E83A00D29077 /* GLOutput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLOutput.cpp; sourceTree = "<group>"; };
 		64F5DE071A28E83A00D29077 /* GLOutputShader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLOutputShader.c; sourceTree = "<group>"; };
 		64F5DE0D1A28E84B00D29077 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		64F5DE0F1A28E89800D29077 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -101,14 +101,14 @@
 		64F5DE311A28E9B100D29077 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		64F5DE331A28E9B100D29077 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		64F5DE341A28E9B100D29077 /* MainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainController.h; sourceTree = "<group>"; };
-		64F5DE351A28E9B100D29077 /* MainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainController.m; sourceTree = "<group>"; };
+		64F5DE351A28E9B100D29077 /* MainController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainController.mm; sourceTree = "<group>"; };
 		64F5DE361A28E9B100D29077 /* MachineWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MachineWindowController.h; sourceTree = "<group>"; };
 		64F5DE381A28E9B100D29077 /* TapeRecorderWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TapeRecorderWindowController.h; sourceTree = "<group>"; };
 		64F5DE391A28E9B100D29077 /* TapeRecorderWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TapeRecorderWindowController.m; sourceTree = "<group>"; };
 		64F5DE3A1A28E9B100D29077 /* PreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesWindowController.h; sourceTree = "<group>"; };
 		64F5DE3B1A28E9B100D29077 /* PreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesWindowController.m; sourceTree = "<group>"; };
 		64F5DE3E1A28E9B100D29077 /* GLOutputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLOutputView.h; sourceTree = "<group>"; };
-		64F5DE3F1A28E9B100D29077 /* GLOutputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLOutputView.m; sourceTree = "<group>"; };
+		64F5DE3F1A28E9B100D29077 /* GLOutputView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLOutputView.mm; sourceTree = "<group>"; };
 		64F5DE401A28E9B100D29077 /* CoreAudioOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreAudioOutput.h; sourceTree = "<group>"; };
 		64F5DE411A28E9B100D29077 /* CoreAudioOutput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreAudioOutput.m; sourceTree = "<group>"; };
 		64F5DE441A28E9B100D29077 /* TapeRecorderWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TapeRecorderWindow.h; sourceTree = "<group>"; };
@@ -267,11 +267,11 @@
 				645DAEA41B3B2C5400C9AB10 /* system.h */,
 				645DAEA51B3B2C5400C9AB10 /* system.c */,
 				64F5DDFE1A28E83A00D29077 /* OpenGL.h */,
-				64F5DE051A28E83A00D29077 /* GLOutput.h */,
-				64F5DE061A28E83A00D29077 /* GLOutput.c */,
+				64F5DE051A28E83A00D29077 /* GLOutput.hpp */,
+				64F5DE061A28E83A00D29077 /* GLOutput.cpp */,
 				64F5DE071A28E83A00D29077 /* GLOutputShader.c */,
-				645DAEA21B3B213D00C9AB10 /* Machine.h */,
-				645DAEA11B3B213D00C9AB10 /* Machine.c */,
+				645DAEA21B3B213D00C9AB10 /* Machine.hpp */,
+				645DAEA11B3B213D00C9AB10 /* Machine.cpp */,
 			);
 			name = Common;
 			path = common;
@@ -283,12 +283,12 @@
 				64F5DE311A28E9B100D29077 /* Prefix.pch */,
 				64F5DE331A28E9B100D29077 /* main.m */,
 				64F5DE341A28E9B100D29077 /* MainController.h */,
-				64F5DE351A28E9B100D29077 /* MainController.m */,
+				64F5DE351A28E9B100D29077 /* MainController.mm */,
 				64BB311F1B3D248700AE1D99 /* KeyCodes.h */,
 				64F5DE361A28E9B100D29077 /* MachineWindowController.h */,
-				64BB31201B3D248700AE1D99 /* MachineWindowController.m */,
+				64BB31201B3D248700AE1D99 /* MachineWindowController.mm */,
 				64F5DE3E1A28E9B100D29077 /* GLOutputView.h */,
-				64F5DE3F1A28E9B100D29077 /* GLOutputView.m */,
+				64F5DE3F1A28E9B100D29077 /* GLOutputView.mm */,
 				64F5DE3A1A28E9B100D29077 /* PreferencesWindowController.h */,
 				64F5DE3B1A28E9B100D29077 /* PreferencesWindowController.m */,
 				64F5DE401A28E9B100D29077 /* CoreAudioOutput.h */,
@@ -506,7 +506,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/../../resources/OS X/Property Lists/Info.plist\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/../../resources/OS X/Property Lists/Info.plist\"";
+			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/../../resources/OS X/property lists/Info.plist\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/../../resources/OS X/property lists/Info.plist\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -516,9 +516,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				64F5DE681A28EA5100D29077 /* SNP.c in Sources */,
-				64BB31211B3D248700AE1D99 /* MachineWindowController.m in Sources */,
+				64BB31211B3D248700AE1D99 /* MachineWindowController.mm in Sources */,
 				64F5DE651A28EA5100D29077 /* SNA.c in Sources */,
-				645DAEA91B3C750C00C9AB10 /* Machine.c in Sources */,
+				645DAEA91B3C750C00C9AB10 /* Machine.cpp in Sources */,
 				64F5DE631A28EA5100D29077 /* FRZ.c in Sources */,
 				64F5DE621A28EA5100D29077 /* 89C.c in Sources */,
 				64F5DE4C1A28E9B100D29077 /* PreferencesWindowController.m in Sources */,
@@ -526,14 +526,14 @@
 				64F5DE511A28E9B100D29077 /* TapeRecorderWindow.m in Sources */,
 				645DAEA61B3B2C5400C9AB10 /* system.c in Sources */,
 				64DEF6811B797EF4000F4F01 /* KeyboardWindowController.m in Sources */,
-				64F5DE0B1A28E83A00D29077 /* GLOutput.c in Sources */,
+				64F5DE0B1A28E83A00D29077 /* GLOutput.cpp in Sources */,
 				64F5DE0C1A28E83A00D29077 /* GLOutputShader.c in Sources */,
-				64F5DE491A28E9B100D29077 /* MainController.m in Sources */,
+				64F5DE491A28E9B100D29077 /* MainController.mm in Sources */,
 				64F5DE661A28EA5100D29077 /* ACH.c in Sources */,
 				64F5DE641A28EA5100D29077 /* PLUSD.c in Sources */,
 				64F5DE2E1A28E99000D29077 /* NSView+RedCode.m in Sources */,
 				64F5DE711A28EA5F00D29077 /* Z80.c in Sources */,
-				64F5DE4E1A28E9B100D29077 /* GLOutputView.m in Sources */,
+				64F5DE4E1A28E9B100D29077 /* GLOutputView.mm in Sources */,
 				64F5DE521A28E9B100D29077 /* Window.m in Sources */,
 				64F5DE721A28EA5F00D29077 /* ZX Spectrum.c in Sources */,
 				64F5DE481A28E9B100D29077 /* main.m in Sources */,
@@ -553,6 +553,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++98";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -566,7 +567,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -584,6 +585,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					/usr/local/include,
+					"/Users/manuel/Projects/Kits/Z/1/Z/Z.Kit/v0.1/API/C++",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -595,6 +597,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++98";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -610,7 +613,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -621,6 +624,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					/usr/local/include,
+					"/Users/manuel/Projects/Kits/Z/1/Z/Z.Kit/v0.1/API/C++",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
