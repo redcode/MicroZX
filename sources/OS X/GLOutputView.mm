@@ -4,6 +4,9 @@
 |   ____________/\__\ Released under the GNU General Public License v3.
 |_*/
 
+#define Z_USE_CG_GEOMETRY_TYPES
+#define Z_USE_NS_GEOMETRY_TYPES
+
 #import "GLOutputView.h"
 #import <Z/classes/base/Value2D.hpp>
 #import <Z/functions/geometry/ZRectangle.h>
@@ -93,7 +96,7 @@ using namespace ZKit;
 
 			SET_CONTEXT;
 			_output = new GLOutput();
-			_output->set_geometry(hard_cast<Rectangle<Real>, NSRect>(self.bounds), Z_SCALING_EXPAND);
+			_output->set_geometry(self.bounds, Z_SCALING_EXPAND);
 			RESTORE_CONTEXT;
 			/*gl_output_set_effect(&_GLOutput, &effect, NULL);
 
@@ -178,7 +181,7 @@ using namespace ZKit;
 			if (_flags.reshaped)
 				{
 				[_GLContext update];
-				_output->set_geometry(hard_cast<Rectangle<Real>, NSRect>(self.bounds), Z_SCALING_SAME);
+				_output->set_geometry(self.bounds, Z_SCALING_SAME);
 				}
 
 			_output->draw(FALSE);
@@ -213,7 +216,7 @@ using namespace ZKit;
 		{
 		if (_flags.active) pthread_mutex_lock(&mutex_);
 		SET_CONTEXT;
-		_output->set_geometry(hard_cast<Rectangle<Real>, NSRect>(self.bounds), scaling);
+		_output->set_geometry(self.bounds, scaling);
 		RESTORE_CONTEXT;
 		if (_flags.active) pthread_mutex_unlock(&mutex_);
 		}

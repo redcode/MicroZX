@@ -4,11 +4,6 @@
 |   ____________/\__\ Released under the GNU General Public License v3.
 |_*/
 
-#define OSX
-
-#define Q_C_HAS_COMPOUND_LITERAL
-#define Q_C_HAS_ANONYMOUS_UNION
-
 #ifdef __OBJC__
 #	define Q_AVOID_NULL_DECLARATION
 #	import <Cocoa/Cocoa.h>

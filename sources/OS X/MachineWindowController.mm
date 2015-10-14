@@ -4,6 +4,9 @@
 |   ____________/\__\ Released under the GNU General Public License v3.
 |_*/
 
+#define Z_USE_CG_GEOMETRY_TYPES
+#define Z_USE_NS_GEOMETRY_TYPES
+
 #import "MachineWindowController.h"
 #import "KeyCodes.h"
 #import <Z/hardware/machine/platform/computer/ZX Spectrum.h>
@@ -18,11 +21,11 @@
 #import <Z/functions/geometry/ZRectangle.h>
 #import <Z/functions/casting.hpp>
 
-#define kScreenZoomIncrement	1.5
-#define SCREEN_SIZE_X		Z_JOIN_2(Z_ZX_SPECTRUM_SCREEN_WIDTH, .0)
-#define SCREEN_SIZE_Y		Z_JOIN_2(Z_ZX_SPECTRUM_SCREEN_HEIGHT, .0)
-#define SCREEN_SIZE		Value2D<Real>(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT)
-#define NS_SCREEN_SIZE		NSMakeSize(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT)
+#define kZoomIncrement	0.5
+#define SCREEN_SIZE_X	Z_JOIN_2(Z_ZX_SPECTRUM_SCREEN_WIDTH, .0)
+#define SCREEN_SIZE_Y	Z_JOIN_2(Z_ZX_SPECTRUM_SCREEN_HEIGHT, .0)
+#define SCREEN_SIZE	Value2D<Real>(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT)
+#define NS_SCREEN_SIZE	NSMakeSize(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT)
 
 using namespace ZKit;
 
@@ -109,8 +112,8 @@ Z_INLINE Real step_up(Real n, Real step_size)
 		{
 		if (_flags.isFullScreen)
 			{
-			Value2D<Real> boundsSize = hard_cast<Value2D<Real>, NSSize>(_videoOutput.bounds.size);
 			Value2D<Real> zoomedSize = SCREEN_SIZE * zoom;
+			Value2D<Real> boundsSize(_videoOutput.bounds.size);
 
 			_videoOutput.contentSize = boundsSize.contains(zoomedSize)
 				? zoomedSize
@@ -120,20 +123,15 @@ Z_INLINE Real step_up(Real n, Real step_size)
 		else	{
 			NSWindow *window = self.window;
 
-			Rectangle<Real> screenFrame = hard_cast<Rectangle<Real>, NSRect>(window.screen.visibleFrame);
-			Value2D<Real> borderSize = hard_cast<Value2D<Real>, NSSize>(window.borderSize);
-			Value2D<Real> newSize	 = borderSize + SCREEN_SIZE * zoom;
+			Rectangle<Real> screenFrame(window.screen.visibleFrame);
+			Value2D	 <Real> borderSize(window.borderSize);
+			Value2D	 <Real> newSize = borderSize + SCREEN_SIZE * zoom;
 
 			[window animateIntoScreenFrame: hard_cast<NSRect, Rectangle<Real> >(screenFrame)
-				fromTopCenterToSize:	hard_cast<NSSize, Value2D<Real> >
+				fromTopCenterToSize:	hard_cast<NSSize, Value2D  <Real> >
 					(screenFrame.size.contains(newSize)
 						? newSize
 						: SCREEN_SIZE.fit(screenFrame.size - borderSize) + borderSize)];
-
-			Z2D size = screenFrame.size;
-			Rectangle<Real> r(size, size);
-			Value2D<Real> r2(screenFrame.point);
-			(screenFrame.size += size).contains(size);
 			}
 		}
 
@@ -258,7 +256,7 @@ Z_INLINE Real step_up(Real n, Real step_size)
 		)
 			[window setCollectionBehavior: [window collectionBehavior] | NSWindowCollectionBehaviorFullScreenPrimary];
 
-		_minimumWindowSize = SCREEN_SIZE + hard_cast<Value2D<Real>, NSSize>(window.borderSize);
+		_minimumWindowSize = SCREEN_SIZE + window.borderSize;
 		window.title = [NSString stringWithUTF8String: _machine->abi->model_name];
 		[window.contentView addSubview: _videoOutput];
 		[window setContentAspectRatio: contentSize];
@@ -741,12 +739,12 @@ Z_INLINE Real step_up(Real n, Real step_size)
 
 
 	- (IBAction) zoomIn: (id) sender
-		{self.zoom = step_up(self.zoom, 0.5);}
+		{self.zoom = step_up(self.zoom, kZoomIncrement);}
 
 
 	- (IBAction) zoomOut: (id) sender
 		{
-		zreal zoom = step_down(self.zoom, 0.5);
+		zreal zoom = step_down(self.zoom, kZoomIncrement);
 
 		self.zoom = zoom <= 1.0 ? 1.0 : zoom;
 		}
