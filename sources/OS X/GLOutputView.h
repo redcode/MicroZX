@@ -7,7 +7,6 @@
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/QuartzCore.h>
 #import "GLOutput.hpp"
-#import <Z/classes/base/Value2D.hpp>
 
 @interface GLOutputView : NSView {
 
@@ -22,7 +21,6 @@
 	} _flags;
 }
 	@property (nonatomic, readonly) GLOutput*		  GLOutput;
-	@property (nonatomic, readonly) ZTripleBuffer*		  buffer;
 	@property (nonatomic, assign)	ZKit::Value2D<ZKit::Real> contentSize;
 	@property (nonatomic, assign)	ZKey(SCALING)  scaling;
 
@@ -36,5 +34,4 @@
 	- (void) blank;
 
 	- (void) setLinearInterpolation: (BOOL) value;
-
 @end

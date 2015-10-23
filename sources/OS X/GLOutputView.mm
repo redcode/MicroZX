@@ -8,8 +8,6 @@
 #define Z_USE_NS_GEOMETRY_TYPES
 
 #import "GLOutputView.h"
-#import <Z/classes/base/Value2D.hpp>
-#import <Z/functions/geometry/ZRectangle.h>
 #import <Z/functions/buffering/ZTripleBuffer.h>
 #import <Z/functions/casting.hpp>
 #import <pthread.h>
@@ -197,7 +195,6 @@ using namespace ZKit;
 #	pragma mark - Accessors
 
 	- (GLOutput	 *) GLOutput	{return _output;}
-	- (ZTripleBuffer *) buffer	{return &_output->buffer;}
 	- (Value2D<Real>  ) contentSize {return _output->content_bounds.size;}
 	- (ZKey(SCALING)  ) scaling	{return _output->content_scaling;}
 

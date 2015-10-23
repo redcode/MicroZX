@@ -70,9 +70,8 @@ void GLOutput::set_resolution(Value2D<Size> resolution)
 	{
 	Size frame_buffer_size = resolution.inner_product() * 4;
 
-	z_triple_buffer_initialize
-		(&buffer,
-		 buffer.buffers[0] = realloc(buffer.buffers[0], frame_buffer_size * 3),
+	buffer.initialize
+		(buffer.buffers[0] = realloc(buffer.buffers[0], frame_buffer_size * 3),
 		 frame_buffer_size);
 
 	glEnable(GL_TEXTURE_2D);
@@ -252,12 +251,12 @@ void GLOutput::remove_effect()
 
 void GLOutput::draw(Boolean skip_old)
 	{
-	void *frame = z_triple_buffer_consume(&buffer);
+	void *frame = buffer.consume();
 
 	if (frame == NULL)
 		{
 		if (skip_old) return;
-		frame = z_triple_buffer_consumption_buffer(&buffer);
+		frame = buffer.consumption_buffer();
 		}
 
 	glEnable(GL_TEXTURE_2D);

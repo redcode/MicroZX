@@ -8,6 +8,7 @@
 #define __mZX_common_GLOutput_HPP
 
 #include "OpenGL.h"
+#include <Z/classes/buffering/TripleBuffer.hpp>
 #include <Z/classes/geometry/Rectangle.hpp>
 #include <Z/types/mathematics.h>
 #include <Z/types/buffering.h>
@@ -43,7 +44,7 @@ class GLOutput {
 	public:
 	GLsizei			    input_width;
 	GLsizei			    input_height;
-	ZTripleBuffer		    buffer;
+	ZKit::TripleBuffer	    buffer;
 	ZKit::Rectangle<ZKit::Real> viewport;
 	ZKit::Rectangle<ZKit::Real> content_bounds;
 	ZKey(SCALING)		    content_scaling;

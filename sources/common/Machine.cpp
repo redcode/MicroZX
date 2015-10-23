@@ -43,12 +43,12 @@ Z_PRIVATE void *emulate(Machine *object)
 		if ((buffer = z_ring_buffer_try_produce(object->audio_output)) != NULL)
 			object->context->audio_output_buffer = (Int16 *)buffer;
 
-		object->context->video_output_buffer = z_triple_buffer_produce(object->video_output);
+		object->context->video_output_buffer = object->video_output->produce();
 
 		//----------------.
 		// Consume input. |
 		//----------------'
-		if ((keyboard = (UInt64 *)z_triple_buffer_consume(object->keyboard_input)) != NULL)
+		if ((keyboard = (UInt64 *)object->keyboard_input->consume()) != NULL)
 			{object->context->state.keyboard.value_uint64 = *keyboard;}
 
 		if (object->audio_input != NULL)
@@ -91,8 +91,7 @@ Z_PRIVATE void stop(Machine *object)
 	}
 
 
-
-Machine::Machine(MachineABI *abi, ZTripleBuffer *video_output, ZRingBuffer *audio_output)
+Machine::Machine(MachineABI *abi, ZKit::TripleBuffer *video_output, ZRingBuffer *audio_output)
 	{
 	this->abi	   = abi;
 	this->video_output = video_output;
@@ -104,15 +103,15 @@ Machine::Machine(MachineABI *abi, ZTripleBuffer *video_output, ZRingBuffer *audi
 	/*--------------------------------------.
 	| Create the machine and its components |
 	'--------------------------------------*/
-	context = (ZXSpectrum *)malloc(abi->context_size);
-	context->cpu_abi.run   = (ZEmulatorRun	)z80_run;
-	context->cpu_abi.irq   = (ZSwitch	)z80_irq;
-	context->cpu_abi.reset = (ZDo		)z80_reset;
-	context->cpu_abi.power = (ZEmulatorPower)z80_power;
-	context->cpu	       = (Z80 *)malloc(sizeof(Z80));
-	context->cpu_cycles    = &context->cpu->cycles;
-	context->memory	       = (UInt8 *)calloc(1, abi->memory_size);
-	context->video_output_buffer = z_triple_buffer_production_buffer(video_output);
+	context			     = (ZXSpectrum *)malloc(abi->context_size);
+	context->cpu_abi.run	     = (ZEmulatorRun  )z80_run;
+	context->cpu_abi.irq	     = (ZSwitch	      )z80_irq;
+	context->cpu_abi.reset	     = (ZDo	      )z80_reset;
+	context->cpu_abi.power	     = (ZEmulatorPower)z80_power;
+	context->cpu		     = (Z80 *)malloc(sizeof(Z80));
+	context->cpu_cycles	     = &context->cpu->cycles;
+	context->memory		     = (UInt8 *)calloc(1, abi->memory_size);
+	context->video_output_buffer = video_output->production_buffer();
 	context->audio_output_buffer = (Int16 *)z_ring_buffer_production_buffer(audio_output);
 	abi->initialize(context);
 	}

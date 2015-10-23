@@ -13,7 +13,6 @@
 #import "SNA.h"
 #import <Z/types/buffering.h>
 #import <pthread.h>
-#import <Z/classes/base/Value2D.hpp>
 
 @interface MachineWindowController : NSWindowController <NSWindowDelegate, NSAnimationDelegate> {
 
@@ -40,7 +39,7 @@
 	//-------------'
 	//QTripleBuffer*	_videoOutputBuffer;
 	//QRingBuffer*		_audioOutputBuffer;
-	ZTripleBuffer*		_keyboardBuffer;
+	ZKit::TripleBuffer*	_keyboardBuffer;
 	Z64Bit*			_keyboard;
 	Z64Bit			_keyboardState;
 

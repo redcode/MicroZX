@@ -15,17 +15,15 @@
 #import "NSView+RedCode.h"
 
 #include "system.h"
-#import <Z/classes/geometry/Rectangle.hpp>
 #import <Z/functions/buffering/ZTripleBuffer.h>
 #import <Z/functions/buffering/ZRingBuffer.h>
-#import <Z/functions/geometry/ZRectangle.h>
 #import <Z/functions/casting.hpp>
 
 #define kZoomIncrement	0.5
-#define SCREEN_SIZE_X	Z_JOIN_2(Z_ZX_SPECTRUM_SCREEN_WIDTH, .0)
+#define SCREEN_SIZE_X	Z_JOIN_2(Z_ZX_SPECTRUM_SCREEN_WIDTH,  .0)
 #define SCREEN_SIZE_Y	Z_JOIN_2(Z_ZX_SPECTRUM_SCREEN_HEIGHT, .0)
 #define SCREEN_SIZE	Value2D<Real>(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT)
-#define NS_SCREEN_SIZE	NSMakeSize(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT)
+#define NS_SCREEN_SIZE	NSMakeSize   (Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT)
 
 using namespace ZKit;
 
@@ -176,13 +174,12 @@ Z_INLINE Real step_up(Real n, Real step_size)
 			//_audioOutput = [[ALOutputPlayer alloc] init];
 
 
-			_keyboardBuffer = (ZTripleBuffer *)malloc(sizeof(ZTripleBuffer));
-			z_triple_buffer_initialize(_keyboardBuffer, malloc(Z_UINT64_SIZE * 3), Z_UINT64_SIZE);
-			_keyboard = (Z64Bit *)z_triple_buffer_production_buffer(_keyboardBuffer);
+			_keyboardBuffer = new ZKit::TripleBuffer(malloc(Z_UINT64_SIZE * 3), Z_UINT64_SIZE);
+			_keyboard = (Z64Bit *)_keyboardBuffer->production_buffer();
 			memset(_keyboardBuffer->buffers[0], 0xFF, Z_UINT64_SIZE * 3);
 
-			_machine = new Machine(machineABI, _videoOutput.buffer, _audioOutput.buffer);
-			_machine->keyboard_input = _keyboardBuffer;
+			_machine = new Machine(machineABI, &_videoOutput.GLOutput->buffer, _audioOutput.buffer);
+			_machine->keyboard_input = (ZKit::TripleBuffer *)_keyboardBuffer;
 
 			/*-----------------.
 			| Load needed ROMs |
@@ -378,7 +375,7 @@ Z_INLINE Real step_up(Real n, Real step_size)
 			}
 
 		_keyboard->value_uint64 = _keyboardState.value_uint64;
-		_keyboard = (Z64Bit *)z_triple_buffer_produce(_keyboardBuffer);
+		_keyboard = (Z64Bit *)_keyboardBuffer->produce();
 		}
 
 
@@ -446,7 +443,7 @@ Z_INLINE Real step_up(Real n, Real step_size)
 			}
 
 		_keyboard->value_uint64 = _keyboardState.value_uint64;
-		_keyboard = (Z64Bit *)z_triple_buffer_produce(_keyboardBuffer);
+		_keyboard = (Z64Bit *)_keyboardBuffer->produce();
 		}
 
 
@@ -464,7 +461,7 @@ Z_INLINE Real step_up(Real n, Real step_size)
 			}
 
 		_keyboard->value_uint64 = _keyboardState.value_uint64;
-		_keyboard = (Z64Bit *)z_triple_buffer_produce(_keyboardBuffer);
+		_keyboard = (Z64Bit *)_keyboardBuffer->produce();
 		}
 
 
