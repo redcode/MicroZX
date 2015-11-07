@@ -1,4 +1,4 @@
-/* Zilog Z80 CPU Emulator C API v1.0
+/* Zilog Z80 CPU Emulator C API
   ____    ____    ___ ___     ___
  / __ \  / ___\  / __` __`\  / __`\
 /\ \/  \/\ \__/_/\ \/\ \/\ \/\  __/
@@ -11,20 +11,18 @@ Released under the terms of the GNU General Public License v3. */
 #define __emulation_CPU_Z80_H__
 
 #include <Z/hardware/CPU/architecture/Z80.h>
-#include <Z/types/generic functions.h>
+#include <Z/ABIs/emulation.h>
 
-#ifndef EMULATION_CPU_Z80_NO_SLOTS
+#ifdef CPU_Z80_USE_SLOTS
 #	include <Z/macros/slot.h>
 #endif
 
-#if defined(BUILDING_DYNAMIC_EMULATION_CPU_Z80)
-#	define CPU_Z80_API Z_API_EXPORT
-#elif defined(BUILDING_STATIC_EMULATION_CPU_Z80)
-#	define CPU_Z80_API Z_PUBLIC
-#elif defined(USE_STATIC_EMULATION_CPU_Z80)
-#	define CPU_Z80_API
-#else
-#	define CPU_Z80_API Z_API
+#ifndef CPU_Z80_API
+#	ifdef CPU_Z80_USE_STATIC
+#		define CPU_Z80_API
+#	else
+#		define CPU_Z80_API Z_API
+#	endif
 #endif
 
 typedef struct {
@@ -34,7 +32,15 @@ typedef struct {
 	zuint8	  r7;
 	Z32Bit	  data;
 
-#	ifdef EMULATION_CPU_Z80_NO_SLOTS
+#	ifdef CPU_Z80_USE_SLOTS
+		struct {ZSlot(Z16BitAddressRead8Bit ) read;
+			ZSlot(Z16BitAddressWrite8Bit) write;
+			ZSlot(Z16BitAddressRead8Bit ) in;
+			ZSlot(Z16BitAddressWrite8Bit) out;
+			ZSlot(ZRead32Bit	    ) int_data;
+			ZSlot(ZSwitch		    ) halt;
+		} cb;
+#	else
 		void* cb_context;
 
 		struct {Z16BitAddressRead8Bit  read;
@@ -44,18 +50,12 @@ typedef struct {
 			ZRead32Bit	       int_data;
 			ZSwitch		       halt;
 		} cb;
-#	else
-		struct {ZSlot(Z16BitAddressRead8Bit ) read;
-			ZSlot(Z16BitAddressWrite8Bit) write;
-			ZSlot(Z16BitAddressRead8Bit ) in;
-			ZSlot(Z16BitAddressWrite8Bit) out;
-			ZSlot(ZRead32Bit	    ) int_data;
-			ZSlot(ZSwitch		    ) halt;
-		} cb;
 #	endif
 } Z80;
 
 Z_C_SYMBOLS_BEGIN
+
+CPU_Z80_API extern ZCPUEmulatorABI const abi_cpu_z80;
 
 CPU_Z80_API zsize z80_run   (Z80*     object,
 			     zsize    cycles);

@@ -4,6 +4,8 @@
 |   ____________/\__\ Released under the GNU General Public License v3.
 |_*/
 
+#define CPU_Z80_USE_LOCAL_HEADER
+
 #ifdef __OBJC__
 #	define Q_AVOID_NULL_DECLARATION
 #	import <Cocoa/Cocoa.h>
