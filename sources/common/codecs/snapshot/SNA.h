@@ -1,7 +1,7 @@
 #ifndef mZX_SNA_h
 #define mZX_SNA_h
 
-#include <Z/formats/snapshot/machine/ZX Spectrum/SNA.h>
+#include <Z/formats/snapshot/machine/computer/ZX Spectrum/SNA.h>
 #include <Z/hardware/machine/platform/computer/ZX Spectrum.h>
 #include <Z/hardware/CPU/architecture/Z80.h>
 

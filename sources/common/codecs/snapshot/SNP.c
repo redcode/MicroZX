@@ -7,7 +7,7 @@
 Copyright © 2013 Manuel Sainz de Baranda y Goñi <manuel@redcodesofware.com>
 Released under the terms of the GNU General Public License v3. */
 
-#include <Z/formats/snapshot/machine/ZX Spectrum/SNP.h>
+#include <Z/formats/snapshot/machine/computer/ZX Spectrum/SNP.h>
 #include <Z/hardware/machine/platform/computer/ZX Spectrum.h>
 #include <Z/hardware/CPU/architecture/Z80.h>
 #include <Z/functions/base/value.h>
