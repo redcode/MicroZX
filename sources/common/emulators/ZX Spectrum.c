@@ -15,7 +15,7 @@ Released under the terms of the GNU General Public License v3. */
 #include <Z/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum +2A.h>
 #include <Z/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum +3.h>
 #include <Z/hardware/machine/model/computer/ZX Spectrum/Inves Spectrum +.h>
-#include <Z/ABIs/emulation.h>
+#include <Z/ABIs/generic/emulation.h>
 
 #define KB(amount) (1024 * amount)
 
@@ -94,8 +94,8 @@ Z_PRIVATE Contention const zx_spectrum_plus_128k_contention = {
 							\
 	struct {ZEmulatorRun	run;			\
 		ZEmulatorPower	power;			\
-		ZDo		reset;			\
-		ZSwitch		irq;			\
+		ZContextDo	reset;			\
+		ZContextSwitch	irq;			\
 	} cpu_abi;					\
 							\
 	zuint8			keyboard[8];		\

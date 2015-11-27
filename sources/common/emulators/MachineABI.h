@@ -19,17 +19,17 @@ typedef struct {
 } ROM;
 
 typedef struct {
-	ZString* model_name;
-	zsize	 context_size;
-	zsize	 context_cpu_context_offset;
-	zsize	 memory_size;
-	zsize	 rom_count;
-	ROM*	 roms;
-	ZDo	 initialize;
-	ZSwitch	 power;
-	ZDo	 reset;
-	ZDo	 run_one_frame;
-	ZDo	 run_one_scanline;
+	ZString*       model_name;
+	zsize	       context_size;
+	zsize	       context_cpu_context_offset;
+	zsize	       memory_size;
+	zsize	       rom_count;
+	ROM*	       roms;
+	ZContextDo     initialize;
+	ZContextSwitch power;
+	ZContextDo     reset;
+	ZContextDo     run_one_frame;
+	ZContextDo     run_one_scanline;
 } MachineABI;
 
 extern MachineABI machine_abi_table[];

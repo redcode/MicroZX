@@ -10,7 +10,7 @@ Released under the terms of the GNU General Public License v2. */
 #define USE_STATIC_EMULATION_CPU_Z80
 #include "Z80.h"
 #include <Z/hardware/machine/platform/computer/ZX Spectrum.h>
-#include <Z/ABIs/emulation.h>
+#include <Z/ABIs/generic/emulation.h>
 
 typedef struct {
 	zsize cycles_per_frame;
@@ -27,9 +27,9 @@ typedef struct {
 	zint16*			audio_output_buffer; \
 							  \
 	struct {ZEmulatorRun	run;			  \
-		ZSwitch	power;			\
-		ZDo	reset;			\
-		ZSwitch	irq;			\
+		ZEmulatorPower	power;			\
+		ZContextDo	reset;			\
+		ZContextSwitch	irq;			\
 	} cpu_abi;					\
 							\
 	zuint8			keyboard[8];		\

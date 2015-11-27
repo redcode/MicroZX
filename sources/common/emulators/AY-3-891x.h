@@ -16,12 +16,12 @@ Released under the terms of the GNU General Public License v3. */
 typedef struct {
 	zuint8 r[16];
 
-	struct {Z16BitAddressRead8Bit  read;
-		Z16BitAddressWrite8Bit write;
-		Z16BitAddressRead8Bit  in;
-		Z16BitAddressWrite8Bit out;
-		ZRead32Bit	       int_data;
-		ZSwitch		       halt;
+	struct {ZContext16BitAddressRead8Bit  read;
+		ZContext16BitAddressWrite8Bit write;
+		ZContext16BitAddressRead8Bit  in;
+		ZContext16BitAddressWrite8Bit out;
+		ZContextRead32Bit	      int_data;
+		ZContextSwitch		      halt;
 	} cb;
 } AY3891x;
 
