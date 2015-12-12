@@ -9,7 +9,7 @@
 
 #include "OpenGL.h"
 #include <Z/classes/buffering/TripleBuffer.hpp>
-#include <Z/classes/geometry/Rectangle.hpp>
+#include <Z/classes/mathematics/geometry/Rectangle.hpp>
 #include <Z/types/mathematics.h>
 #include <Z/types/buffering.h>
 #include <Z/keys/layout.h>
