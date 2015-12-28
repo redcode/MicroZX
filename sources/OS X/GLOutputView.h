@@ -5,11 +5,9 @@
 |_*/
 
 #import <Cocoa/Cocoa.h>
-#import <QuartzCore/QuartzCore.h>
 #import "GLOutput.hpp"
 
 @interface GLOutputView : NSView {
-
 	NSOpenGLContext*     _GLContext;
 	CGLContextObj	     _CGLContext;
 	NSOpenGLPixelFormat* _pixelFormat;
@@ -22,7 +20,7 @@
 }
 	@property (nonatomic, readonly) GLOutput*		  GLOutput;
 	@property (nonatomic, assign)	ZKit::Value2D<ZKit::Real> contentSize;
-	@property (nonatomic, assign)	ZKey(SCALING)  scaling;
+	@property (nonatomic, assign)	ZKey(SCALING)		  scaling;
 
 	- (void) setResolution:	(ZKit::Value2D<ZKit::Size>) resolution
 		 format:	(ZKit::UInt		  ) format;

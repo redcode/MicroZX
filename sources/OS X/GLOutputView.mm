@@ -1,5 +1,5 @@
 /*     _________  ___
- _____ \_   /\  \/  / OS X/GLOutputView.m
+ _____ \_   /\  \/  / OS X/GLOutputView.mm
 |  |  |_/  /__>    <  Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
 |   ____________/\__\ Released under the GNU General Public License v3.
 |_*/
@@ -12,6 +12,7 @@
 #import <Z/functions/casting.hpp>
 #import <pthread.h>
 #import <stdlib.h>
+#import <QuartzCore/QuartzCore.h>
 
 #define SET_CONTEXT	CGLSetCurrentContext(_CGLContext)
 #define RESTORE_CONTEXT CGLSetCurrentContext(NULL)
@@ -182,7 +183,7 @@ using namespace ZKit;
 				_output->set_geometry(self.bounds, Z_SCALING_SAME);
 				}
 
-			_output->draw(FALSE);
+			_output->draw(false);
 			_flags.reshaped = NO;
 			//}
 
