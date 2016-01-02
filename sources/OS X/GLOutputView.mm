@@ -4,8 +4,8 @@
 |   ____________/\__\ Released under the GNU General Public License v3.
 |_*/
 
-#define Z_USE_CG_GEOMETRY_TYPES
-#define Z_USE_NS_GEOMETRY_TYPES
+#define Z_USE_INTEROPERABILITY_WITH_CG_GEOMETRY
+#define Z_USE_INTEROPERABILITY_WITH_NS_GEOMETRY
 
 #import "GLOutputView.h"
 #import <Z/functions/buffering/ZTripleBuffer.h>
@@ -13,6 +13,7 @@
 #import <pthread.h>
 #import <stdlib.h>
 #import <QuartzCore/QuartzCore.h>
+#include <Z/functions/base/Z2DValue.h>
 
 #define SET_CONTEXT	CGLSetCurrentContext(_CGLContext)
 #define RESTORE_CONTEXT CGLSetCurrentContext(NULL)
