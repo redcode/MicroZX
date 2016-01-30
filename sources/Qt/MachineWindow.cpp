@@ -17,7 +17,7 @@
 #include <Z/keys/layout.h>
 #include <Z/functions/buffering/ZTripleBuffer.h>
 #include <Z/functions/buffering/ZRingBuffer.h>
-#include <Z/functions/geometry/ZRectangle.h>
+#include <Z/functions/mathematics/geometry/euclidean/ZRectangle.h>
 #include <Z/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum.h>
 #include "system.h"
 #include <Z/types/time.h>
@@ -79,12 +79,12 @@ MachineWindow::MachineWindow(QWidget *parent) :	QMainWindow(parent), ui(new Ui::
 	//---------------------------------------'
 
 	ui->videoOutputView->setResolutionAndFormat
-		(Value2D<SIZE>(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT), 0);
+		(Value2D<Size>(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT), 0);
 
 	alsa_output_initialize(&audioOutput);
 
 
-	keyboardBuffer = (ZTripleBuffer *)malloc(sizeof(ZTripleBuffer));
+	keyboardBuffer = new TripleBuffer();
 	z_triple_buffer_initialize(keyboardBuffer, malloc(sizeof(zuint64) * 3), sizeof(zuint64));
 	keyboard = (Z64Bit *)z_triple_buffer_production_buffer(keyboardBuffer);
 	memset(keyboardBuffer->buffers[0], 0xFF, sizeof(zuint64) * 3);
@@ -115,7 +115,7 @@ MachineWindow::MachineWindow(QWidget *parent) :	QMainWindow(parent), ui(new Ui::
 			}
 
 		else	{
-			file.read((char *)(machine.context->memory + rom->base_address), rom->size);
+			file.read((char *)(machine->context->memory + rom->base_address), rom->size);
 			file.close();
 			}
 		}

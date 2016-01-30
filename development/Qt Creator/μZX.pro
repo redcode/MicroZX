@@ -4,8 +4,8 @@
 #
 #-------------------------------------------------
 
-QMAKE_CXXFLAGS += -DEMULATION_CPU_Z80_NO_SLOTS
-QMAKE_CFLAGS   += -DEMULATION_CPU_Z80_NO_SLOTS
+QMAKE_CXXFLAGS += -DCPU_Z80_USE_LOCAL_HEADER
+QMAKE_CFLAGS   += -DCPU_Z80_USE_LOCAL_HEADER
 
 QT += core guiQT opengl
 

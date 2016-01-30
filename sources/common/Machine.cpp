@@ -51,6 +51,7 @@ Z_PRIVATE void *emulate(Machine *object)
 		if ((keyboard = (UInt64 *)object->keyboard_input->consume()) != NULL)
 			{object->context->state.keyboard.value_uint64 = *keyboard;}
 
+#		if Z_OS != Z_OS_LINUX
 		if (object->audio_input != NULL)
 			{
 			while ((buffer = z_ring_buffer_try_consume(object->audio_input)) == NULL)
@@ -62,6 +63,7 @@ Z_PRIVATE void *emulate(Machine *object)
 
 			object->context->audio_input_buffer = (UInt8 *)buffer;
 			}
+#		endif
 
 		//----------------------------------------.
 		// Schedule next iteration time and wait. |
@@ -96,7 +98,9 @@ Machine::Machine(MachineABI *abi, ZKit::TripleBuffer *video_output, ZRingBuffer 
 	this->abi	   = abi;
 	this->video_output = video_output;
 	this->audio_output = audio_output;
+#	if Z_OS != Z_OS_LINUX
 	this->audio_input  = NULL;
+#	endif
 	flags.power  = OFF;
 	flags.pause  = OFF;
 

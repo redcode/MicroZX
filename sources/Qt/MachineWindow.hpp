@@ -29,7 +29,7 @@ class MachineWindow : public QMainWindow {Q_OBJECT
 	void*		   memory;
 	pthread_t	   thread;
 	ZRingBuffer	   audioOutputBuffer;
-	ZTripleBuffer*	   keyboardBuffer;
+	ZKit::TripleBuffer* keyboardBuffer;
 	Z64Bit*		   keyboard;
 	Z64Bit		   keyboardState;
 	QFrame*		   fullScreenMenuFrame;

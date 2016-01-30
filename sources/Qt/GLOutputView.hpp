@@ -26,9 +26,9 @@ class GLOutputView : public QGLWidget {Q_OBJECT
 	void resizeGL(int width, int height);
 	int heightForWidth(int width) const;
 	static void drawActiveViews();
-	ZTripleBuffer *buffer() {return &output.buffer;}
-	ZKit::Value2D<Real> contentSize();
-	void setContentSize(ZKit::Value2D<Real> content_size);
+	ZKit::TripleBuffer *buffer() {return &output->buffer;}
+	ZKit::Value2D<ZKit::Real> contentSize();
+	void setContentSize(ZKit::Value2D<ZKit::Real> content_size);
 	void setScaling(ZKey(SCALING) scaling);
 	void setResolutionAndFormat(ZKit::Value2D<ZKit::Size> resolution, ZKit::UInt format);
 	void start();
