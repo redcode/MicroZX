@@ -8,8 +8,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <Z/classes/mathematics/geometry/euclidean/Rectangle.hpp>
-#include <Z/functions/buffering/ZTripleBuffer.h>
-#include <Z/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum.h>
 #include "system.h"
 #include <QTimer>
 
