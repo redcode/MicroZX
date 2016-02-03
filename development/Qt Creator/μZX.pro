@@ -7,9 +7,9 @@
 QMAKE_CXXFLAGS += -DCPU_Z80_USE_LOCAL_HEADER
 QMAKE_CFLAGS   += -DCPU_Z80_USE_LOCAL_HEADER
 
-QT += core guiQT opengl
+QT += core opengl
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
 
 LIBS += -lX11 -lasound
 

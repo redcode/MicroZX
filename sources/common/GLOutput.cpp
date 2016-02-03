@@ -39,9 +39,8 @@ static void set_viewport(Rectangle<Real> viewport)
 	}
 
 
-GLOutput::GLOutput()
+GLOutput::GLOutput() : effect(NULL), content_scaling(Z_SCALING_FIT)
 	{
-	effect = NULL;
 	buffer.buffers[0] = NULL;
 
 	glEnable(GL_TEXTURE_2D);
@@ -125,7 +124,7 @@ void GLOutput::set_geometry(Rectangle<Real> viewport, ZKey(SCALING) content_scal
 	{
 	set_viewport(this->viewport = viewport);
 
-	switch (content_scaling ? (content_scaling = content_scaling) : content_scaling)
+	switch (content_scaling ? (this->content_scaling = content_scaling) : this->content_scaling)
 		{
 		case Z_SCALING_FIT:
 		set_content_size(Value2D<Real>(input_width, input_height).fit(viewport.size));
