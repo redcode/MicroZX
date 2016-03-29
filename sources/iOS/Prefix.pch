@@ -7,8 +7,6 @@
 #define CPU_Z80_USE_LOCAL_HEADER
 
 #ifdef __OBJC__
-#	import <Cocoa/Cocoa.h>
-
 #	define STRING(...) [NSString stringWithFormat: __VA_ARGS__]
 #	define _(string) NSLocalizedString(@string, nil)
 #endif

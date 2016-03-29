@@ -1,21 +1,21 @@
 /*     _________  ___
- _____ \_   /\  \/  / OS X/CoreAudioOutput.m
+ _____ \_   /\  \/  / OS X/CoreAudioOutputPlayer.m
 |  |  |_/  /__>    <  Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
 |   ____________/\__\ Released under the GNU General Public License v3.
 |_*/
 
-#import "CoreAudioOutput.h"
+#import "CoreAudioOutputPlayer.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import <Z/types/base.h>
 #import <Z/functions/buffering/ZRingBuffer.h>
 #import "system.h"
 
 
-@implementation CoreAudioOutput
+@implementation CoreAudioOutputPlayer
 
 
 	static OSStatus FillBuffer(
-		CoreAudioOutput*	    audioOutput,
+		CoreAudioOutputPlayer*	    player,
 		AudioUnitRenderActionFlags* ioActionFlags,
 		const AudioTimeStamp*	    inTimeStamp,
 		UInt32 			    inBusNumber,
@@ -23,17 +23,17 @@
 		AudioBufferList*	    ioData
 	)
 		{
-		if (audioOutput->_buffer.fill_count < 2)
+		if (player->_buffer.fill_count < 2)
 			{
-			ioData->mBuffers[0].mData = z_ring_buffer_consumption_buffer(&audioOutput->_buffer);
+			ioData->mBuffers[0].mData = z_ring_buffer_consumption_buffer(&player->_buffer);
 			return noErr;
 			}
 
-		while (audioOutput->_buffer.fill_count > 3)
-			z_ring_buffer_try_consume(&audioOutput->_buffer);
+		while (player->_buffer.fill_count > 3)
+			z_ring_buffer_try_consume(&player->_buffer);
 
-		ioData->mBuffers[0].mData = z_ring_buffer_consumption_buffer(&audioOutput->_buffer);
-		z_ring_buffer_try_consume(&audioOutput->_buffer);
+		ioData->mBuffers[0].mData = z_ring_buffer_consumption_buffer(&player->_buffer);
+		z_ring_buffer_try_consume(&player->_buffer);
 		return noErr;
 		}
 

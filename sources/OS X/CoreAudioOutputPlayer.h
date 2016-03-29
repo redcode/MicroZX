@@ -1,5 +1,5 @@
 /*     _________  ___
- _____ \_   /\  \/  / OS X/CoreAudioOutput.h
+ _____ \_   /\  \/  / OS X/CoreAudioOutputPlayer.h
 |  |  |_/  /__>    <  Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
 |   ____________/\__\ Released under the GNU General Public License v3.
 |_*/
@@ -9,7 +9,7 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import <Z/types/buffering.h>
 
-@interface CoreAudioOutput : NSObject {
+@interface CoreAudioOutputPlayer : NSObject {
 
 	AudioComponentInstance _audioUnit;
 	ZRingBuffer	       _buffer;

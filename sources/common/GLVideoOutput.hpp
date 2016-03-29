@@ -1,11 +1,11 @@
 /*     _________  ___
- _____ \_   /\  \/  / common/GLOutput.h
+ _____ \_   /\  \/  / common/GLVideoOutput.h
 |  |  |_/  /__>    <  Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
 |   ____________/\__\ Released under the GNU General Public License v3.
 |_*/
 
-#ifndef __mZX_common_GLOutput_HPP
-#define __mZX_common_GLOutput_HPP
+#ifndef __mZX_common_GLVideoOutput_HPP
+#define __mZX_common_GLVideoOutput_HPP
 
 #include "OpenGL.h"
 #include <Z/classes/buffering/TripleBuffer.hpp>
@@ -38,9 +38,9 @@ typedef struct {
 			       GLsizei texture_width,
 			       GLsizei texture_height);
 	} abi;
-} GLOutputEffect;
+} GLVideoOutputEffect;
 
-class GLOutput {
+class GLVideoOutput {
 	public:
 	GLsizei			    input_width;
 	GLsizei			    input_height;
@@ -50,20 +50,20 @@ class GLOutput {
 	ZKey(SCALING)		    content_scaling;
 	GLfloat			    model_view_matrix[16];
 	GLuint			    texture;
-	GLOutputEffect*		    effect;
+	GLVideoOutputEffect*	    effect;
 	void*			    effect_context;
 
-	GLOutput();
-	~GLOutput();
+	GLVideoOutput();
+	~GLVideoOutput();
 
 	void set_resolution(ZKit::Value2D<ZKit::Size> resolution);
 	void set_content_bounds(ZKit::Rectangle<ZKit::Real> bounds);
 	void set_content_size(ZKit::Value2D<ZKit::Real> size);
 	void set_geometry(ZKit::Rectangle<ZKit::Real> viewport, ZKey(SCALING) content_scaling);
-	void set_effect(GLOutputEffect *effect, void *effect_context);
+	void set_effect(GLVideoOutputEffect *effect, void *effect_context);
 	void remove_effect();
 	void draw(ZKit::Boolean skip_old);
 	void set_linear_interpolation(ZKit::Boolean value);
 };
 
-#endif /* __mZX_common_GLOutput_HPP */
+#endif /* __mZX_common_GLVideoOutput_HPP */

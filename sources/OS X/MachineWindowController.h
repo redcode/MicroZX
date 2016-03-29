@@ -6,8 +6,8 @@
 
 #import <Foundation/Foundation.h>
 #import "Machine.hpp"
-#import "GLOutputView.h"
-#import "CoreAudioOutput.h"
+#import "GLVideoOutputView.h"
+#import "CoreAudioOutputPlayer.h"
 #import "TapeRecorderWindowController.h"
 #import "ZX Spectrum.h" // Eliminar
 #import "SNA.h"
@@ -44,8 +44,8 @@
 	Z64Bit			_keyboardState;
 
 	BOOL			_smooth;
-	GLOutputView*		_videoOutput;
-	CoreAudioOutput*	_audioOutput;
+	GLVideoOutputView*	_videoOutputView;
+	CoreAudioOutputPlayer*	_audioOutputPlayer;
 	BOOL			_keyboardInput;
 	ZRingBuffer		_audioInputBuffer;
 

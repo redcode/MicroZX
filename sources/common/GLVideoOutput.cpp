@@ -4,7 +4,7 @@
 |   ____________/\__\ Released under the GNU General Public License v3.
 |_*/
 
-#include "GLOutput.hpp"
+#include "GLVideoOutput.hpp"
 #include <Z/functions/buffering/ZTripleBuffer.h>
 #include <stdlib.h>
 
@@ -39,7 +39,7 @@ static void set_viewport(Rectangle<Real> viewport)
 	}
 
 
-GLOutput::GLOutput() : effect(NULL), content_scaling(Z_SCALING_FIT)
+GLVideoOutput::GLVideoOutput() : effect(NULL), content_scaling(Z_SCALING_FIT)
 	{
 	buffer.buffers[0] = NULL;
 
@@ -57,7 +57,7 @@ GLOutput::GLOutput() : effect(NULL), content_scaling(Z_SCALING_FIT)
 	}
 
 
-GLOutput::~GLOutput()
+GLVideoOutput::~GLVideoOutput()
 	{
 	if (effect != NULL) remove_effect();
 	glDeleteTextures(1, &texture);
@@ -65,7 +65,7 @@ GLOutput::~GLOutput()
 	}
 
 
-void GLOutput::set_resolution(Value2D<Size> resolution)
+void GLVideoOutput::set_resolution(Value2D<Size> resolution)
 	{
 	Size frame_buffer_size = resolution.inner_product() * 4;
 
@@ -85,7 +85,7 @@ void GLOutput::set_resolution(Value2D<Size> resolution)
 	}
 
 
-void GLOutput::set_content_bounds(Rectangle<Real> bounds)
+void GLVideoOutput::set_content_bounds(Rectangle<Real> bounds)
 	{
 	content_bounds = bounds;
 
@@ -105,7 +105,7 @@ void GLOutput::set_content_bounds(Rectangle<Real> bounds)
 	}
 
 
-void GLOutput::set_content_size(Value2D<Real> size)
+void GLVideoOutput::set_content_size(Value2D<Real> size)
 	{
 	content_bounds = Rectangle<Real>(viewport.size - size / 2.0, size);
 
@@ -120,7 +120,7 @@ void GLOutput::set_content_size(Value2D<Real> size)
 	}
 
 
-void GLOutput::set_geometry(Rectangle<Real> viewport, ZKey(SCALING) content_scaling)
+void GLVideoOutput::set_geometry(Rectangle<Real> viewport, ZKey(SCALING) content_scaling)
 	{
 	set_viewport(this->viewport = viewport);
 
@@ -143,7 +143,7 @@ void GLOutput::set_geometry(Rectangle<Real> viewport, ZKey(SCALING) content_scal
 	}
 
 
-void GLOutput::set_linear_interpolation(Boolean value)
+void GLVideoOutput::set_linear_interpolation(Boolean value)
 	{
 	GLint filter = value ? GL_LINEAR : GL_NEAREST;
 
@@ -153,7 +153,7 @@ void GLOutput::set_linear_interpolation(Boolean value)
 	}
 
 
-void GLOutput::set_effect(GLOutputEffect *effect, void *effect_context)
+void GLVideoOutput::set_effect(GLVideoOutputEffect *effect, void *effect_context)
 	{
 	if (this->effect != effect)
 		{
@@ -224,11 +224,11 @@ void GLOutput::set_effect(GLOutputEffect *effect, void *effect_context)
 	}
 
 
-void GLOutput::remove_effect()
+void GLVideoOutput::remove_effect()
 	{
 	if (this->effect != NULL)
 		{
-		GLOutputEffect *effect = this->effect;
+		GLVideoOutputEffect *effect = this->effect;
 
 		if (!--effect->owner_count)
 			{
@@ -248,7 +248,7 @@ void GLOutput::remove_effect()
 	}
 
 
-void GLOutput::draw(Boolean skip_old)
+void GLVideoOutput::draw(Boolean skip_old)
 	{
 	void *frame = buffer.consume();
 
@@ -286,7 +286,7 @@ void GLOutput::draw(Boolean skip_old)
 		}
 
 	else	{
-		GLOutputEffect *effect = this->effect;
+		GLVideoOutputEffect *effect = this->effect;
 
 		glUseProgram(effect->program);
 		glActiveTexture(GL_TEXTURE0);

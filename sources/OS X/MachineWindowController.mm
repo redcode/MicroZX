@@ -17,7 +17,6 @@
 #include "system.h"
 #import <Z/functions/buffering/ZTripleBuffer.h>
 #import <Z/functions/buffering/ZRingBuffer.h>
-#import <Z/functions/casting.hpp>
 
 #define kZoomIncrement	0.5
 #define SCREEN_SIZE_X	Z_JOIN_2(Z_ZX_SPECTRUM_SCREEN_WIDTH,  .0)
@@ -94,14 +93,14 @@ Z_INLINE Real step_up(Real n, Real step_size)
 		NSPasteboard *pasteboard  = [NSPasteboard generalPasteboard];
 
 		[pasteboard declareTypes: [NSMutableArray arrayWithObject: NSTIFFPboardType] owner: nil];
-		[pasteboard setData: [[_videoOutput imageCapture] TIFFRepresentation] forType: NSTIFFPboardType];
+		[pasteboard setData: [[_videoOutputView imageCapture] TIFFRepresentation] forType: NSTIFFPboardType];
 		}
 
 
 	- (CGFloat) zoom
 		{
 		return _flags.isFullScreen
-			? _videoOutput.contentSize.x / SCREEN_SIZE_X
+			? _videoOutputView.contentSize.x / SCREEN_SIZE_X
 			: ((NSView *)self.window.contentView).bounds.size.width / SCREEN_SIZE_X;
 		}
 
@@ -111,9 +110,9 @@ Z_INLINE Real step_up(Real n, Real step_size)
 		if (_flags.isFullScreen)
 			{
 			Value2D<Real> zoomedSize = SCREEN_SIZE * zoom;
-			Value2D<Real> boundsSize(_videoOutput.bounds.size);
+			Value2D<Real> boundsSize(_videoOutputView.bounds.size);
 
-			_videoOutput.contentSize = boundsSize.contains(zoomedSize)
+			_videoOutputView.contentSize = boundsSize.contains(zoomedSize)
 				? zoomedSize
 				: SCREEN_SIZE.fit(boundsSize);
 			}
@@ -125,11 +124,10 @@ Z_INLINE Real step_up(Real n, Real step_size)
 			Value2D	 <Real> borderSize(window.borderSize);
 			Value2D	 <Real> newSize = borderSize + SCREEN_SIZE * zoom;
 
-			[window animateIntoScreenFrame: hard_cast<NSRect, Rectangle<Real> >(screenFrame)
-				fromTopCenterToSize:	hard_cast<NSSize, Value2D  <Real> >
-					(screenFrame.size.contains(newSize)
-						? newSize
-						: SCREEN_SIZE.fit(screenFrame.size - borderSize) + borderSize)];
+			[window animateIntoScreenFrame: screenFrame
+				fromTopCenterToSize:	screenFrame.size.contains(newSize)
+					? newSize
+					: SCREEN_SIZE.fit(screenFrame.size - borderSize) + borderSize];
 			}
 		}
 
@@ -158,19 +156,19 @@ Z_INLINE Real step_up(Real n, Real step_size)
 			/*----------------------------.
 			| Create video output object. |
 			'----------------------------*/
-			_videoOutput = [[GLOutputView alloc] initWithFrame:
+			_videoOutputView = [[GLVideoOutputView alloc] initWithFrame:
 				NSMakeRect(0.0, 0.0, SCREEN_SIZE_X, SCREEN_SIZE_Y)];
 
-			[_videoOutput
+			[_videoOutputView
 				setResolution: Value2D<ZKit::Size>(SCREEN_SIZE_X, SCREEN_SIZE_Y)
 				format:	       0];
 
-			_videoOutput.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+			_videoOutputView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
 
 			/*----------------------------.
 			| Create audio output object. |
 			'----------------------------*/
-			_audioOutput = [[CoreAudioOutput alloc] init];
+			_audioOutputPlayer = [[CoreAudioOutputPlayer alloc] init];
 			//_audioOutput = [[ALOutputPlayer alloc] init];
 
 
@@ -178,7 +176,7 @@ Z_INLINE Real step_up(Real n, Real step_size)
 			_keyboard = (Z64Bit *)_keyboardBuffer->production_buffer();
 			memset(_keyboardBuffer->buffers[0], 0xFF, Z_UINT64_SIZE * 3);
 
-			_machine = new Machine(machineABI, &_videoOutput.GLOutput->buffer, _audioOutput.buffer);
+			_machine = new Machine(machineABI, &_videoOutputView.videoOutput->buffer, _audioOutputPlayer.buffer);
 			_machine->keyboard_input = (ZKit::TripleBuffer *)_keyboardBuffer;
 
 			/*-----------------.
@@ -225,14 +223,14 @@ Z_INLINE Real step_up(Real n, Real step_size)
 
 	- (void) dealloc
 		{
-		[_videoOutput stop];
-		[_audioOutput stop];
+		[_videoOutputView stop];
+		[_audioOutputPlayer stop];
 		_machine->power(OFF);
 		[titleWindow release];
 		[_tapeRecorderWindowController release];
 		[_pointerVisibilityTimer invalidate];
-		[_videoOutput release];
-		[_audioOutput release];
+		[_videoOutputView release];
+		[_audioOutputPlayer release];
 		[_fullScreenWindow release];
 		delete _machine;
 		free(_keyboardBuffer->buffers[0]);
@@ -255,12 +253,12 @@ Z_INLINE Real step_up(Real n, Real step_size)
 
 		_minimumWindowSize = SCREEN_SIZE + window.borderSize;
 		window.title = [NSString stringWithUTF8String: _machine->abi->model_name];
-		[window.contentView addSubview: _videoOutput];
+		[window.contentView addSubview: _videoOutputView];
 		[window setContentAspectRatio: contentSize];
 		[window setContentMinSize: contentSize];
 
-		[_videoOutput start];
-		[_audioOutput start];
+		[_videoOutputView start];
+		[_audioOutputPlayer start];
 		_machine->power(ON);
 		}
 
@@ -495,7 +493,7 @@ Z_INLINE Real step_up(Real n, Real step_size)
 		{
 		[window setContentAspectRatio: NSZeroSize];
 
-		_videoOutput.scaling = Z_SCALING_FIT;
+		_videoOutputView.scaling = Z_SCALING_FIT;
 		return proposedSize;
 		}
 
@@ -515,10 +513,10 @@ Z_INLINE Real step_up(Real n, Real step_size)
 		{
 		NSWindow *window = self.window;
 
-		_videoOutput.scaling = Z_SCALING_NONE;
+		_videoOutputView.scaling = Z_SCALING_NONE;
 
 		_trackingArea = [[NSTrackingArea alloc]
-			initWithRect: _videoOutput.bounds
+			initWithRect: _videoOutputView.bounds
 			options:      NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingActiveInKeyWindow
 			owner:	      self
 			userInfo:     nil];
@@ -539,7 +537,7 @@ Z_INLINE Real step_up(Real n, Real step_size)
 		_pointerVisibilityTimer = nil;
 		_trackingArea = nil;
 		_flags.isFullScreen = NO;
-		_videoOutput.scaling = Z_SCALING_EXPAND;
+		_videoOutputView.scaling = Z_SCALING_EXPAND;
 		[NSCursor unhide];
 		}
 
@@ -678,11 +676,16 @@ Z_INLINE Real step_up(Real n, Real step_size)
 
 		_machine->power(state);
 
-		if (state) [_videoOutput start];
+		if (state)
+			{
+			[_videoOutputView start];
+			[_audioOutputPlayer start];
+			}
 
 		else	{
-			[_videoOutput stop];
-			[_videoOutput blank];
+			[_audioOutputPlayer stop];
+			[_videoOutputView stop];
+			[_videoOutputView blank];
 			}
 		}
 
@@ -692,8 +695,17 @@ Z_INLINE Real step_up(Real n, Real step_size)
 		zboolean state = !_machine->flags.pause;
 
 		_machine->pause(state);
-		if (state) [_videoOutput stop];
-		else [_videoOutput start];
+
+		if (state)
+			{
+			[_audioOutputPlayer stop];
+			[_videoOutputView stop];
+			}
+
+		else	{
+			[_videoOutputView start];
+			[_audioOutputPlayer start];
+			}
 		}
 
 
@@ -702,7 +714,12 @@ Z_INLINE Real step_up(Real n, Real step_size)
 		zboolean pause = _machine->flags.pause;
 
 		_machine->reset();
-		if (pause) [_videoOutput start];
+
+		if (pause)
+			{
+			[_videoOutputView start];
+			[_audioOutputPlayer start];
+			}
 		}
 
 
@@ -761,7 +778,7 @@ Z_INLINE Real step_up(Real n, Real step_size)
 		BOOL enable = sender.state == NSOnState ? NSOffState : NSOnState;
 
 		sender.state = enable;
-		[_videoOutput setLinearInterpolation: enable];
+		[_videoOutputView setLinearInterpolation: enable];
 		}
 
 
