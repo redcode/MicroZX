@@ -1,32 +1,32 @@
 /*     _________  ___
- _____ \_   /\  \/  / Qt/GLOutputView.hpp
+ _____ \_   /\  \/  / Qt/GLVideoOutputView.hpp
 |  |  |_/  /__>    <  Copyright © 2014-2015 Manuel Sainz de Baranda y Goñi.
 |   ____________/\__\ Released under the GNU General Public License v3.
 |_*/
 
-#ifndef __mZX_Qt_GLOutputView_HPP
-#define __mZX_Qt_GLOutputView_HPP
+#ifndef __mZX_Qt_GLVideoOutputView_HPP
+#define __mZX_Qt_GLVideoOutputView_HPP
 
 #include <QGLWidget>
 #include <QTimer>
-#include "GLOutput.hpp"
+#include "GLVideoOutput.hpp"
 #include <Z/classes/base/Value2D.hpp>
 
-class GLOutputView : public QGLWidget {Q_OBJECT
+class GLVideoOutputView : public QGLWidget {Q_OBJECT
 	private:
-	QTimer*	  timer;
-	GLOutput* output;
-	bool	  active;
+	QTimer*	       timer;
+	GLVideoOutput* videoOutput;
+	bool	       active;
 
 	public:
-	explicit GLOutputView(QWidget *parent = 0);
-	~GLOutputView();
+	explicit GLVideoOutputView(QWidget *parent = 0);
+	~GLVideoOutputView();
 	void initializeGL();
 	void paintGL();
 	void resizeGL(int width, int height);
 	int heightForWidth(int width) const;
 	static void drawActiveViews();
-	ZKit::TripleBuffer *buffer() {return &output->buffer;}
+	ZKit::TripleBuffer *buffer() {return &videoOutput->buffer;}
 	ZKit::Value2D<ZKit::Real> contentSize();
 	void setContentSize(ZKit::Value2D<ZKit::Real> content_size);
 	void setScaling(ZKey(SCALING) scaling);
@@ -37,4 +37,4 @@ class GLOutputView : public QGLWidget {Q_OBJECT
 	void setLinearInterpolation(bool enabled);
 };
 
-#endif // __mZX_Qt_GLOutputView_HPP
+#endif // __mZX_Qt_GLVideoOutputView_HPP

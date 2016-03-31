@@ -6,8 +6,11 @@
 
 QMAKE_CXXFLAGS += -DCPU_Z80_USE_LOCAL_HEADER
 QMAKE_CFLAGS   += -DCPU_Z80_USE_LOCAL_HEADER
+INCLUDEPATH += /usr/local/include \
+		/usr/local/include/C++
 
 QT += core opengl
+CONFIG += c++11
 
 greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
 

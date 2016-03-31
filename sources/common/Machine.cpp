@@ -10,16 +10,13 @@
 #include "Machine.hpp"
 #include "system.h"
 #include "Z80.h"
-#include <Z/functions/buffering/ZTripleBuffer.h>
-#include <Z/functions/buffering/ZRingBuffer.h>
-#include <Z/types/base.hpp>
 
 using namespace ZKit;
 
 /*--------------------------------.
 | Emulation thread main function. |
 '--------------------------------*/
-Z_PRIVATE void *emulate(Machine *object)
+void Machine::main()
 	{
 	UInt64	frames_per_second = 50;
 	UInt64	frame_ticks	  = 1000000000 / frames_per_second;
@@ -30,38 +27,38 @@ Z_PRIVATE void *emulate(Machine *object)
 	void*	buffer;
 	UInt64* keyboard;
 
-	while (!object->must_stop)
+	while (!_must_stop)
 		{
 		loops = 0;
 
-		do object->abi->run_one_frame(object->context);
+		do abi->run_one_frame(context);
 		while ((next_frame_tick += frame_ticks) < z_ticks() && ++loops < maximum_frameskip);
 
 		//-----------------.
 		// Produce output. |
 		//-----------------'
-		if ((buffer = z_ring_buffer_try_produce(object->audio_output)) != NULL)
-			object->context->audio_output_buffer = (Int16 *)buffer;
+		if ((buffer = _audio_output->try_produce()) != NULL)
+			context->audio_output_buffer = (Int16 *)buffer;
 
-		object->context->video_output_buffer = object->video_output->produce();
+		context->video_output_buffer = _video_output->produce();
 
 		//----------------.
 		// Consume input. |
 		//----------------'
-		if ((keyboard = (UInt64 *)object->keyboard_input->consume()) != NULL)
-			{object->context->state.keyboard.value_uint64 = *keyboard;}
+		if ((keyboard = (UInt64 *)keyboard_input->consume()) != NULL)
+			{context->state.keyboard.value_uint64 = *keyboard;}
 
 #		if Z_OS != Z_OS_LINUX
-		if (object->audio_input != NULL)
+		if (_audio_input)
 			{
-			while ((buffer = z_ring_buffer_try_consume(object->audio_input)) == NULL)
+			while (!(buffer = _audio_input->try_consume()))
 				{
 				//printf("skip");
 				next_frame_tick += frame_ticks / 4;
 				z_wait(frame_ticks / 4);
 				}
 
-			object->context->audio_input_buffer = (UInt8 *)buffer;
+			context->audio_input_buffer = (UInt8 *)buffer;
 			}
 #		endif
 
@@ -71,33 +68,26 @@ Z_PRIVATE void *emulate(Machine *object)
 		if ((delta = next_frame_tick - z_ticks()) <= frame_ticks) z_wait(delta);
 		//else printf("delta => %lu, next => %lu\n", delta, next_frame_tick);
 		}
-
-	return NULL;
 	}
 
 
-Z_PRIVATE void start(Machine *object)
+void Machine::start()
 	{
-	object->must_stop = FALSE;
-	pthread_attr_t attributes;
-	pthread_attr_init(&attributes);
-	pthread_create(&object->thread, &attributes, (void *(*)(void *))emulate, object);
-	pthread_attr_destroy(&attributes);
+	_must_stop = FALSE;
+	_thread = std::thread(&Machine::main, this);
 	}
 
 
-Z_PRIVATE void stop(Machine *object)
+void Machine::stop()
 	{
-	object->must_stop = TRUE;
-	pthread_join(object->thread, NULL);
+	_must_stop = TRUE;
+	_thread.join();
 	}
 
 
-Machine::Machine(MachineABI *abi, ZKit::TripleBuffer *video_output, ZRingBuffer *audio_output)
+Machine::Machine(MachineABI *abi, ZKit::TripleBuffer *video_output, ZKit::RingBuffer *audio_output)
+: _video_output(video_output), _audio_output(audio_output), abi(abi)
 	{
-	this->abi	   = abi;
-	this->video_output = video_output;
-	this->audio_output = audio_output;
 #	if Z_OS != Z_OS_LINUX
 	this->audio_input  = NULL;
 #	endif
@@ -116,7 +106,7 @@ Machine::Machine(MachineABI *abi, ZKit::TripleBuffer *video_output, ZRingBuffer 
 	context->cpu_cycles	     = &context->cpu->cycles;
 	context->memory		     = (UInt8 *)calloc(1, abi->memory_size);
 	context->video_output_buffer = video_output->production_buffer();
-	context->audio_output_buffer = (Int16 *)z_ring_buffer_production_buffer(audio_output);
+	context->audio_output_buffer = (Int16 *)audio_output->production_buffer();
 	abi->initialize(context);
 	}
 
@@ -142,7 +132,7 @@ void Machine::power(Boolean state)
 			flags.power = ON;
 			flags.pause = OFF;
 			abi->power(context, ON);
-			start(this);
+			start();
 			}
 
 		else	{
@@ -150,7 +140,7 @@ void Machine::power(Boolean state)
 			Size offset = 0;
 			ROM *rom;
 
-			if (!flags.pause) stop(this);
+			if (!flags.pause) stop();
 			abi->power(context, OFF);
 
 			for (; index < rom_count; index++)
@@ -175,11 +165,11 @@ void Machine::pause(Boolean state)
 		if (state)
 			{
 			flags.pause = ON;
-			stop(this);
+			stop();
 			}
 
 		else	{
-			start(this);
+			start();
 			flags.pause = OFF;
 			}
 		}
@@ -190,9 +180,9 @@ void Machine::reset()
 	{
 	if (flags.power)
 		{
-		if (!flags.pause) stop(this);
+		if (!flags.pause) stop();
 		abi->reset(context);
-		start(this);
+		start();
 		flags.pause = OFF;
 		}
 	}

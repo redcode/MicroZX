@@ -44,7 +44,7 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="GLOutputView" name="videoOutputView" native="true">
+     <widget class="GLVideoOutputView" name="videoOutputView" native="true">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -90,8 +90,6 @@
     <addaction name="menuNew"/>
     <addaction name="actionFileOpen"/>
     <addaction name="actionFileClose"/>
-    <addaction name="separator"/>
-    <addaction name="actionFileProperties"/>
     <addaction name="separator"/>
     <addaction name="actionMachineSaveScreenshot"/>
     <addaction name="actionRecord_Movie"/>
@@ -195,7 +193,7 @@
      <string>Help</string>
     </property>
     <addaction name="actionHelpAbout"/>
-    <addaction name="actionAbout_Qt"/>
+    <addaction name="actionHelpAboutQt"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuMachine"/>
@@ -528,11 +526,6 @@
     <string>Menu Bar</string>
    </property>
   </action>
-  <action name="actionAbout_Qt">
-   <property name="text">
-    <string>About Qt...</string>
-   </property>
-  </action>
   <action name="actionBackground">
    <property name="checkable">
     <bool>true</bool>
@@ -709,12 +702,17 @@
     <string>Default</string>
    </property>
   </action>
+  <action name="actionHelpAboutQt">
+   <property name="text">
+    <string>About Qt...</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>GLOutputView</class>
+   <class>GLVideoOutputView</class>
    <extends>QWidget</extends>
-   <header>GLOutputView.hpp</header>
+   <header>GLVideoOutputView.hpp</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

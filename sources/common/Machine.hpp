@@ -8,27 +8,29 @@
 #define __mZX_common_Machine_H
 
 #include <Z/classes/buffering/TripleBuffer.hpp>
-#include <pthread.h>
+#include <Z/classes/buffering/RingBuffer.hpp>
 #include "ZX Spectrum.h"
 #include "MachineABI.h"
 #include <Z/inspection/OS.h>
+#include <thread>
 
 class Machine {
-
-	public:
-	pthread_t	    thread;
-	ZXSpectrum*	    context;
-	MachineABI*	    abi;
-	ZKit::TripleBuffer* video_output;
-	ZRingBuffer*	    audio_output;
+	private:
+	std::thread	       _thread;
+	volatile ZKit::Boolean _must_stop;
+	ZKit::TripleBuffer*    _video_output;
+	ZKit::RingBuffer*      _audio_output;
 
 #	if Z_OS == Z_OS_MAC_OS_X
-		ZRingBuffer* audio_input;
+		ZKit::RingBuffer* _audio_input;
 #	endif
+
+	public:
+	ZXSpectrum*	    context;
+	MachineABI*	    abi;
 
 	ZKit::UInt8	       audio_frame[882];
 	ZKit::TripleBuffer*    keyboard_input;
-	volatile ZKit::Boolean must_stop;
 
 	struct {ZKit::Boolean power :1;
 		ZKit::Boolean pause :1;
@@ -36,7 +38,7 @@ class Machine {
 
 	Machine(MachineABI*	    abi,
 		ZKit::TripleBuffer* video_output,
-		ZRingBuffer*	    audio_output);
+		ZKit::RingBuffer*   audio_output);
 
 	~Machine();
 
@@ -44,7 +46,11 @@ class Machine {
 	void power(ZKit::Boolean  state);
 	void pause(ZKit::Boolean  state);
 	void reset();
-	void machine_set_audio_input_buffer(ZRingBuffer* audio_input);
+
+	private:
+	void main();
+	void start();
+	void stop();
 };
 
 #endif /* __mZX_common_Machine_H */

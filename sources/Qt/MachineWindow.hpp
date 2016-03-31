@@ -12,7 +12,7 @@
 #include <QTimer>
 #include <Z/types/buffering.h>
 #include "Machine.hpp"
-#include "ALSAOutput.h"
+#include "ALSAAudioOutputPlayer.hpp"
 
 namespace Ui {class MachineWindow;}
 
@@ -23,17 +23,17 @@ class MachineWindow : public QMainWindow {Q_OBJECT
 	void emulateMachine();
 
 	private:
-	Ui::MachineWindow* ui;
-	ALSAOutput	   audioOutput;
-	Machine*	   machine;
-	void*		   memory;
-	pthread_t	   thread;
-	ZRingBuffer	   audioOutputBuffer;
-	ZKit::TripleBuffer* keyboardBuffer;
-	Z64Bit*		   keyboard;
-	Z64Bit		   keyboardState;
-	QFrame*		   fullScreenMenuFrame;
-	volatile bool	   mustStop;
+	Ui::MachineWindow*     ui;
+	ALSAAudioOutputPlayer* audioOutputPlayer;
+	Machine*	       machine;
+	void*		       memory;
+	pthread_t	       thread;
+	ZRingBuffer	       audioOutputBuffer;
+	ZKit::TripleBuffer*    keyboardBuffer;
+	Z64Bit*		       keyboard;
+	Z64Bit		       keyboardState;
+	QFrame*		       fullScreenMenuFrame;
+	volatile bool	       mustStop;
 
 	struct {bool running :1;
 	} flags;
@@ -66,6 +66,7 @@ class MachineWindow : public QMainWindow {Q_OBJECT
 	void on_actionViewSmooth_toggled(bool);
 	void on_actionWindowEditTitle_triggered();
 	void on_actionHelpAbout_triggered();
+	void on_actionHelpAboutQt_triggered();
 };
 
 #endif // __mZX_Qt_MachineWindow_HPP

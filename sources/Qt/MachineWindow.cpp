@@ -81,19 +81,16 @@ MachineWindow::MachineWindow(QWidget *parent) :	QMainWindow(parent), ui(new Ui::
 	ui->videoOutputView->setResolutionAndFormat
 		(Value2D<Size>(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT), 0);
 
-	alsa_output_initialize(&audioOutput);
-
+	audioOutputPlayer = new ALSAAudioOutputPlayer();
 
 	keyboardBuffer = new TripleBuffer();
 	z_triple_buffer_initialize(keyboardBuffer, malloc(sizeof(zuint64) * 3), sizeof(zuint64));
 	keyboard = (Z64Bit *)z_triple_buffer_production_buffer(keyboardBuffer);
 	memset(keyboardBuffer->buffers[0], 0xFF, sizeof(zuint64) * 3);
 
-	z_ring_buffer_initialize(&audioOutputBuffer, malloc(sizeof(zint16) * 882 * 4), sizeof(zint16) * 882, 4);
-
 	MachineABI *abi = &machine_abi_table[4];
 
-	machine = new Machine(abi, ui->videoOutputView->buffer(), &audioOutput.buffer);
+	machine = new Machine(abi, ui->videoOutputView->buffer(), audioOutputPlayer->buffer());
 	machine->keyboard_input = keyboardBuffer;
 
 	zsize index = abi->rom_count;
@@ -124,15 +121,15 @@ MachineWindow::MachineWindow(QWidget *parent) :	QMainWindow(parent), ui(new Ui::
 	setWindowTitle(QString(abi->model_name));
 	ui->videoOutputView->start();
 	machine->power(ON);
-	alsa_output_start(&audioOutput);
+	audioOutputPlayer->start();
 	}
 
 
 MachineWindow::~MachineWindow()
 	{
 	ui->videoOutputView->stop();
-	alsa_output_stop(&audioOutput);
-	alsa_output_finalize(&audioOutput);
+	audioOutputPlayer->stop();
+	delete audioOutputPlayer;
 	//delete audioOutput;
 	machine->power(OFF);
 	delete ui;
@@ -365,12 +362,12 @@ void MachineWindow::on_actionMachinePower_toggled(bool enabled)
 
 	if (state)
 		{
-		alsa_output_start(&audioOutput);
+		audioOutputPlayer->start();
 		ui->videoOutputView->start();
 		}
 
 	else	{
-		alsa_output_stop(&audioOutput);
+		audioOutputPlayer->stop();
 		ui->videoOutputView->stop();
 		ui->videoOutputView->blank();
 		}
@@ -387,10 +384,10 @@ void MachineWindow::on_actionMachinePause_toggled(bool enabled)
 	if (state)
 		{
 		ui->videoOutputView->stop();
-		alsa_output_stop(&audioOutput);
+		audioOutputPlayer->stop();
 		}
 	else	{
-		alsa_output_start(&audioOutput);
+		audioOutputPlayer->start();
 		ui->videoOutputView->start();
 		}
 	}
@@ -484,6 +481,10 @@ void MachineWindow::on_actionHelpAbout_triggered()
 	aboutDialog->show();
 	aboutDialog->raise();
 	}
+
+
+void MachineWindow::on_actionHelpAboutQt_triggered()
+	{QApplication::aboutQt();}
 
 
 // Qt/MachineWindow.cpp EOF

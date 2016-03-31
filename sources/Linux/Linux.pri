@@ -1,6 +1,6 @@
 
 SOURCES += \
-	$$P_SOURCES/Linux/ALSAOutput.c \
+	$$P_SOURCES/Linux/ALSAAudioOutputPlayer.cpp \
 
 HEADERS += \
-	$$P_SOURCES/Linux/ALSAOutput.h \
+	$$P_SOURCES/Linux/ALSAAudioOutputPlayer.hpp \
