@@ -28,7 +28,6 @@ class MachineWindow : public QMainWindow {Q_OBJECT
 	Machine*	       machine;
 	void*		       memory;
 	pthread_t	       thread;
-	ZRingBuffer	       audioOutputBuffer;
 	ZKit::TripleBuffer*    keyboardBuffer;
 	Z64Bit*		       keyboard;
 	Z64Bit		       keyboardState;
@@ -40,8 +39,8 @@ class MachineWindow : public QMainWindow {Q_OBJECT
 
 	void runMachine();
 	void stopMachine();
-	double currentZoom();
-	void setZoom(zreal);
+	ZKit::Real currentZoom();
+	void setZoom(ZKit::Real);
 
 	protected:
 	void keyPressEvent	   (QKeyEvent*);

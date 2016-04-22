@@ -31,7 +31,7 @@ using namespace ZKit;
 static AboutDialog* aboutDialog = NULL;
 
 
-double MachineWindow::currentZoom()
+Real MachineWindow::currentZoom()
 	{
 	return isFullScreen()
 		? ui->videoOutputView->contentSize().x / double(Z_ZX_SPECTRUM_SCREEN_WIDTH)
@@ -39,16 +39,16 @@ double MachineWindow::currentZoom()
 	}
 
 
-void MachineWindow::setZoom(zreal zoom)
+void MachineWindow::setZoom(Real zoom)
 	{
 	if (isFullScreen())
 		{
-		Z2D boundsSize = z_2d(ui->videoOutputView->width(), ui->videoOutputView->height());
-		Z2D zoomedSize = z_2d(zreal(Z_ZX_SPECTRUM_SCREEN_WIDTH) * zoom, zreal(Z_ZX_SPECTRUM_SCREEN_HEIGHT) * zoom);
+		Value2D<Real> boundsSize(ui->videoOutputView->width(), ui->videoOutputView->height());
+		Value2D<Real> zoomedSize(zreal(Z_ZX_SPECTRUM_SCREEN_WIDTH) * zoom, zreal(Z_ZX_SPECTRUM_SCREEN_HEIGHT) * zoom);
 
-		ui->videoOutputView->setContentSize(z_2d_contains(boundsSize, zoomedSize)
+		ui->videoOutputView->setContentSize(boundsSize.contains(zoomedSize)
 			? zoomedSize
-			: z_2d_fit(MACHINE_SCREEN_SIZE, boundsSize));
+			: MACHINE_SCREEN_SIZE.fit(boundsSize));
 		}
 
 	else	{
@@ -84,16 +84,15 @@ MachineWindow::MachineWindow(QWidget *parent) :	QMainWindow(parent), ui(new Ui::
 	audioOutputPlayer = new ALSAAudioOutputPlayer();
 
 	keyboardBuffer = new TripleBuffer();
-	z_triple_buffer_initialize(keyboardBuffer, malloc(sizeof(zuint64) * 3), sizeof(zuint64));
-	keyboard = (Z64Bit *)z_triple_buffer_production_buffer(keyboardBuffer);
+	keyboardBuffer->initialize(malloc(sizeof(zuint64) * 3), sizeof(zuint64));
+	keyboard = (Z64Bit *)keyboardBuffer->production_buffer();
 	memset(keyboardBuffer->buffers[0], 0xFF, sizeof(zuint64) * 3);
 
 	MachineABI *abi = &machine_abi_table[4];
 
-	machine = new Machine(abi, ui->videoOutputView->buffer(), audioOutputPlayer->buffer());
-	machine->keyboard_input = keyboardBuffer;
+	machine = new Machine(abi, ui->videoOutputView->buffer(), audioOutputPlayer->buffer(), keyboardBuffer);
 
-	zsize index = abi->rom_count;
+	Size index = abi->rom_count;
 	ROM *rom;
 
 	while (index)
@@ -231,7 +230,7 @@ void MachineWindow::keyPressEvent(QKeyEvent* event)
 		}
 
 	keyboard->value_uint64 = keyboardState.value_uint64;
-	keyboard = (Z64Bit *)z_triple_buffer_produce(keyboardBuffer);
+	keyboard = (Z64Bit *)keyboardBuffer->produce();
 	}
 
 
@@ -299,7 +298,7 @@ void MachineWindow::keyReleaseEvent(QKeyEvent* event)
 		}
 
 	keyboard->value_uint64 = keyboardState.value_uint64;
-	keyboard = (Z64Bit *)z_triple_buffer_produce(keyboardBuffer);
+	keyboard = (Z64Bit *)keyboardBuffer->produce();
 	}
 
 
@@ -316,11 +315,7 @@ void MachineWindow::resizeEvent(QResizeEvent *)
 	if (isFullScreen())
 		{
 		ui->videoOutputView->setScaling(Z_SCALING_NONE);
-
-		ui->videoOutputView->setContentSize(z_2d_fit
-			(z_2d(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT),
-			 z_2d(ui->videoOutputView->width(), ui->videoOutputView->height())));
-
+		ui->videoOutputView->setContentSize(MACHINE_SCREEN_SIZE.fit(z_2d(ui->videoOutputView->width(), ui->videoOutputView->height())));
 		fullScreenMenuFrame->setGeometry(0.0, 0.0, ui->videoOutputView->width(), ui->menuBar->height());
 		fullScreenMenuFrame->show();
 		}
@@ -437,7 +432,7 @@ void MachineWindow::on_actionViewZoomIn_triggered()
 
 void MachineWindow::on_actionViewZoomOut_triggered()
 	{
-	zreal zoom = ceil(currentZoom() / 0.5) * 0.5 - 0.5;
+	Real zoom = ceil(currentZoom() / 0.5) * 0.5 - 0.5;
 
 	setZoom(zoom <= 1.0 ? 1.0 : zoom);
 	}

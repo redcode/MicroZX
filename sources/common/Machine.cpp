@@ -190,7 +190,9 @@ void Machine::reset()
 
 void Machine::set_audio_input(RingBuffer *audio_input)
 	{
+#	if Z_OS != Z_OS_LINUX
 	_audio_input = audio_input;
+#	endif
 	}
 
 
