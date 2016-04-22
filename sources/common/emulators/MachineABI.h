@@ -28,8 +28,8 @@ typedef struct {
 	ZContextDo     initialize;
 	ZContextSwitch power;
 	ZContextDo     reset;
-	ZContextDo     run_one_frame;
-	ZContextDo     run_one_scanline;
+	ZContextDo     run_1_frame;
+	ZContextDo     run_1_scanline;
 } MachineABI;
 
 extern MachineABI machine_abi_table[];

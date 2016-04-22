@@ -10,10 +10,10 @@
 #import "GLVideoOutputView.h"
 #import <Z/functions/buffering/ZTripleBuffer.h>
 #import <Z/functions/casting.hpp>
-#import <pthread.h>
 #import <stdlib.h>
 #import <QuartzCore/QuartzCore.h>
 #include <Z/functions/base/Z2DValue.h>
+#include <mutex>
 
 #define SET_CONTEXT	CGLSetCurrentContext(_CGLContext)
 #define RESTORE_CONTEXT CGLSetCurrentContext(NULL)
@@ -38,10 +38,10 @@ using namespace ZKit;
 @implementation GLVideoOutputView
 
 
-	static GLVideoOutputView** activeInstances_     = NULL;
-	static zsize		   activeInstanceCount_ = 0;
-	static pthread_mutex_t	   mutex_	      = PTHREAD_MUTEX_INITIALIZER;
-	static CVDisplayLinkRef	   displayLink_;
+	static GLVideoOutputView** activeInstances     = NULL;
+	static zsize		   activeInstanceCount = 0;
+	static std::mutex	   mutex;
+	static CVDisplayLinkRef	   displayLink;
 
 
 	static CVReturn draw(
@@ -53,18 +53,18 @@ using namespace ZKit;
 		void*		   dummy
 	)
 		{
-		pthread_mutex_lock(&mutex_);
-		zsize index = activeInstanceCount_;
+		mutex.lock();
+		zsize index = activeInstanceCount;
 
 		while (index)
 			{
-			GLVideoOutputView *view = activeInstances_[--index];
+			GLVideoOutputView *view = activeInstances[--index];
 			CGLSetCurrentContext(view->_CGLContext);
 			view->_videoOutput->draw(TRUE);
 			}
 
 		CGLSetCurrentContext(NULL);
-		pthread_mutex_unlock(&mutex_);
+		mutex.unlock();
 		return kCVReturnSuccess;
 		}
 
@@ -131,13 +131,13 @@ using namespace ZKit;
 	- (void) dealloc
 		{
 		[self stop];
-		pthread_mutex_lock(&mutex_);
+		mutex.lock();
 		SET_CONTEXT;
 		delete _videoOutput;
 		RESTORE_CONTEXT;
 		[_pixelFormat release];
 		[_GLContext release];
-		pthread_mutex_unlock(&mutex_);
+		mutex.unlock();
 		[super dealloc];
 		}
 
@@ -166,7 +166,7 @@ using namespace ZKit;
 
 	- (void) drawRect: (NSRect) frame
 		{
-		if (_flags.active) pthread_mutex_lock(&mutex_);
+		if (_flags.active) mutex.lock();
 
 		SET_CONTEXT;
 
@@ -190,7 +190,7 @@ using namespace ZKit;
 
 		RESTORE_CONTEXT;
 
-		if (_flags.active) pthread_mutex_unlock(&mutex_);
+		if (_flags.active) mutex.unlock();
 		}
 
 
@@ -203,21 +203,21 @@ using namespace ZKit;
 
 	- (void) setContentSize: (Value2D<Real>) contentSize
 		{
-		if (_flags.active) pthread_mutex_lock(&mutex_);
+		if (_flags.active) mutex.lock();
 		SET_CONTEXT;
 		_videoOutput->set_content_size(contentSize);
 		RESTORE_CONTEXT;
-		if (_flags.active) pthread_mutex_unlock(&mutex_);
+		if (_flags.active) mutex.unlock();
 		}
 
 
 	- (void) setScaling: (ZKey(SCALING)) scaling
 		{
-		if (_flags.active) pthread_mutex_lock(&mutex_);
+		if (_flags.active) mutex.lock();
 		SET_CONTEXT;
 		_videoOutput->set_geometry(self.bounds, scaling);
 		RESTORE_CONTEXT;
-		if (_flags.active) pthread_mutex_unlock(&mutex_);
+		if (_flags.active) mutex.unlock();
 		}
 
 
@@ -235,25 +235,25 @@ using namespace ZKit;
 
 	- (void) start
 		{
-		if (activeInstanceCount_)
+		if (activeInstanceCount)
 			{
-			pthread_mutex_lock(&mutex_);
-			activeInstances_ = (GLVideoOutputView **)realloc(activeInstances_, sizeof(void *) * (activeInstanceCount_ + 1));
-			activeInstances_[activeInstanceCount_++] = self;
-			pthread_mutex_unlock(&mutex_);
+			mutex.lock();
+			activeInstances = (GLVideoOutputView **)realloc(activeInstances, sizeof(void *) * (activeInstanceCount + 1));
+			activeInstances[activeInstanceCount++] = self;
+			mutex.unlock();
 			}
 
 		else	{
-			*(activeInstances_ = (GLVideoOutputView **)malloc(sizeof(void *))) = self;
-			activeInstanceCount_ = 1;
+			*(activeInstances = (GLVideoOutputView **)malloc(sizeof(void *))) = self;
+			activeInstanceCount = 1;
 
-			CVDisplayLinkCreateWithActiveCGDisplays(&displayLink_);
-			CVDisplayLinkSetOutputCallback(displayLink_, (CVDisplayLinkOutputCallback)draw, NULL);
+			CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
+			CVDisplayLinkSetOutputCallback(displayLink, (CVDisplayLinkOutputCallback)draw, NULL);
 
 			CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext
-				(displayLink_, [_GLContext CGLContextObj], [_pixelFormat CGLPixelFormatObj]);
+				(displayLink, [_GLContext CGLContextObj], [_pixelFormat CGLPixelFormatObj]);
 
-			CVDisplayLinkStart(displayLink_);
+			CVDisplayLinkStart(displayLink);
 			}
 
 		_flags.active = YES;
@@ -265,32 +265,32 @@ using namespace ZKit;
 		{
 		if (_flags.active)
 			{
-			pthread_mutex_lock(&mutex_);
+			mutex.lock();
 
-			if (activeInstanceCount_ > 1)
+			if (activeInstanceCount > 1)
 				{
-				zsize index = activeInstanceCount_--;
+				zsize index = activeInstanceCount--;
 
-				while (activeInstances_[--index] != self);
-				memmove(activeInstances_ + index, activeInstances_ + index + 1, sizeof(void *) * (activeInstanceCount_ - index));
-				activeInstances_ = (GLVideoOutputView **)realloc(activeInstances_, sizeof(void *) * activeInstanceCount_);
+				while (activeInstances[--index] != self);
+				memmove(activeInstances + index, activeInstances + index + 1, sizeof(void *) * (activeInstanceCount - index));
+				activeInstances = (GLVideoOutputView **)realloc(activeInstances, sizeof(void *) * activeInstanceCount);
 				}
 
 			else	{
-				if (CVDisplayLinkIsRunning(displayLink_))
+				if (CVDisplayLinkIsRunning(displayLink))
 					{
-					CVDisplayLinkStop(displayLink_);
-					while (CVDisplayLinkIsRunning(displayLink_));
+					CVDisplayLinkStop(displayLink);
+					while (CVDisplayLinkIsRunning(displayLink));
 					}
 
-				CVDisplayLinkRelease(displayLink_);
-				activeInstanceCount_ = 0;
-				free(activeInstances_);
-				activeInstances_ = NULL;
+				CVDisplayLinkRelease(displayLink);
+				activeInstanceCount = 0;
+				free(activeInstances);
+				activeInstances = NULL;
 				}
 
 			_flags.active = NO;
-			pthread_mutex_unlock(&mutex_);
+			mutex.unlock();
 			}
 		}
 
@@ -307,11 +307,11 @@ using namespace ZKit;
 
 	- (void) setLinearInterpolation: (BOOL) value
 		{
-		if (_flags.active) pthread_mutex_lock(&mutex_);
+		if (_flags.active) mutex.lock();
 		SET_CONTEXT;
 		_videoOutput->set_linear_interpolation(value);
 		RESTORE_CONTEXT;
-		if (_flags.active) pthread_mutex_unlock(&mutex_);
+		if (_flags.active) mutex.unlock();
 		}
 
 @end

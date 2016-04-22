@@ -5,7 +5,7 @@
 |_*/
 
 #import "TapeRecorderWindow.h"
-#import "CoreAudioOutputPlayer.h"
+#import "CoreAudioOutputPlayer.hpp"
 #import <Z/types/base.h>
 #import <pthread.h>
 

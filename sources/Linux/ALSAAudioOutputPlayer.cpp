@@ -4,7 +4,6 @@
 |   ____________/\__\ Released under the GNU General Public License v3.
 |_*/
 
-#include <Z/functions/buffering/ZRingBuffer.h>
 #include "system.h"
 #include <stdlib.h>
 #include "ALSAAudioOutputPlayer.hpp"
@@ -17,7 +16,7 @@ void ALSAAudioOutputPlayer::main()
 	while (_buffer.fill_count < 2)
 		z_wait(1000000000 / 50 + 1000000000 / 100);
 
-	while (!must_stop)
+	while (!_must_stop)
 		{
 		if (_buffer.fill_count < 2)
 			snd_pcm_writei(_device, _buffer.consumption_buffer(), 882);
@@ -84,7 +83,7 @@ void ALSAAudioOutputPlayer::start()
 		snd_pcm_prepare(device);
 
 		_device = device;
-		must_stop = FALSE;
+		_must_stop = FALSE;
 		playing = TRUE;
 		_thread = std::thread(&ALSAAudioOutputPlayer::main, this);
 		}
@@ -95,7 +94,7 @@ void ALSAAudioOutputPlayer::stop()
 	{
 	if (playing)
 		{
-		must_stop = TRUE;
+		_must_stop = TRUE;
 		_thread.join();
 		playing = FALSE;
 		snd_pcm_close(_device);

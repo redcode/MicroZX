@@ -7,7 +7,7 @@
 #import <Foundation/Foundation.h>
 #import "Machine.hpp"
 #import "GLVideoOutputView.h"
-#import "CoreAudioOutputPlayer.h"
+#import "CoreAudioOutputPlayer.hpp"
 #import "TapeRecorderWindowController.h"
 #import "ZX Spectrum.h" // Eliminar
 #import "SNA.h"
@@ -47,7 +47,7 @@
 	GLVideoOutputView*	_videoOutputView;
 	CoreAudioOutputPlayer*	_audioOutputPlayer;
 	BOOL			_keyboardInput;
-	ZRingBuffer		_audioInputBuffer;
+	ZKit::RingBuffer	_audioInputBuffer;
 
 	NSTimer*		_pointerVisibilityTimer;
 	NSTrackingArea*		_trackingArea;
@@ -64,8 +64,6 @@
 	//KeyboardWindowController*     _keyboardWindowController;
 	//DebuggerWindowController*     _debuggerWindowController;
 	TapeRecorderWindowController* _tapeRecorderWindowController;
-
-	volatile BOOL _mustStop;
 
 	struct {BOOL isFullScreen	 :1;
 		BOOL ignoreKeyboardInput :1;

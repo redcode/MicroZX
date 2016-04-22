@@ -31,7 +31,7 @@ void Machine::main()
 		{
 		loops = 0;
 
-		do abi->run_one_frame(context);
+		do abi->run_1_frame(context);
 		while ((next_frame_tick += frame_ticks) < z_ticks() && ++loops < maximum_frameskip);
 
 		//-----------------.
@@ -45,7 +45,7 @@ void Machine::main()
 		//----------------.
 		// Consume input. |
 		//----------------'
-		if ((keyboard = (UInt64 *)keyboard_input->consume()) != NULL)
+		if ((keyboard = (UInt64 *)_keyboard_input->consume()) != NULL)
 			{context->state.keyboard.value_uint64 = *keyboard;}
 
 #		if Z_OS != Z_OS_LINUX
@@ -85,11 +85,11 @@ void Machine::stop()
 	}
 
 
-Machine::Machine(MachineABI *abi, ZKit::TripleBuffer *video_output, ZKit::RingBuffer *audio_output)
-: _video_output(video_output), _audio_output(audio_output), abi(abi)
+Machine::Machine(MachineABI *abi, TripleBuffer *video_output, RingBuffer *audio_output, TripleBuffer *keyboard_input)
+: _video_output(video_output), _audio_output(audio_output), abi(abi), _keyboard_input(keyboard_input)
 	{
 #	if Z_OS != Z_OS_LINUX
-	this->audio_input  = NULL;
+	_audio_input = NULL;
 #	endif
 	flags.power  = OFF;
 	flags.pause  = OFF;
@@ -186,6 +186,16 @@ void Machine::reset()
 		flags.pause = OFF;
 		}
 	}
+
+
+void Machine::set_audio_input(RingBuffer *audio_input)
+	{
+	_audio_input = audio_input;
+	}
+
+
+void Machine::write_memory(ZKit::UInt16 base_address, void *data, ZKit::Size data_size)
+	{memcpy(context->memory + base_address, data, data_size);}
 
 
 /* Machine.c EOF */

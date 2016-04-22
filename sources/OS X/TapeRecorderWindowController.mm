@@ -9,6 +9,7 @@
 #import <CoreAudio/CoreAudio.h>
 #import <time.h>
 
+using namespace ZKit;
 
 void tape_recorder_play_frame(TapeRecorder *object)
 	{
@@ -41,7 +42,7 @@ void *tape_recorder_play(TapeRecorder *object)
 			_tapeRecorder.sample_count = [data length];
 			_tapeRecorder.samples = malloc([data length] * 2);
 			memcpy(_tapeRecorder.samples, [data bytes], _tapeRecorder.sample_count);
-			memset(_tapeRecorder.samples + _tapeRecorder.sample_count, 0x70, _tapeRecorder.sample_count);
+			memset((UInt8 *)_tapeRecorder.samples + _tapeRecorder.sample_count, 0x70, _tapeRecorder.sample_count);
 			_filePath = [path retain];
 			[tapeView setHidden: NO];
 			}
@@ -49,7 +50,7 @@ void *tape_recorder_play(TapeRecorder *object)
 
 	- (void) playFrame
 		{
-		((void (*)(id,SEL, zuint8 *))_tapeRecorder.output_method)(_tapeRecorder.output, _tapeRecorder.output_selector, _tapeRecorder.samples + _tapeRecorder.frame_size * _tapeRecorder.frame_index);
+		((void (*)(id,SEL, zuint8 *))_tapeRecorder.output_method)(_tapeRecorder.output, _tapeRecorder.output_selector, (UInt8 *)_tapeRecorder.samples + _tapeRecorder.frame_size * _tapeRecorder.frame_index);
 		_tapeRecorder.frame_index++;
 		//NSLog(@"playFrame");
 		}
@@ -186,7 +187,7 @@ void *tape_recorder_play(TapeRecorder *object)
 		{
 		if (_playing)
 			{
-			[self performSelector: @selector(stopPlayThread) onThread: _thread withObject: nil waitUntilDone: YES];
+			//[self performSelector: @selector(stopPlayThread) onThread: _thread withObject: nil waitUntilDone: YES];
 			_playing = NO;
 			}
 

@@ -17,13 +17,13 @@
 
 class ALSAAudioOutputPlayer {
 	private:
-	std::thread	  _thread;
-	snd_pcm_t*	  _device;
-	ZKit::RingBuffer  _buffer;
+	std::thread	       _thread;
+	snd_pcm_t*	       _device;
+	ZKit::RingBuffer       _buffer;
+	volatile ZKit::Boolean _must_stop;
 
 	public:
-	volatile zboolean must_stop;
-	zboolean	  playing;
+	ZKit::Boolean	       playing;
 
 	ALSAAudioOutputPlayer();
 	~ALSAAudioOutputPlayer();

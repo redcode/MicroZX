@@ -168,16 +168,15 @@ Z_INLINE Real step_up(Real n, Real step_size)
 			/*----------------------------.
 			| Create audio output object. |
 			'----------------------------*/
-			_audioOutputPlayer = [[CoreAudioOutputPlayer alloc] init];
+			_audioOutputPlayer = new CoreAudioOutputPlayer();
 			//_audioOutput = [[ALOutputPlayer alloc] init];
 
 
-			_keyboardBuffer = new ZKit::TripleBuffer(malloc(Z_UINT64_SIZE * 3), Z_UINT64_SIZE);
+			_keyboardBuffer = new TripleBuffer(malloc(Z_UINT64_SIZE * 3), Z_UINT64_SIZE);
 			_keyboard = (Z64Bit *)_keyboardBuffer->production_buffer();
 			memset(_keyboardBuffer->buffers[0], 0xFF, Z_UINT64_SIZE * 3);
 
-			_machine = new Machine(machineABI, &_videoOutputView.videoOutput->buffer, _audioOutputPlayer.buffer);
-			_machine->keyboard_input = (ZKit::TripleBuffer *)_keyboardBuffer;
+			_machine = new Machine(machineABI, &_videoOutputView.videoOutput->buffer, _audioOutputPlayer->buffer(), _keyboardBuffer);
 
 			/*-----------------.
 			| Load needed ROMs |
@@ -195,7 +194,7 @@ Z_INLINE Real step_up(Real n, Real step_size)
 					ofType:		 @"rom"
 					inDirectory:	 @"ROMs"]];
 
-				memcpy(_machine->context->memory + rom->base_address, [ROM bytes], rom->size);
+				_machine->write_memory(rom->base_address, (void *)[ROM bytes], rom->size);
 				}
 
 			//machineABI->initialize(_machine);
@@ -224,13 +223,13 @@ Z_INLINE Real step_up(Real n, Real step_size)
 	- (void) dealloc
 		{
 		[_videoOutputView stop];
-		[_audioOutputPlayer stop];
+		_audioOutputPlayer->stop();
 		_machine->power(OFF);
 		[titleWindow release];
 		[_tapeRecorderWindowController release];
 		[_pointerVisibilityTimer invalidate];
 		[_videoOutputView release];
-		[_audioOutputPlayer release];
+		delete _audioOutputPlayer;
 		[_fullScreenWindow release];
 		delete _machine;
 		free(_keyboardBuffer->buffers[0]);
@@ -258,7 +257,7 @@ Z_INLINE Real step_up(Real n, Real step_size)
 		[window setContentMinSize: contentSize];
 
 		[_videoOutputView start];
-		[_audioOutputPlayer start];
+		_audioOutputPlayer->start();
 		_machine->power(ON);
 		}
 
@@ -607,10 +606,10 @@ Z_INLINE Real step_up(Real n, Real step_size)
 
 	- (void) submitAudioFrame: (void *) frame
 		{
-		void *buffer = z_ring_buffer_production_buffer(_machine->audio_input);
+		//void *buffer = z_ring_buffer_production_buffer(_machine->_audio_input);
 
-		memcpy(buffer, frame, _machine->audio_input->buffer_size);
-		z_ring_buffer_produce(_machine->audio_input);
+		//memcpy(buffer, frame, _machine->_audio_input->buffer_size);
+		//z_ring_buffer_produce(_machine->_audio_input);
 		}
 
 
@@ -679,11 +678,11 @@ Z_INLINE Real step_up(Real n, Real step_size)
 		if (state)
 			{
 			[_videoOutputView start];
-			[_audioOutputPlayer start];
+			_audioOutputPlayer->start();
 			}
 
 		else	{
-			[_audioOutputPlayer stop];
+			_audioOutputPlayer->stop();
 			[_videoOutputView stop];
 			[_videoOutputView blank];
 			}
@@ -698,13 +697,13 @@ Z_INLINE Real step_up(Real n, Real step_size)
 
 		if (state)
 			{
-			[_audioOutputPlayer stop];
+			_audioOutputPlayer->stop();
 			[_videoOutputView stop];
 			}
 
 		else	{
 			[_videoOutputView start];
-			[_audioOutputPlayer start];
+			_audioOutputPlayer->start();
 			}
 		}
 
@@ -718,7 +717,7 @@ Z_INLINE Real step_up(Real n, Real step_size)
 		if (pause)
 			{
 			[_videoOutputView start];
-			[_audioOutputPlayer start];
+			_audioOutputPlayer->start();
 			}
 		}
 
@@ -796,14 +795,14 @@ Z_INLINE Real step_up(Real n, Real step_size)
 			[_tapeRecorderWindowController release];
 			_tapeRecorderWindowController = nil;
 		//	ring_buffer_destroy(_machine.audio_input_buffer);
-			_machine->audio_input = NULL;
+		//	_machine->_audio_input = NULL;
 			}
 
 		else	{
 			sender.state = NSOnState;
 			void *buffer = calloc(3, 882);
 			z_ring_buffer_initialize(&_audioInputBuffer, buffer, 882, 3);
-			_machine->audio_input = &_audioInputBuffer;
+			_machine->set_audio_input(&_audioInputBuffer);
 			_tapeRecorderWindowController = [[TapeRecorderWindowController alloc] init];
 			[_tapeRecorderWindowController setFrameSize: 882 count: 4];
 			[_tapeRecorderWindowController addOutput: self action: @selector(submitAudioFrame:)];
