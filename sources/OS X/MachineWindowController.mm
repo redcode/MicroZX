@@ -4,8 +4,8 @@
 |   ____________/\__\ Released under the GNU General Public License v3.
 |_*/
 
-#define Z_USE_INTEROPERABILITY_WITH_CG_GEOMETRY
-#define Z_USE_INTEROPERABILITY_WITH_NS_GEOMETRY
+#define Z_SUPPORT_CG_GEOMETRY
+#define Z_SUPPORT_NS_GEOMETRY
 
 #import "MachineWindowController.h"
 #import "KeyCodes.h"
