@@ -10,23 +10,29 @@ Released under the terms of the GNU General Public License v3. */
 #include <Z/macros/value.h>
 #include <Z/macros/pointer.h>
 
-#if defined(CPU_Z80_HIDE_API)
+#define DEFINED(what) (defined CPU_Z80_##what)
+
+#if !DEFINED(USE_SLOTS) && (DEFINED(BUILD_ABI) || DEFINED(BUILD_MODULE_ABI))
+#	define CPU_Z80_USE_SLOTS
+#endif
+
+#if DEFINED(HIDE_API)
 #	define CPU_Z80_API static
-#elif defined(CPU_Z80_AS_DYNAMIC)
+#elif DEFINED(DYNAMIC)
 #	define CPU_Z80_API Z_API_EXPORT
 #else
 #	define CPU_Z80_API
 #endif
 
-#if defined(CPU_Z80_HIDE_ABI)
+#if DEFINED(HIDE_ABI)
 #	define CPU_Z80_ABI static
-#elif defined(CPU_Z80_AS_DYNAMIC)
+#elif DEFINED(DYNAMIC)
 #	define CPU_Z80_ABI Z_API_EXPORT
 #else
 #	define CPU_Z80_ABI
 #endif
 
-#ifdef CPU_Z80_USE_LOCAL_HEADER
+#if DEFINED(USE_LOCAL_HEADER)
 #	include "Z80.h"
 #else
 #	include <emulation/CPU/Z80.h>
@@ -47,7 +53,7 @@ typedef zuint8 (* Instruction)(Z80 *object);
 
 /* MARK: - Macros & Functions: Callback */
 
-#ifdef CPU_Z80_USE_SLOTS
+#if DEFINED(USE_SLOTS)
 #	define CB_ACTION(name) object->cb.name.action
 #	define CB_OBJECT(name) object->cb.name.object
 #else
@@ -1450,12 +1456,9 @@ CPU_Z80_API zsize z80_run(Z80 *object, zsize cycles)
 			R++;		 /* Consume memory refresh.	*/
 			IFF1 = IFF2 = 0; /* Clear interrupt flip-flops.	*/
 
-#			ifdef CPU_Z80_AUTOCLEAR_INT_LINE
+#			if DEFINED(AUTOCLEAR_INT_LINE)
 				INT = FALSE;
 #			endif
-
-			/*if (DAISY) pointer = object->daisy.call_requester_device();
-			else;*/
 
 			switch (IM)
 				{
@@ -1551,10 +1554,8 @@ CPU_Z80_API void z80_reset(Z80 *object)
 	IFF1 = Z_Z80_VALUE_AFTER_RESET_IFF1;
 	IFF2 = Z_Z80_VALUE_AFTER_RESET_IFF2;
 	IM   = Z_Z80_VALUE_AFTER_RESET_IM;
-	EI   = 0;
-	HALT = 0;
-	INT  = 0;
-	NMI  = 0;
+
+	EI = HALT = INT = NMI = 0;
 	}
 
 
@@ -1582,71 +1583,74 @@ CPU_Z80_API void z80_power(Z80 *object, zboolean state)
 			IFF1 = Z_Z80_VALUE_AFTER_POWER_ON_IFF1;
 			IFF2 = Z_Z80_VALUE_AFTER_POWER_ON_IFF2;
 			IM   = Z_Z80_VALUE_AFTER_POWER_ON_IM;
-			EI   = 0;
-			HALT = 0;
-			INT  = 0;
-			NMI  = 0;
+
+			EI = HALT = INT = NMI = 0;
 #		endif
+		}
+
+	else	{
+		PC = SP = IX = IY = AF = BC = DE = HL = AF_ = BC_ = DE_ = HL_ = I = R =
+		IFF1 = IFF2 = IM = EI = HALT = INT = NMI = 0;
 		}
 	}
 
 
 CPU_Z80_API void z80_nmi(Z80 *object)		      {NMI = TRUE ;}
-CPU_Z80_API void z80_irq(Z80 *object, zboolean state) {INT = state;}
+CPU_Z80_API void z80_int(Z80 *object, zboolean state) {INT = state;}
 
 
 /* MARK: - ABI */
 
-#if defined(CPU_Z80_BUILD_ABI) || defined(CPU_Z80_BUILD_MODULE_ABI)
+#if DEFINED(BUILD_ABI) || DEFINED(MODULE_ABI)
 
 	static void will_read_state(Z80 *object) {R  = R_ALL;}
 	static void did_write_state(Z80 *object) {R7 = R;    }
 
-	static ZEmulatorFunctionExport const exports[7] = {
-		{Z_EMULATOR_ACTION_POWER,	    (ZEmulatorFunction)z80_power      },
-		{Z_EMULATOR_ACTION_RESET,	    (ZEmulatorFunction)z80_reset      },
-		{Z_EMULATOR_ACTION_RUN,		    (ZEmulatorFunction)z80_run	      },
-		{Z_EMULATOR_ACTION_WILL_READ_STATE, (ZEmulatorFunction)will_read_state},
-		{Z_EMULATOR_ACTION_DID_WRITE_STATE, (ZEmulatorFunction)did_write_state},
-		{Z_EMULATOR_ACTION_NMI,		    (ZEmulatorFunction)z80_nmi	      },
-		{Z_EMULATOR_ACTION_INT,		    (ZEmulatorFunction)z80_irq	      }
+	static ZCPUEmulatorExport const exports[7] = {
+		{Z_EMULATOR_FUNCTION_POWER,	      (ZEmulatorFunction)z80_power      },
+		{Z_EMULATOR_FUNCTION_RESET,	      (ZEmulatorFunction)z80_reset      },
+		{Z_EMULATOR_FUNCTION_RUN,	      (ZEmulatorFunction)z80_run	},
+		{Z_EMULATOR_FUNCTION_WILL_READ_STATE, (ZEmulatorFunction)will_read_state},
+		{Z_EMULATOR_FUNCTION_DID_WRITE_STATE, (ZEmulatorFunction)did_write_state},
+		{Z_EMULATOR_FUNCTION_NMI,	      (ZEmulatorFunction)z80_nmi	},
+		{Z_EMULATOR_FUNCTION_INT,	      (ZEmulatorFunction)z80_int	}
 	};
 
 #	define SLOT_OFFSET(name) Z_OFFSET_OF(Z80, cb.name)
 
-	static ZEmulatorSlotLinkage const slot_linkages[6] = {
-		{Z_EMULATOR_OBJECT_MEMORY,  Z_EMULATOR_ACTION_READ_8BIT,  SLOT_OFFSET(read    )},
-		{Z_EMULATOR_OBJECT_MEMORY,  Z_EMULATOR_ACTION_WRITE_8BIT, SLOT_OFFSET(write   )},
-		{Z_EMULATOR_OBJECT_IO,	    Z_EMULATOR_ACTION_IN_8BIT,	  SLOT_OFFSET(in      )},
-		{Z_EMULATOR_OBJECT_IO,	    Z_EMULATOR_ACTION_OUT_8BIT,   SLOT_OFFSET(out     )},
-		{Z_EMULATOR_OBJECT_MACHINE, Z_EMULATOR_ACTION_INT_DATA,   SLOT_OFFSET(int_data)},
-		{Z_EMULATOR_OBJECT_MACHINE, Z_EMULATOR_ACTION_HALT,	  SLOT_OFFSET(halt    )}
+	static ZCPUEmulatorInstanceImport const instance_imports[6] = {
+		{Z_EMULATOR_FUNCTION_READ_8BIT,	 SLOT_OFFSET(read    )},
+		{Z_EMULATOR_FUNCTION_WRITE_8BIT, SLOT_OFFSET(write   )},
+		{Z_EMULATOR_FUNCTION_IN_8BIT,	 SLOT_OFFSET(in      )},
+		{Z_EMULATOR_FUNCTION_OUT_8BIT,	 SLOT_OFFSET(out     )},
+		{Z_EMULATOR_FUNCTION_INT_DATA,	 SLOT_OFFSET(int_data)},
+		{Z_EMULATOR_FUNCTION_HALT,	 SLOT_OFFSET(halt    )}
 	};
 
 	CPU_Z80_ABI ZCPUEmulatorABI const abi_emulation_cpu_z80 = {
-		/* dependency_count	       */ 0,
-		/* dependencies		       */ NULL,
-		/* function_export_count       */ 7,
-		/* function_exports	       */ exports,
-		/* instance_size	       */ sizeof(Z80),
-		/* instance_state_offset       */ Z_OFFSET_OF(Z80, state),
-		/* instance_state_size	       */ sizeof(ZZ80State),
-		/* instance_slot_linkage_count */ 6,
-		/* instance_slot_linkages      */ slot_linkages
+		/* dependency_count	 */ 0,
+		/* dependencies		 */ NULL,
+		/* export_count		 */ 7,
+		/* exports		 */ exports,
+		/* instance_size	 */ sizeof(Z80),
+		/* instance_state_offset */ Z_OFFSET_OF(Z80, state),
+		/* instance_state_size	 */ sizeof(ZZ80State),
+		/* instance_import_count */ 6,
+		/* instance_imports	 */ instance_imports
 	};
 
 #endif
 
-#ifdef CPU_Z80_BUILD_MODULE_ABI
+#if DEFINED(BUILD_MODULE_ABI)
 
 #	include <Z/ABIs/generic/module.h>
 
 	static zcharacter const information[] =
 		"C1999-2016 Manuel Sainz de Baranda y Goñi\n"
-		"LLGPLv3";
+		"LGPLv3";
 
-	static ZModuleUnit const unit = {"Z80", Z_VERSION(1, 0, 0), information, &abi_emulation_cpu_z80};
-	static ZModuleDomain const domain = {"emulation/CPU", Z_VERSION(1, 0, 0), 1, &unit};
+	static ZModuleUnit const unit = {"Z80", "Z80", Z_VERSION(1, 0, 0), information, &abi_emulation_cpu_z80};
+	static ZModuleDomain const domain = {"Emulation.CPU", Z_VERSION(1, 0, 0), 1, &unit};
 	Z_API_WEAK_EXPORT ZModuleABI const __module_abi__ = {1, &domain};
 
 #endif

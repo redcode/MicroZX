@@ -99,7 +99,7 @@ Machine::Machine(MachineABI *abi, TripleBuffer *video_output, RingBuffer *audio_
 	'--------------------------------------*/
 	context			     = (ZXSpectrum *)malloc(abi->context_size);
 	context->cpu_abi.run	     = (ZEmulatorRun  )z80_run;
-	context->cpu_abi.irq	     = (ZContextSwitch)z80_irq;
+	context->cpu_abi.irq	     = (ZContextSwitch)z80_int;
 	context->cpu_abi.reset	     = (ZContextDo    )z80_reset;
 	context->cpu_abi.power	     = (ZEmulatorPower)z80_power;
 	context->cpu		     = (Z80 *)malloc(sizeof(Z80));

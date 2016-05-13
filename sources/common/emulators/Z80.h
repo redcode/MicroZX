@@ -4,7 +4,7 @@
 /\ \/  \/\ \__/_/\ \/\ \/\ \/\  __/
 \ \__/\_\ \_____\ \_\ \_\ \_\ \____\
  \/_/\/_/\/_____/\/_/\/_/\/_/\/____/
-Copyright © 1999-2015 Manuel Sainz de Baranda y Goñi.
+Copyright © 1999-2016 Manuel Sainz de Baranda y Goñi.
 Released under the terms of the GNU General Public License v3. */
 
 #ifndef __emulation_CPU_Z80_H__
@@ -15,14 +15,6 @@ Released under the terms of the GNU General Public License v3. */
 
 #ifdef CPU_Z80_USE_SLOTS
 #	include <Z/macros/slot.h>
-#endif
-
-#ifndef CPU_Z80_API
-#	ifdef CPU_Z80_USE_STATIC
-#		define CPU_Z80_API
-#	else
-#		define CPU_Z80_API Z_API
-#	endif
 #endif
 
 typedef struct {
@@ -55,7 +47,23 @@ typedef struct {
 
 Z_C_SYMBOLS_BEGIN
 
-CPU_Z80_API extern ZCPUEmulatorABI const abi_cpu_z80;
+#ifndef CPU_Z80_ABI
+#	ifdef CPU_Z80_STATIC
+#		define CPU_Z80_ABI
+#	else
+#		define CPU_Z80_ABI Z_API
+#	endif
+#endif
+
+CPU_Z80_ABI extern ZCPUEmulatorABI const abi_emulation_cpu_z80;
+
+#ifndef CPU_Z80_API
+#	ifdef CPU_Z80_STATIC
+#		define CPU_Z80_API
+#	else
+#		define CPU_Z80_API Z_API
+#	endif
+#endif
 
 CPU_Z80_API zsize z80_run   (Z80*     object,
 			     zsize    cycles);
@@ -67,7 +75,7 @@ CPU_Z80_API void  z80_reset (Z80*     object);
 
 CPU_Z80_API void  z80_nmi   (Z80*     object);
 
-CPU_Z80_API void  z80_irq   (Z80*     object,
+CPU_Z80_API void  z80_int   (Z80*     object,
 			     zboolean state);
 
 Z_C_SYMBOLS_END
