@@ -5,6 +5,7 @@
  |_*/
 
 #import "MainViewController.h"
+#import "MachineViewController.h"
 
 
 @implementation MainViewController
@@ -14,6 +15,11 @@
 		{
 		[super viewDidLoad];
 		// Do any additional setup after loading the view, typically from a nib.
+		MachineViewController *controller = [[MachineViewController alloc] init];
+
+		[_machineViewControllers addObject: controller];
+
+		[self.view addSubview: controller.view];
 		}
 
 

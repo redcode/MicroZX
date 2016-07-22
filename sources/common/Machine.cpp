@@ -11,7 +11,7 @@
 #include "system.h"
 #include "Z80.h"
 
-using namespace ZKit;
+using namespace Zeta;
 
 /*--------------------------------.
 | Emulation thread main function. |
@@ -196,7 +196,7 @@ void Machine::set_audio_input(RingBuffer *audio_input)
 	}
 
 
-void Machine::write_memory(ZKit::UInt16 base_address, void *data, ZKit::Size data_size)
+void Machine::write_memory(Zeta::UInt16 base_address, void *data, Zeta::Size data_size)
 	{memcpy(context->memory + base_address, data, data_size);}
 
 

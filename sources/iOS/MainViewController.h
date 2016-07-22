@@ -6,7 +6,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MainViewController : UIViewController
+@interface MainViewController : UIViewController {
+	NSMutableArray* _machineViewControllers;
+}
+
 
 	- (IBAction) showTapeRecorder: (id) sender;
 	- (IBAction) showKeyboard:     (id) sender;

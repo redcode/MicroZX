@@ -17,36 +17,36 @@
 class Machine {
 	private:
 	std::thread	       _thread;
-	volatile ZKit::Boolean _must_stop;
-	ZKit::TripleBuffer*    _video_output;
-	ZKit::RingBuffer*      _audio_output;
-	ZKit::TripleBuffer*    _keyboard_input;
+	volatile Zeta::Boolean _must_stop;
+	Zeta::TripleBuffer*    _video_output;
+	Zeta::RingBuffer*      _audio_output;
+	Zeta::TripleBuffer*    _keyboard_input;
 
-#	if Z_OS == Z_OS_MAC_OS_X
-		ZKit::RingBuffer* _audio_input;
+#	if Z_OS != Z_OS_LINUX
+		Zeta::RingBuffer* _audio_input;
 #	endif
 
 	public:
 	ZXSpectrum*	    context;
 	MachineABI*	    abi;
 
-	struct {ZKit::Boolean power :1;
-		ZKit::Boolean pause :1;
+	struct {Zeta::Boolean power :1;
+		Zeta::Boolean pause :1;
 	} flags;
 
 	Machine(MachineABI*	    abi,
-		ZKit::TripleBuffer* video_output,
-		ZKit::RingBuffer*   audio_output,
-		ZKit::TripleBuffer* keyboard_input);
+		Zeta::TripleBuffer* video_output,
+		Zeta::RingBuffer*   audio_output,
+		Zeta::TripleBuffer* keyboard_input);
 
 	~Machine();
 
 	void run_one_frame();
-	void power(ZKit::Boolean state);
-	void pause(ZKit::Boolean state);
+	void power(Zeta::Boolean state);
+	void pause(Zeta::Boolean state);
 	void reset();
-	void set_audio_input(ZKit::RingBuffer *audio_input);
-	void write_memory(ZKit::UInt16 base_address, void *data, ZKit::Size data_size);
+	void set_audio_input(Zeta::RingBuffer *audio_input);
+	void write_memory(Zeta::UInt16 base_address, void *data, Zeta::Size data_size);
 
 	private:
 	void main();

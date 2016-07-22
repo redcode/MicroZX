@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		645DAEA61B3B2C5400C9AB10 /* system.c in Sources */ = {isa = PBXBuildFile; fileRef = 645DAEA51B3B2C5400C9AB10 /* system.c */; };
 		645DAEA91B3C750C00C9AB10 /* Machine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 645DAEA11B3B213D00C9AB10 /* Machine.cpp */; };
+		6483DD341D3BD50100807C53 /* Simple.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 6483DD331D3BD50100807C53 /* Simple.vsh */; };
+		6483DD361D3C609800807C53 /* Simple.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 6483DD351D3C609800807C53 /* Simple.fsh */; };
+		64AA40EC1D3D595B00D27759 /* OpenGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64AA40EB1D3D595B00D27759 /* OpenGL.cpp */; };
+		64B7D8A41D401B56007175DA /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64B7D8A31D401B56007175DA /* Matrix.cpp */; };
 		64BB31211B3D248700AE1D99 /* MachineWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 64BB31201B3D248700AE1D99 /* MachineWindowController.mm */; };
 		64DEF6811B797EF4000F4F01 /* KeyboardWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64DEF6801B797EF4000F4F01 /* KeyboardWindowController.m */; };
 		64DEF6841B7A44C3000F4F01 /* Tape Recorder Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 64DEF6831B7A44C3000F4F01 /* Tape Recorder Button.png */; };
@@ -17,12 +21,10 @@
 		64DEF68C1B7A4C83000F4F01 /* Tape Recorder Button - Pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 64DEF68B1B7A4C83000F4F01 /* Tape Recorder Button - Pressed.png */; };
 		64DEF6901B7A4EFD000F4F01 /* Tape Recorder Button Separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 64DEF68F1B7A4EFD000F4F01 /* Tape Recorder Button Separator.png */; };
 		64F5DDAA1A28E03C00D29077 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DDA91A28E03C00D29077 /* Images.xcassets */; };
-		64F5DE0B1A28E83A00D29077 /* GLVideoOutput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE061A28E83A00D29077 /* GLVideoOutput.cpp */; };
-		64F5DE0C1A28E83A00D29077 /* GLVideoOutputShader.c in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE071A28E83A00D29077 /* GLVideoOutputShader.c */; };
+		64F5DE0B1A28E83A00D29077 /* GLFrameBufferRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE061A28E83A00D29077 /* GLFrameBufferRenderer.cpp */; };
 		64F5DE0E1A28E84B00D29077 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64F5DE0D1A28E84B00D29077 /* OpenGL.framework */; };
 		64F5DE101A28E89800D29077 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64F5DE0F1A28E89800D29077 /* AudioToolbox.framework */; };
 		64F5DE121A28E89F00D29077 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64F5DE111A28E89F00D29077 /* AudioUnit.framework */; };
-		64F5DE141A28E8C200D29077 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64F5DE131A28E8C200D29077 /* CoreAudio.framework */; };
 		64F5DE171A28E90F00D29077 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64F5DE161A28E90F00D29077 /* QuartzCore.framework */; };
 		64F5DE1E1A28E93600D29077 /* mZX.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DE181A28E93600D29077 /* mZX.xib */; };
 		64F5DE1F1A28E93600D29077 /* TapeRecorderWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64F5DE191A28E93600D29077 /* TapeRecorderWindow.xib */; };
@@ -36,7 +38,7 @@
 		64F5DE491A28E9B100D29077 /* MainController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE351A28E9B100D29077 /* MainController.mm */; };
 		64F5DE4B1A28E9B100D29077 /* TapeRecorderWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE391A28E9B100D29077 /* TapeRecorderWindowController.mm */; };
 		64F5DE4C1A28E9B100D29077 /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE3B1A28E9B100D29077 /* PreferencesWindowController.m */; };
-		64F5DE4E1A28E9B100D29077 /* GLVideoOutputView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE3F1A28E9B100D29077 /* GLVideoOutputView.mm */; };
+		64F5DE4E1A28E9B100D29077 /* GLVideoView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE3F1A28E9B100D29077 /* GLVideoView.mm */; };
 		64F5DE4F1A28E9B100D29077 /* CoreAudioOutputPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE411A28E9B100D29077 /* CoreAudioOutputPlayer.cpp */; };
 		64F5DE511A28E9B100D29077 /* TapeRecorderWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE451A28E9B100D29077 /* TapeRecorderWindow.m */; };
 		64F5DE521A28E9B100D29077 /* Window.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F5DE471A28E9B100D29077 /* Window.m */; };
@@ -66,6 +68,11 @@
 		645DAEA21B3B213D00C9AB10 /* Machine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Machine.hpp; sourceTree = "<group>"; };
 		645DAEA41B3B2C5400C9AB10 /* system.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = system.h; sourceTree = "<group>"; };
 		645DAEA51B3B2C5400C9AB10 /* system.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = system.c; sourceTree = "<group>"; };
+		6483DD331D3BD50100807C53 /* Simple.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Simple.vsh; sourceTree = "<group>"; };
+		6483DD351D3C609800807C53 /* Simple.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Simple.fsh; sourceTree = "<group>"; };
+		64AA40EB1D3D595B00D27759 /* OpenGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGL.cpp; sourceTree = "<group>"; };
+		64B7D8A21D401B45007175DA /* Matrix.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Matrix.hpp; sourceTree = "<group>"; };
+		64B7D8A31D401B56007175DA /* Matrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Matrix.cpp; sourceTree = "<group>"; };
 		64BB311F1B3D248700AE1D99 /* KeyCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyCodes.h; sourceTree = "<group>"; };
 		64BB31201B3D248700AE1D99 /* MachineWindowController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MachineWindowController.mm; sourceTree = "<group>"; };
 		64DEF67F1B797EF4000F4F01 /* KeyboardWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardWindowController.h; sourceTree = "<group>"; };
@@ -79,14 +86,12 @@
 		64F5DDA31A28E03C00D29077 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		64F5DDA91A28E03C00D29077 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		64F5DDFC1A28E83A00D29077 /* MachineABI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MachineABI.h; sourceTree = "<group>"; };
-		64F5DDFE1A28E83A00D29077 /* OpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGL.h; sourceTree = "<group>"; };
-		64F5DE051A28E83A00D29077 /* GLVideoOutput.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GLVideoOutput.hpp; sourceTree = "<group>"; };
-		64F5DE061A28E83A00D29077 /* GLVideoOutput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLVideoOutput.cpp; sourceTree = "<group>"; };
-		64F5DE071A28E83A00D29077 /* GLVideoOutputShader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLVideoOutputShader.c; sourceTree = "<group>"; };
+		64F5DDFE1A28E83A00D29077 /* OpenGL.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OpenGL.hpp; sourceTree = "<group>"; };
+		64F5DE051A28E83A00D29077 /* GLFrameBufferRenderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GLFrameBufferRenderer.hpp; sourceTree = "<group>"; };
+		64F5DE061A28E83A00D29077 /* GLFrameBufferRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLFrameBufferRenderer.cpp; sourceTree = "<group>"; };
 		64F5DE0D1A28E84B00D29077 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		64F5DE0F1A28E89800D29077 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		64F5DE111A28E89F00D29077 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
-		64F5DE131A28E8C200D29077 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		64F5DE161A28E90F00D29077 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		64F5DE181A28E93600D29077 /* mZX.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = mZX.xib; sourceTree = "<group>"; };
 		64F5DE191A28E93600D29077 /* TapeRecorderWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TapeRecorderWindow.xib; sourceTree = "<group>"; };
@@ -107,8 +112,8 @@
 		64F5DE391A28E9B100D29077 /* TapeRecorderWindowController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TapeRecorderWindowController.mm; sourceTree = "<group>"; };
 		64F5DE3A1A28E9B100D29077 /* PreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesWindowController.h; sourceTree = "<group>"; };
 		64F5DE3B1A28E9B100D29077 /* PreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesWindowController.m; sourceTree = "<group>"; };
-		64F5DE3E1A28E9B100D29077 /* GLVideoOutputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLVideoOutputView.h; sourceTree = "<group>"; };
-		64F5DE3F1A28E9B100D29077 /* GLVideoOutputView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLVideoOutputView.mm; sourceTree = "<group>"; };
+		64F5DE3E1A28E9B100D29077 /* GLVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLVideoView.h; sourceTree = "<group>"; };
+		64F5DE3F1A28E9B100D29077 /* GLVideoView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLVideoView.mm; sourceTree = "<group>"; };
 		64F5DE401A28E9B100D29077 /* CoreAudioOutputPlayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CoreAudioOutputPlayer.hpp; sourceTree = "<group>"; };
 		64F5DE411A28E9B100D29077 /* CoreAudioOutputPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CoreAudioOutputPlayer.cpp; sourceTree = "<group>"; };
 		64F5DE441A28E9B100D29077 /* TapeRecorderWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TapeRecorderWindow.h; sourceTree = "<group>"; };
@@ -147,7 +152,6 @@
 			files = (
 				64F5DEB61A28EC5200D29077 /* OpenAL.framework in Frameworks */,
 				64F5DE171A28E90F00D29077 /* QuartzCore.framework in Frameworks */,
-				64F5DE141A28E8C200D29077 /* CoreAudio.framework in Frameworks */,
 				64F5DE121A28E89F00D29077 /* AudioUnit.framework in Frameworks */,
 				64F5DE101A28E89800D29077 /* AudioToolbox.framework in Frameworks */,
 				64F5DE0E1A28E84B00D29077 /* OpenGL.framework in Frameworks */,
@@ -157,11 +161,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6496E7281D396A6200835482 /* OS X & iOS */ = {
+			isa = PBXGroup;
+			children = (
+				64F5DE401A28E9B100D29077 /* CoreAudioOutputPlayer.hpp */,
+				64F5DE411A28E9B100D29077 /* CoreAudioOutputPlayer.cpp */,
+				64F5DE3E1A28E9B100D29077 /* GLVideoView.h */,
+				64F5DE3F1A28E9B100D29077 /* GLVideoView.mm */,
+			);
+			path = "OS X & iOS";
+			sourceTree = "<group>";
+		};
 		6497FB9E1B74D157001B0196 /* shaders */ = {
 			isa = PBXGroup;
 			children = (
-				64F5DE7A1A28EB3900D29077 /* SABR.fsh */,
 				64F5DE7B1A28EB3900D29077 /* SABR.vsh */,
+				64F5DE7A1A28EB3900D29077 /* SABR.fsh */,
+				6483DD331D3BD50100807C53 /* Simple.vsh */,
+				6483DD351D3C609800807C53 /* Simple.fsh */,
 			);
 			path = shaders;
 			sourceTree = "<group>";
@@ -211,6 +228,7 @@
 			isa = PBXGroup;
 			children = (
 				64F5DDF31A28E5EC00D29077 /* Common */,
+				6496E7281D396A6200835482 /* OS X & iOS */,
 				64F5DDF41A28E5F200D29077 /* OS X */,
 			);
 			name = Sources;
@@ -266,10 +284,12 @@
 				64F5DE531A28E9F900D29077 /* Emulators */,
 				645DAEA41B3B2C5400C9AB10 /* system.h */,
 				645DAEA51B3B2C5400C9AB10 /* system.c */,
-				64F5DDFE1A28E83A00D29077 /* OpenGL.h */,
-				64F5DE051A28E83A00D29077 /* GLVideoOutput.hpp */,
-				64F5DE061A28E83A00D29077 /* GLVideoOutput.cpp */,
-				64F5DE071A28E83A00D29077 /* GLVideoOutputShader.c */,
+				64F5DDFE1A28E83A00D29077 /* OpenGL.hpp */,
+				64AA40EB1D3D595B00D27759 /* OpenGL.cpp */,
+				64B7D8A21D401B45007175DA /* Matrix.hpp */,
+				64B7D8A31D401B56007175DA /* Matrix.cpp */,
+				64F5DE051A28E83A00D29077 /* GLFrameBufferRenderer.hpp */,
+				64F5DE061A28E83A00D29077 /* GLFrameBufferRenderer.cpp */,
 				645DAEA21B3B213D00C9AB10 /* Machine.hpp */,
 				645DAEA11B3B213D00C9AB10 /* Machine.cpp */,
 			);
@@ -285,10 +305,6 @@
 				64F5DE341A28E9B100D29077 /* MainController.h */,
 				64F5DE351A28E9B100D29077 /* MainController.mm */,
 				64BB311F1B3D248700AE1D99 /* KeyCodes.h */,
-				64F5DE3E1A28E9B100D29077 /* GLVideoOutputView.h */,
-				64F5DE3F1A28E9B100D29077 /* GLVideoOutputView.mm */,
-				64F5DE401A28E9B100D29077 /* CoreAudioOutputPlayer.hpp */,
-				64F5DE411A28E9B100D29077 /* CoreAudioOutputPlayer.cpp */,
 				64F5DE361A28E9B100D29077 /* MachineWindowController.h */,
 				64BB31201B3D248700AE1D99 /* MachineWindowController.mm */,
 				64F5DE3A1A28E9B100D29077 /* PreferencesWindowController.h */,
@@ -333,7 +349,6 @@
 			children = (
 				64F5DEB51A28EC5200D29077 /* OpenAL.framework */,
 				64F5DE161A28E90F00D29077 /* QuartzCore.framework */,
-				64F5DE131A28E8C200D29077 /* CoreAudio.framework */,
 				64F5DE111A28E89F00D29077 /* AudioUnit.framework */,
 				64F5DE0F1A28E89800D29077 /* AudioToolbox.framework */,
 				64F5DE0D1A28E84B00D29077 /* OpenGL.framework */,
@@ -478,6 +493,7 @@
 				64F5DE231A28E93600D29077 /* Z80 Debugger.xib in Resources */,
 				64F5DE221A28E93600D29077 /* PreferencesWindow.xib in Resources */,
 				64F5DE1E1A28E93600D29077 /* mZX.xib in Resources */,
+				6483DD361D3C609800807C53 /* Simple.fsh in Resources */,
 				64F5DE1F1A28E93600D29077 /* TapeRecorderWindow.xib in Resources */,
 				64F5DEB41A28EB6600D29077 /* ROMs in Resources */,
 				64DEF6901B7A4EFD000F4F01 /* Tape Recorder Button Separator.png in Resources */,
@@ -489,6 +505,7 @@
 				64F5DE211A28E93600D29077 /* Title Sheet.xib in Resources */,
 				64F5DDAA1A28E03C00D29077 /* Images.xcassets in Resources */,
 				64F5DE7C1A28EB3900D29077 /* SABR.fsh in Resources */,
+				6483DD341D3BD50100807C53 /* Simple.vsh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,21 +543,22 @@
 				64F5DE511A28E9B100D29077 /* TapeRecorderWindow.m in Sources */,
 				645DAEA61B3B2C5400C9AB10 /* system.c in Sources */,
 				64DEF6811B797EF4000F4F01 /* KeyboardWindowController.m in Sources */,
-				64F5DE0B1A28E83A00D29077 /* GLVideoOutput.cpp in Sources */,
-				64F5DE0C1A28E83A00D29077 /* GLVideoOutputShader.c in Sources */,
+				64F5DE0B1A28E83A00D29077 /* GLFrameBufferRenderer.cpp in Sources */,
 				64F5DE491A28E9B100D29077 /* MainController.mm in Sources */,
 				64F5DE661A28EA5100D29077 /* ACH.c in Sources */,
 				64F5DE641A28EA5100D29077 /* PLUSD.c in Sources */,
 				64F5DE2E1A28E99000D29077 /* NSView+RedCode.m in Sources */,
 				64F5DE711A28EA5F00D29077 /* Z80.c in Sources */,
-				64F5DE4E1A28E9B100D29077 /* GLVideoOutputView.mm in Sources */,
+				64F5DE4E1A28E9B100D29077 /* GLVideoView.mm in Sources */,
 				64F5DE521A28E9B100D29077 /* Window.m in Sources */,
+				64AA40EC1D3D595B00D27759 /* OpenGL.cpp in Sources */,
 				64F5DE721A28EA5F00D29077 /* ZX Spectrum.c in Sources */,
 				64F5DE481A28E9B100D29077 /* main.m in Sources */,
 				64F5DE2D1A28E99000D29077 /* NSWindow+RedCode.m in Sources */,
 				64F5DE6A1A28EA5100D29077 /* PRG.c in Sources */,
 				64F5DE4F1A28E9B100D29077 /* CoreAudioOutputPlayer.cpp in Sources */,
 				64F5DE731A28EA5F00D29077 /* AY-3-891x.c in Sources */,
+				64B7D8A41D401B56007175DA /* Matrix.cpp in Sources */,
 				64F5DE4B1A28E9B100D29077 /* TapeRecorderWindowController.mm in Sources */,
 				64F5DE691A28EA5100D29077 /* ZX.c in Sources */,
 			);

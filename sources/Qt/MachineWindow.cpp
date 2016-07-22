@@ -23,7 +23,7 @@
 #include <Z/types/time.h>
 #include "MachineABI.h"
 
-using namespace ZKit;
+using namespace Zeta;
 
 #define MACHINE_SCREEN_SIZE Value2D<Real>(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT)
 

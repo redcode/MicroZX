@@ -10,7 +10,7 @@ Released under the terms of the GNU General Public License v3. */
 #include <Z/macros/value.h>
 #include <Z/macros/pointer.h>
 
-#define DEFINED(what) (defined CPU_Z80_##what)
+#define DEFINED(WHAT) (defined CPU_Z80_##WHAT)
 
 #if !DEFINED(USE_SLOTS) && (DEFINED(BUILD_ABI) || DEFINED(BUILD_MODULE_ABI))
 #	define CPU_Z80_USE_SLOTS
@@ -1467,22 +1467,22 @@ CPU_Z80_API zsize z80_run(Z80 *object, zsize cycles)
 				'------------------------------*/
 				case 0:
 
-				if ((data = INT_DATA)) switch (data & Z_UINT32(0xFF0000))
+				if ((data = INT_DATA)) switch (data & Z_UINT32(0xFF000000))
 					{
-					case Z_UINT32(0xC30000): /* JP */
-					PC = (zuint16)data;
+					case Z_UINT32(0xC3000000): /* JP */
+					PC = (zuint16)(data >> 8);
 					CYCLES += 10;
 					break;
 
-					case Z_UINT32(0xCD0000): /* CALL */
+					case Z_UINT32(0xCD000000): /* CALL */
 					PUSH(PC);
-					PC = (zuint16)data;
+					PC = (zuint16)(data >> 8);
 					CYCLES += 17;
 					break;
 
 					default: /* RST (and possibly others) */
 					PUSH(PC);
-					PC = (zuint16)(data & 0x38);
+					PC = (zuint16)((data >> 8) & 0x38);
 					CYCLES += 11;
 					}
 
@@ -1588,10 +1588,8 @@ CPU_Z80_API void z80_power(Z80 *object, zboolean state)
 #		endif
 		}
 
-	else	{
-		PC = SP = IX = IY = AF = BC = DE = HL = AF_ = BC_ = DE_ = HL_ = I = R =
+	else	PC = SP = IX = IY = AF = BC = DE = HL = AF_ = BC_ = DE_ = HL_ = I = R =
 		IFF1 = IFF2 = IM = EI = HALT = INT = NMI = 0;
-		}
 	}
 
 
@@ -1601,7 +1599,7 @@ CPU_Z80_API void z80_int(Z80 *object, zboolean state) {INT = state;}
 
 /* MARK: - ABI */
 
-#if DEFINED(BUILD_ABI) || DEFINED(MODULE_ABI)
+#if DEFINED(BUILD_ABI) || DEFINED(BUILD_MODULE_ABI)
 
 	static void will_read_state(Z80 *object) {R  = R_ALL;}
 	static void did_write_state(Z80 *object) {R7 = R;    }

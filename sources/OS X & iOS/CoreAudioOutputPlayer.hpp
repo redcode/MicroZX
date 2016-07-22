@@ -4,23 +4,22 @@
 |   ____________/\__\ Released under the GNU General Public License v3.
 |_*/
 
-#import <CoreAudio/CoreAudio.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import <Z/classes/buffering/RingBuffer.hpp>
 
 class CoreAudioOutputPlayer {
 	private:
 	AudioComponentInstance _audio_unit;
-	ZKit::RingBuffer       _buffer;
+	Zeta::RingBuffer       _buffer;
 	zuint		       _buffer_frame_count;
 	double		       _sample_rate;
 
 	public:
-	ZKit::Boolean	       playing;
+	Zeta::Boolean	       playing;
 
 	CoreAudioOutputPlayer();
 	~CoreAudioOutputPlayer();
-	ZKit::RingBuffer *buffer() {return &_buffer;}
+	Zeta::RingBuffer *buffer() {return &_buffer;}
 	void start();
 	void stop();
 };

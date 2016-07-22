@@ -8,8 +8,9 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import <Z/types/base.h>
 #import "system.h"
+#import <Z/inspection/OS.h>
 
-using namespace ZKit;
+using namespace Zeta;
 
 
 static OSStatus FillBuffer(
@@ -44,8 +45,14 @@ CoreAudioOutputPlayer::CoreAudioOutputPlayer()
 	// Configure the search parameters to find the default playback output unit. |
 	//---------------------------------------------------------------------------'
 	AudioComponentDescription output_description = {
-		.componentType		= kAudioUnitType_Output,
-		.componentSubType	= kAudioUnitSubType_DefaultOutput,
+		.componentType = kAudioUnitType_Output,
+
+#		if Z_OS == Z_OS_MAC_OS_X
+			.componentSubType = kAudioUnitSubType_DefaultOutput,
+#		elif Z_OS == Z_OS_IOS
+			.componentSubType = kAudioUnitSubType_GenericOutput,
+#		endif
+
 		.componentManufacturer	= kAudioUnitManufacturer_Apple,
 		.componentFlags		= 0,
 		.componentFlagsMask	= 0
@@ -84,10 +91,11 @@ CoreAudioOutputPlayer::CoreAudioOutputPlayer()
 	//NSAssert1(error == noErr, @"Error setting maximum frames per slice: %hd", error);
 
 	// Set the buffer size
-
-	error = AudioUnitSetProperty
-		(_audio_unit, kAudioDevicePropertyBufferFrameSize, kAudioUnitScope_Global,
-		 0, &frames, sizeof(frames));
+#	if Z_OS == Z_OS_MAC_OS_X
+		error = AudioUnitSetProperty
+			(_audio_unit, kAudioDevicePropertyBufferFrameSize, kAudioUnitScope_Global,
+			 0, &frames, sizeof(frames));
+#	endif
 
 	//NSAssert1(error == noErr, @"Error setting buffer frame size: %hd", error);
 

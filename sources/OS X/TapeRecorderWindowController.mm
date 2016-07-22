@@ -9,7 +9,7 @@
 #import <CoreAudio/CoreAudio.h>
 #import <time.h>
 
-using namespace ZKit;
+using namespace Zeta;
 
 void tape_recorder_play_frame(TapeRecorder *object)
 	{

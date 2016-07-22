@@ -4,9 +4,6 @@
 |   ____________/\__\ Released under the GNU General Public License v3.
 |_*/
 
-#define Z_SUPPORT_CG_GEOMETRY
-#define Z_SUPPORT_NS_GEOMETRY
-
 #import "MachineWindowController.h"
 #import "KeyCodes.h"
 #import <Z/hardware/machine/platform/computer/ZX Spectrum.h>
@@ -14,17 +11,13 @@
 #import "NSWindow+RedCode.h"
 #import "NSView+RedCode.h"
 
-#include "system.h"
-#import <Z/functions/buffering/ZTripleBuffer.h>
-#import <Z/functions/buffering/ZRingBuffer.h>
-
 #define kZoomIncrement	0.5
 #define SCREEN_SIZE_X	Z_JOIN_2(Z_ZX_SPECTRUM_SCREEN_WIDTH,  .0)
 #define SCREEN_SIZE_Y	Z_JOIN_2(Z_ZX_SPECTRUM_SCREEN_HEIGHT, .0)
 #define SCREEN_SIZE	Value2D<Real>(Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT)
 #define NS_SCREEN_SIZE	NSMakeSize   (Z_ZX_SPECTRUM_SCREEN_WIDTH, Z_ZX_SPECTRUM_SCREEN_HEIGHT)
 
-using namespace ZKit;
+using namespace Zeta;
 
 typedef struct {
 	struct {zuint8 row  :3;
@@ -156,11 +149,11 @@ Z_INLINE Real step_up(Real n, Real step_size)
 			/*----------------------------.
 			| Create video output object. |
 			'----------------------------*/
-			_videoOutputView = [[GLVideoOutputView alloc] initWithFrame:
+			_videoOutputView = [[GLVideoView alloc] initWithFrame:
 				NSMakeRect(0.0, 0.0, SCREEN_SIZE_X, SCREEN_SIZE_Y)];
 
 			[_videoOutputView
-				setResolution: Value2D<ZKit::Size>(SCREEN_SIZE_X, SCREEN_SIZE_Y)
+				setResolution: Value2D<Zeta::Size>(SCREEN_SIZE_X, SCREEN_SIZE_Y)
 				format:	       0];
 
 			_videoOutputView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
@@ -176,12 +169,12 @@ Z_INLINE Real step_up(Real n, Real step_size)
 			_keyboard = (Z64Bit *)_keyboardBuffer->production_buffer();
 			memset(_keyboardBuffer->buffers[0], 0xFF, Z_UINT64_SIZE * 3);
 
-			_machine = new Machine(machineABI, &_videoOutputView.videoOutput->buffer, _audioOutputPlayer->buffer(), _keyboardBuffer);
+			_machine = new Machine(machineABI, _videoOutputView.buffer, _audioOutputPlayer->buffer(), _keyboardBuffer);
 
 			/*-----------------.
 			| Load needed ROMs |
 			'-----------------*/
-			ZKit::Size index = machineABI->rom_count;
+			Zeta::Size index = machineABI->rom_count;
 			NSBundle *bundle = [NSBundle mainBundle];
 			ROM *rom;
 
@@ -199,7 +192,7 @@ Z_INLINE Real step_up(Real n, Real step_size)
 
 			//machineABI->initialize(_machine);
 
-			_keyboardState.value_uint64 = Type<ZKit::UInt64>::maximum;
+			_keyboardState.value_uint64 = Type<Zeta::UInt64>::maximum;
 
 			/*NSData *data = [NSData dataWithContentsOfFile: @"/Users/manuel/Desktop/Batman.sna"];
 			ZSNAv48K *sna = (ZSNAv48K *)[data bytes];
@@ -230,7 +223,6 @@ Z_INLINE Real step_up(Real n, Real step_size)
 		[_pointerVisibilityTimer invalidate];
 		[_videoOutputView release];
 		delete _audioOutputPlayer;
-		[_fullScreenWindow release];
 		delete _machine;
 		free(_keyboardBuffer->buffers[0]);
 		free(_keyboardBuffer);
@@ -541,66 +533,6 @@ Z_INLINE Real step_up(Real n, Real step_size)
 		}
 
 
-#	pragma mark - NSAnimationDelegate Protocol
-
-
-/*	- (void) animationDidEnd: (NSAnimation *) animation
-		{
-		NSLog(@"animationDidEnd");
-		_videoOutput.contentSize = q_2d_fit(MACHINE_SCREEN_SIZE, NSSizeToZ(_fullScreenWindow.frame.size));
-		_videoOutput.scaling = Z_SCALING_NONE;
-		[_videoOutput retain];
-		[_videoOutput removeFromSuperview];
-		_fullScreenWindow.contentView = _videoOutput;
-		[_videoOutput release];
-		_fullScreenTransitionView = nil;
-		[NSMenu setMenuBarVisible: NO];
-		}
-
-
-	- (IBAction) toggleFullScreen: (id) sender
-		{
-		NSWindow *window = self.window;
-		NSRect screenFrame = window.screen.frame;
-		NSRect startFrame = [_videoOutput frameInScreen];
-		NSRect videoOutputEndFrame;
-
-		_flags.isFullScreen = YES;
-
-		_fullScreenWindow = [[NSWindow alloc]
-			initWithContentRect: startFrame
-			styleMask:	     NSBorderlessWindowMask
-			backing:	     NSBackingStoreBuffered
-			defer:		     YES];
-
-		_fullScreenWindow.level = NSFloatingWindowLevel;
-		_fullScreenWindow.title = window.title;
-		_fullScreenWindow.backgroundColor = [NSColor blackColor];
-
-		_fullScreenTransitionView = [[NSImageView alloc] initWithFrame: _videoOutput.bounds];
-		_fullScreenWindow.contentView = _fullScreenTransitionView;
-		[_fullScreenTransitionView release];
-		_fullScreenTransitionView.imageScaling = NSImageScaleProportionallyUpOrDown;
-		_fullScreenTransitionView.image = [_videoOutput imageCapture];
-
-		[_fullScreenWindow makeKeyAndOrderFront: nil];
-
-		NSViewAnimation *animation = [[NSViewAnimation alloc] initWithViewAnimations: [NSArray arrayWithObjects:
-			[NSMutableDictionary dictionaryWithObjectsAndKeys:
-				_fullScreenWindow,			 NSViewAnimationTargetKey,
-				//NSViewAnimationFadeOutEffect,		 NSViewAnimationEffectKey,
-				[NSValue valueWithRect: startFrame],	 NSViewAnimationStartFrameKey,
-				[NSValue valueWithRect: screenFrame],	 NSViewAnimationEndFrameKey,
-				nil],
-			nil]];
-
-		[animation setDuration: 0.29];
-		[animation setDelegate: self];
-		[animation setAnimationCurve: NSAnimationEaseIn];
-		[animation startAnimation];
-		}*/
-
-
 #	pragma mark - AudioOutput Protocol
 
 
@@ -801,7 +733,7 @@ Z_INLINE Real step_up(Real n, Real step_size)
 		else	{
 			sender.state = NSOnState;
 			void *buffer = calloc(3, 882);
-			z_ring_buffer_initialize(&_audioInputBuffer, buffer, 882, 3);
+			_audioInputBuffer.initialize(buffer, 882, 3);
 			_machine->set_audio_input(&_audioInputBuffer);
 			_tapeRecorderWindowController = [[TapeRecorderWindowController alloc] init];
 			[_tapeRecorderWindowController setFrameSize: 882 count: 4];

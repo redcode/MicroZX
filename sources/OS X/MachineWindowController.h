@@ -4,15 +4,11 @@
 |   ____________/\__\ Released under the GNU General Public License v3.
 |_*/
 
-#import <Foundation/Foundation.h>
 #import "Machine.hpp"
-#import "GLVideoOutputView.h"
+#import "GLVideoView.h"
 #import "CoreAudioOutputPlayer.hpp"
 #import "TapeRecorderWindowController.h"
-#import "ZX Spectrum.h" // Eliminar
 #import "SNA.h"
-#import <Z/types/buffering.h>
-#import <pthread.h>
 
 @interface MachineWindowController : NSWindowController <NSWindowDelegate, NSAnimationDelegate> {
 
@@ -27,36 +23,28 @@
 	//-----------.
 	// Emulation |
 	//-----------'
-	Machine*		_machine;
+	Machine* _machine;
 
 	//----------.
 	// Geometry |
 	//----------'
-	ZKit::Value2D<ZKit::Real> _minimumWindowSize;
+	Zeta::Value2D<Zeta::Real> _minimumWindowSize;
 
 	//-------------.
 	// I/O Buffers |
 	//-------------'
-	//QTripleBuffer*	_videoOutputBuffer;
-	//QRingBuffer*		_audioOutputBuffer;
-	ZKit::TripleBuffer*	_keyboardBuffer;
-	Z64Bit*			_keyboard;
-	Z64Bit			_keyboardState;
+	Zeta::TripleBuffer* _keyboardBuffer;
+	Z64Bit*		    _keyboard;
+	Z64Bit		    _keyboardState;
 
-	BOOL			_smooth;
-	GLVideoOutputView*	_videoOutputView;
-	CoreAudioOutputPlayer*	_audioOutputPlayer;
+	BOOL		       _smooth;
+	GLVideoView*	       _videoOutputView;
+	CoreAudioOutputPlayer* _audioOutputPlayer;
 	BOOL			_keyboardInput;
-	ZKit::RingBuffer	_audioInputBuffer;
+	Zeta::RingBuffer	_audioInputBuffer;
 
 	NSTimer*		_pointerVisibilityTimer;
 	NSTrackingArea*		_trackingArea;
-
-	//----------------------.
-	// Pre-Lion Full Screen |
-	//----------------------'
-	NSWindow*		_fullScreenWindow;
-	NSImageView*		_fullScreenTransitionView;
 
 	//--------.
 	// Panels |
@@ -70,8 +58,8 @@
 	} _flags;
 
 	// Temporal
-	ZKit::Size   _tapeSampleCount;
-	ZKit::UInt8* _tapeSamples;
+	Zeta::Size   _tapeSampleCount;
+	Zeta::UInt8* _tapeSamples;
 	BOOL	     _attachInputBuffer;
 }
 	- (id) initWithMachineABI: (MachineABI *) machineABI;

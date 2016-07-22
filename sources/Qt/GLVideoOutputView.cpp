@@ -13,7 +13,7 @@
 
 #define BOUNDS Rectangle<Real>(0.0, 0.0, Real(this->width()), Real(this->height()))
 
-using namespace ZKit;
+using namespace Zeta;
 
 
 GLVideoOutputView::GLVideoOutputView(QWidget *parent) : QGLWidget(parent)

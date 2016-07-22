@@ -7,13 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		64421D391D382E55003CD4A5 /* MachineViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 64421D381D382E55003CD4A5 /* MachineViewController.mm */; };
+		64421D3D1D38320D003CD4A5 /* MachineView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64421D3C1D38320D003CD4A5 /* MachineView.xib */; };
+		64421D401D384780003CD4A5 /* Machine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64421D3F1D384780003CD4A5 /* Machine.cpp */; };
+		64421D431D38495F003CD4A5 /* system.c in Sources */ = {isa = PBXBuildFile; fileRef = 64421D421D38495F003CD4A5 /* system.c */; };
+		6483DD321D3BB6B500807C53 /* GLFrameBufferRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64EC80BA1B744CCE00C15EFE /* GLFrameBufferRenderer.cpp */; };
+		6496E71F1D3967BB00835482 /* CoreAudioOutputPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6496E71E1D3967BB00835482 /* CoreAudioOutputPlayer.cpp */; };
+		6496E7241D39684A00835482 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6496E7221D39684A00835482 /* AudioToolbox.framework */; };
 		6497FBA01B74D180001B0196 /* ROMs in Resources */ = {isa = PBXBuildFile; fileRef = 6497FB9F1B74D180001B0196 /* ROMs */; };
 		6497FBA31B74D1CD001B0196 /* SimpleVertex.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 6497FBA21B74D1CD001B0196 /* SimpleVertex.glsl */; };
 		6497FBA51B74D3F6001B0196 /* SimplePixel.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 6497FBA41B74D3F6001B0196 /* SimplePixel.glsl */; };
+		649D9A741D3B19C6008720B3 /* GLVideoView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 649D9A731D3B19C6008720B3 /* GLVideoView.mm */; };
+		64B7D8A11D4008CC007175DA /* OpenGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64B7D8A01D4008CC007175DA /* OpenGL.cpp */; };
+		64BFD24C1D41F1D50006FD23 /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64BFD24B1D41F1D50006FD23 /* Matrix.cpp */; };
 		64DEF67E1B794F4E000F4F01 /* Joystick.png in Resources */ = {isa = PBXBuildFile; fileRef = 64DEF67D1B794F4E000F4F01 /* Joystick.png */; };
 		64EC80581B722D2E00C15EFE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 64EC80571B722D2E00C15EFE /* main.m */; };
 		64EC805B1B722D2E00C15EFE /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64EC805A1B722D2E00C15EFE /* MainController.m */; };
-		64EC805E1B722D2E00C15EFE /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64EC805D1B722D2E00C15EFE /* MainViewController.m */; };
+		64EC805E1B722D2E00C15EFE /* MainViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 64EC805D1B722D2E00C15EFE /* MainViewController.mm */; };
 		64EC80611B722D2E00C15EFE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 64EC805F1B722D2E00C15EFE /* Main.storyboard */; };
 		64EC80631B722D2E00C15EFE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64EC80621B722D2E00C15EFE /* Images.xcassets */; };
 		64EC80661B722D2E00C15EFE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64EC80641B722D2E00C15EFE /* LaunchScreen.xib */; };
@@ -32,15 +42,29 @@
 		64EC80A81B73AA7F00C15EFE /* TapeRecorderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64EC80A71B73AA7F00C15EFE /* TapeRecorderView.m */; };
 		64EC80AC1B73AAAF00C15EFE /* JoystickView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64EC80AB1B73AAAF00C15EFE /* JoystickView.m */; };
 		64EC80AF1B73AAC300C15EFE /* KeyboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64EC80AE1B73AAC300C15EFE /* KeyboardView.m */; };
-		64EC80B31B73AB3200C15EFE /* GLOutputView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 64EC80B21B73AB3200C15EFE /* GLOutputView.mm */; };
 		64EC80B51B7442C700C15EFE /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64EC80B41B7442C700C15EFE /* OpenGLES.framework */; };
 		64EC80B71B7442D600C15EFE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64EC80B61B7442D600C15EFE /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		64421D371D382E55003CD4A5 /* MachineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MachineViewController.h; sourceTree = "<group>"; };
+		64421D381D382E55003CD4A5 /* MachineViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MachineViewController.mm; sourceTree = "<group>"; };
+		64421D3C1D38320D003CD4A5 /* MachineView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MachineView.xib; sourceTree = "<group>"; };
+		64421D3E1D384780003CD4A5 /* Machine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Machine.hpp; sourceTree = "<group>"; };
+		64421D3F1D384780003CD4A5 /* Machine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Machine.cpp; sourceTree = "<group>"; };
+		64421D411D38495F003CD4A5 /* system.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = system.h; sourceTree = "<group>"; };
+		64421D421D38495F003CD4A5 /* system.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = system.c; sourceTree = "<group>"; };
+		6496E71D1D3967BB00835482 /* CoreAudioOutputPlayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CoreAudioOutputPlayer.hpp; sourceTree = "<group>"; };
+		6496E71E1D3967BB00835482 /* CoreAudioOutputPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CoreAudioOutputPlayer.cpp; sourceTree = "<group>"; };
+		6496E7221D39684A00835482 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		6497FB9F1B74D180001B0196 /* ROMs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ROMs; sourceTree = "<group>"; };
 		6497FBA21B74D1CD001B0196 /* SimpleVertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimpleVertex.glsl; sourceTree = "<group>"; };
 		6497FBA41B74D3F6001B0196 /* SimplePixel.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimplePixel.glsl; sourceTree = "<group>"; };
+		649D9A721D3B19C6008720B3 /* GLVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLVideoView.h; sourceTree = "<group>"; };
+		649D9A731D3B19C6008720B3 /* GLVideoView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLVideoView.mm; sourceTree = "<group>"; };
+		64B7D8A01D4008CC007175DA /* OpenGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGL.cpp; sourceTree = "<group>"; };
+		64BFD24A1D41F1D00006FD23 /* Matrix.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Matrix.hpp; sourceTree = "<group>"; };
+		64BFD24B1D41F1D50006FD23 /* Matrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Matrix.cpp; sourceTree = "<group>"; };
 		64DEF67D1B794F4E000F4F01 /* Joystick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Joystick.png; sourceTree = "<group>"; };
 		64E106241CAAB17A0007743B /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		64EC80521B722D2E00C15EFE /* μZX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "μZX.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -49,7 +73,7 @@
 		64EC80591B722D2E00C15EFE /* MainController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainController.h; sourceTree = "<group>"; };
 		64EC805A1B722D2E00C15EFE /* MainController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainController.m; sourceTree = "<group>"; };
 		64EC805C1B722D2E00C15EFE /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
-		64EC805D1B722D2E00C15EFE /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		64EC805D1B722D2E00C15EFE /* MainViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MainViewController.mm; sourceTree = "<group>"; };
 		64EC80601B722D2E00C15EFE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		64EC80621B722D2E00C15EFE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		64EC80651B722D2E00C15EFE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -76,13 +100,11 @@
 		64EC80AB1B73AAAF00C15EFE /* JoystickView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JoystickView.m; sourceTree = "<group>"; };
 		64EC80AD1B73AAC300C15EFE /* KeyboardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardView.h; sourceTree = "<group>"; };
 		64EC80AE1B73AAC300C15EFE /* KeyboardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardView.m; sourceTree = "<group>"; };
-		64EC80B11B73AB3200C15EFE /* GLOutputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLOutputView.h; sourceTree = "<group>"; };
-		64EC80B21B73AB3200C15EFE /* GLOutputView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLOutputView.mm; sourceTree = "<group>"; };
 		64EC80B41B7442C700C15EFE /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		64EC80B61B7442D600C15EFE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		64EC80B81B744C8E00C15EFE /* OpenGL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenGL.h; sourceTree = "<group>"; };
-		64EC80B91B744CCE00C15EFE /* GLOutput.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GLOutput.hpp; sourceTree = "<group>"; };
-		64EC80BA1B744CCE00C15EFE /* GLOutput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLOutput.cpp; sourceTree = "<group>"; };
+		64EC80B81B744C8E00C15EFE /* OpenGL.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = OpenGL.hpp; sourceTree = "<group>"; };
+		64EC80B91B744CCE00C15EFE /* GLFrameBufferRenderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GLFrameBufferRenderer.hpp; sourceTree = "<group>"; };
+		64EC80BA1B744CCE00C15EFE /* GLFrameBufferRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLFrameBufferRenderer.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +112,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6496E7241D39684A00835482 /* AudioToolbox.framework in Frameworks */,
 				64EC80B71B7442D600C15EFE /* QuartzCore.framework in Frameworks */,
 				64EC80B51B7442C700C15EFE /* OpenGLES.framework in Frameworks */,
 			);
@@ -98,6 +121,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6496E7261D3968D000835482 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6496E7221D39684A00835482 /* AudioToolbox.framework */,
+				64EC80B61B7442D600C15EFE /* QuartzCore.framework */,
+				64EC80B41B7442C700C15EFE /* OpenGLES.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6496E7271D3969FA00835482 /* OS X & iOS */ = {
+			isa = PBXGroup;
+			children = (
+				6496E71D1D3967BB00835482 /* CoreAudioOutputPlayer.hpp */,
+				6496E71E1D3967BB00835482 /* CoreAudioOutputPlayer.cpp */,
+				649D9A721D3B19C6008720B3 /* GLVideoView.h */,
+				649D9A731D3B19C6008720B3 /* GLVideoView.mm */,
+			);
+			path = "OS X & iOS";
+			sourceTree = "<group>";
+		};
 		6497FBA11B74D190001B0196 /* shaders */ = {
 			isa = PBXGroup;
 			children = (
@@ -110,10 +154,9 @@
 		64EC80491B722D2D00C15EFE = {
 			isa = PBXGroup;
 			children = (
-				64EC80B61B7442D600C15EFE /* QuartzCore.framework */,
-				64EC80B41B7442C700C15EFE /* OpenGLES.framework */,
 				64EC807B1B72333E00C15EFE /* Sources */,
 				64EC80541B722D2E00C15EFE /* Resources */,
+				6496E7261D3968D000835482 /* Frameworks */,
 				64EC80531B722D2E00C15EFE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -140,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				64EC807C1B72334400C15EFE /* Common */,
+				6496E7271D3969FA00835482 /* OS X & iOS */,
 				64EC807D1B72334900C15EFE /* iOS */,
 			);
 			name = Sources;
@@ -151,9 +195,16 @@
 			children = (
 				64EC80851B72486D00C15EFE /* Codecs */,
 				64EC80841B72486400C15EFE /* Emulators */,
-				64EC80B81B744C8E00C15EFE /* OpenGL.h */,
-				64EC80B91B744CCE00C15EFE /* GLOutput.hpp */,
-				64EC80BA1B744CCE00C15EFE /* GLOutput.cpp */,
+				64421D411D38495F003CD4A5 /* system.h */,
+				64421D421D38495F003CD4A5 /* system.c */,
+				64EC80B81B744C8E00C15EFE /* OpenGL.hpp */,
+				64B7D8A01D4008CC007175DA /* OpenGL.cpp */,
+				64BFD24A1D41F1D00006FD23 /* Matrix.hpp */,
+				64BFD24B1D41F1D50006FD23 /* Matrix.cpp */,
+				64421D3E1D384780003CD4A5 /* Machine.hpp */,
+				64421D3F1D384780003CD4A5 /* Machine.cpp */,
+				64EC80B91B744CCE00C15EFE /* GLFrameBufferRenderer.hpp */,
+				64EC80BA1B744CCE00C15EFE /* GLFrameBufferRenderer.cpp */,
 			);
 			name = Common;
 			path = common;
@@ -167,9 +218,9 @@
 				64EC80591B722D2E00C15EFE /* MainController.h */,
 				64EC805A1B722D2E00C15EFE /* MainController.m */,
 				64EC805C1B722D2E00C15EFE /* MainViewController.h */,
-				64EC805D1B722D2E00C15EFE /* MainViewController.m */,
-				64EC80B11B73AB3200C15EFE /* GLOutputView.h */,
-				64EC80B21B73AB3200C15EFE /* GLOutputView.mm */,
+				64EC805D1B722D2E00C15EFE /* MainViewController.mm */,
+				64421D371D382E55003CD4A5 /* MachineViewController.h */,
+				64421D381D382E55003CD4A5 /* MachineViewController.mm */,
 				64EC80A61B73AA7F00C15EFE /* TapeRecorderView.h */,
 				64EC80A71B73AA7F00C15EFE /* TapeRecorderView.m */,
 				64EC80AA1B73AAAF00C15EFE /* JoystickView.h */,
@@ -206,6 +257,7 @@
 			children = (
 				64EC805F1B722D2E00C15EFE /* Main.storyboard */,
 				64EC80641B722D2E00C15EFE /* LaunchScreen.xib */,
+				64421D3C1D38320D003CD4A5 /* MachineView.xib */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -240,13 +292,13 @@
 		64EC80841B72486400C15EFE /* Emulators */ = {
 			isa = PBXGroup;
 			children = (
-				64EC809C1B72497300C15EFE /* AY-3-891x.c */,
-				64EC809D1B72497300C15EFE /* AY-3-891x.h */,
 				64EC809E1B72497300C15EFE /* MachineABI.h */,
-				64EC809F1B72497300C15EFE /* Z80.c */,
+				64EC809D1B72497300C15EFE /* AY-3-891x.h */,
+				64EC809C1B72497300C15EFE /* AY-3-891x.c */,
 				64EC80A01B72497300C15EFE /* Z80.h */,
-				64EC80A11B72497300C15EFE /* ZX Spectrum.c */,
+				64EC809F1B72497300C15EFE /* Z80.c */,
 				64EC80A21B72497300C15EFE /* ZX Spectrum.h */,
+				64EC80A11B72497300C15EFE /* ZX Spectrum.c */,
 			);
 			name = Emulators;
 			path = emulators;
@@ -354,6 +406,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64421D3D1D38320D003CD4A5 /* MachineView.xib in Resources */,
 				64EC80611B722D2E00C15EFE /* Main.storyboard in Resources */,
 				6497FBA01B74D180001B0196 /* ROMs in Resources */,
 				6497FBA31B74D1CD001B0196 /* SimpleVertex.glsl in Resources */,
@@ -372,24 +425,31 @@
 			buildActionMask = 2147483647;
 			files = (
 				64EC80A41B72497300C15EFE /* Z80.c in Sources */,
+				6483DD321D3BB6B500807C53 /* GLFrameBufferRenderer.cpp in Sources */,
 				64EC809A1B72491800C15EFE /* SNP.c in Sources */,
 				64EC80981B72491800C15EFE /* SIT.c in Sources */,
-				64EC80B31B73AB3200C15EFE /* GLOutputView.mm in Sources */,
 				64EC80A51B72497300C15EFE /* ZX Spectrum.c in Sources */,
 				64EC80951B72491800C15EFE /* FRZ.c in Sources */,
+				64421D391D382E55003CD4A5 /* MachineViewController.mm in Sources */,
 				64EC80AC1B73AAAF00C15EFE /* JoystickView.m in Sources */,
 				64EC809B1B72491800C15EFE /* ZX.c in Sources */,
 				64EC80941B72491800C15EFE /* ACH.c in Sources */,
-				64EC805E1B722D2E00C15EFE /* MainViewController.m in Sources */,
+				64EC805E1B722D2E00C15EFE /* MainViewController.mm in Sources */,
 				64EC80A81B73AA7F00C15EFE /* TapeRecorderView.m in Sources */,
+				649D9A741D3B19C6008720B3 /* GLVideoView.mm in Sources */,
 				64EC80991B72491800C15EFE /* SNA.c in Sources */,
 				64EC805B1B722D2E00C15EFE /* MainController.m in Sources */,
 				64EC80A31B72497300C15EFE /* AY-3-891x.c in Sources */,
+				64421D401D384780003CD4A5 /* Machine.cpp in Sources */,
 				64EC80931B72491800C15EFE /* 89C.c in Sources */,
 				64EC80581B722D2E00C15EFE /* main.m in Sources */,
+				6496E71F1D3967BB00835482 /* CoreAudioOutputPlayer.cpp in Sources */,
 				64EC80AF1B73AAC300C15EFE /* KeyboardView.m in Sources */,
 				64EC80961B72491800C15EFE /* PLUSD.c in Sources */,
+				64421D431D38495F003CD4A5 /* system.c in Sources */,
 				64EC80971B72491800C15EFE /* PRG.c in Sources */,
+				64BFD24C1D41F1D50006FD23 /* Matrix.cpp in Sources */,
+				64B7D8A11D4008CC007175DA /* OpenGL.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -419,7 +479,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -435,7 +495,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -469,7 +529,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -486,7 +546,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;

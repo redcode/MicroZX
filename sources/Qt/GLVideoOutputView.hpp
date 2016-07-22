@@ -26,11 +26,11 @@ class GLVideoOutputView : public QGLWidget {Q_OBJECT
 	void resizeGL(int width, int height);
 	int heightForWidth(int width) const;
 	static void drawActiveViews();
-	ZKit::TripleBuffer *buffer() {return &videoOutput->buffer;}
-	ZKit::Value2D<ZKit::Real> contentSize();
-	void setContentSize(ZKit::Value2D<ZKit::Real> content_size);
+	Zeta::TripleBuffer *buffer() {return &videoOutput->buffer;}
+	Zeta::Value2D<Zeta::Real> contentSize();
+	void setContentSize(Zeta::Value2D<Zeta::Real> content_size);
 	void setScaling(ZKey(SCALING) scaling);
-	void setResolutionAndFormat(ZKit::Value2D<ZKit::Size> resolution, ZKit::UInt format);
+	void setResolutionAndFormat(Zeta::Value2D<Zeta::Size> resolution, Zeta::UInt format);
 	void start();
 	void stop();
 	void blank();
