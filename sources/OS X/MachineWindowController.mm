@@ -233,7 +233,7 @@ Z_INLINE Real step_up(Real n, Real step_size)
 	- (void) windowDidLoad
 		{
 		[super windowDidLoad];
-
+		//[[self window] disableScreenUpdatesUntilFlush];
 		NSWindow *window = self.window;
 		NSSize contentSize = NS_SCREEN_SIZE;
 

@@ -167,7 +167,8 @@ using namespace Zeta;
 			for (auto view : activeInstances)
 				{
 				[EAGLContext setCurrentContext: view->_GLContext];
-				glClear(GL_COLOR_BUFFER_BIT);
+				//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+				//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 				view->_renderer->draw(true);
 				[view->_GLContext presentRenderbuffer: GL_RENDERBUFFER];
 				}
@@ -185,8 +186,6 @@ using namespace Zeta;
 				{
 				(_EAGLLayer = (CAEAGLLayer *) self.layer).opaque = YES;
 
-				/*_EAGLLayer.drawableProperties = @{ kEAGLDrawablePropertyRetainedBacking : [NSNumber numberWithBool: YES],
-                                           kEAGLDrawablePropertyColorFormat     : kEAGLColorFormatRGBA8};*/
 				if (!(_GLContext = [[EAGLContext alloc] initWithAPI: kEAGLRenderingAPIOpenGLES2]))
 					{
 					NSLog(@"Failed to initialize OpenGLES 2.0 context");
@@ -201,8 +200,9 @@ using namespace Zeta;
 
 				SET_CONTEXT;
 
-				glDisable(GL_DEPTH_TEST);
-				glClearColor(0, 104.0/255.0, 55.0/255.0, 1.0);
+				//glDisable(GL_DEPTH_TEST);
+				//glDisable(GL_STENCIL_TEST);
+				glClearColor(0, 0, 0, 1.0);
 
 				glGenRenderbuffers(1, &_renderBuffer);
 				glBindRenderbuffer(GL_RENDERBUFFER, _renderBuffer);
@@ -392,6 +392,8 @@ using namespace Zeta;
 				[displayLink = [CADisplayLink displayLinkWithTarget: self.class selector: @selector(draw:)]
 					addToRunLoop: NSRunLoop.currentRunLoop
 					forMode:      NSDefaultRunLoopMode];
+
+				//[NSTimer scheduledTimerWithTimeInterval: 1.0 / 50.0  target: self.class selector: @selector(draw:) userInfo: nil repeats: YES];
 #			endif
 			}
 
