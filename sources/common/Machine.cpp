@@ -48,7 +48,7 @@ void Machine::main()
 		if ((keyboard = (UInt64 *)_keyboard_input->consume()) != NULL)
 			{context->state.keyboard.value_uint64 = *keyboard;}
 
-#		if Z_OS != Z_OS_LINUX
+#		if Z_OS == Z_OS_MAC_OS_X
 		if (_audio_input)
 			{
 			while (!(buffer = _audio_input->try_consume()))

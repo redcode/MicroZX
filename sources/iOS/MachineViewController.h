@@ -7,14 +7,17 @@
 #import "Machine.hpp"
 #import "GLVideoView.h"
 #import "CoreAudioOutputPlayer.hpp"
+#import <Z/hardware/machine/platform/computer/ZX Spectrum.h>
+#import <Z/hardware/machine/model/computer/ZX Spectrum/ZX Spectrum.h>
 
 @interface MachineViewController : UIViewController {
+
 
 	//-----------.
 	// Emulation |
 	//-----------'
-	Machine*		_machine;
-
+	Machine* _machine;
+	MachineABI *_abi;
 	//----------.
 	// Geometry |
 	//----------'
@@ -30,7 +33,7 @@
 	Z64Bit			_keyboardState;
 
 	BOOL			_smooth;
-	GLVideoView*		_videoOutputView;
+	IBOutlet GLVideoView*	_videoOutputView;
 	CoreAudioOutputPlayer*	_audioOutputPlayer;
 	BOOL			_keyboardInput;
 	Zeta::RingBuffer	_audioInputBuffer;
@@ -51,4 +54,7 @@
 	Zeta::UInt8* _tapeSamples;
 	BOOL	     _attachInputBuffer;
 }
+
+	- (id) initWithMachineABI: (MachineABI *) machineABI;
+
 @end

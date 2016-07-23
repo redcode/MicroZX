@@ -21,6 +21,7 @@ GLFrameBufferRenderer::GLFrameBufferRenderer()
 	buffer.buffers[0] = nullptr;
 
 	glEnable(GL_TEXTURE_2D);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glGenTextures(1, &_texture);
 	glBindTexture(GL_TEXTURE_2D, _texture);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -141,13 +142,12 @@ void GLFrameBufferRenderer::draw(Boolean skip_old)
 		frame = buffer.consumption_buffer();
 		}
 
-	glEnable(GL_TEXTURE_2D);
-	glDisable(GL_DEPTH_TEST);
+	/*for (Size x = 0; x < input_width * input_height; x++)
+		{
+		((UInt32 *)frame)[x] = 0x1F32FFFF;
+		}*/
 
-	glTexSubImage2D
-		(GL_TEXTURE_2D, 0, 0, 0,
-		 input_width, input_height,
-		 GL_RGBA, GL_UNSIGNED_BYTE, frame);
+	glEnable(GL_TEXTURE_2D);
 
 	if (content_scaling != Z_SCALING_EXPAND)
 		{
@@ -155,15 +155,29 @@ void GLFrameBufferRenderer::draw(Boolean skip_old)
 		glClear(GL_COLOR_BUFFER_BIT);
 		}
 
+	glTexSubImage2D
+		(GL_TEXTURE_2D, 0, 0, 0,
+		 input_width, input_height,
+		 GL_RGBA, GL_UNSIGNED_BYTE, frame);
+
 	//glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 	glBindTexture(GL_TEXTURE_2D, _texture);
 	glUniformMatrix4fv(_transform_uniform, 1, GL_FALSE, _transform.m);
-	glEnableVertexAttribArray(0);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
-	glEnable(GL_DEPTH_TEST);
+#	ifdef OPEN_GL
+		glEnableVertexAttribArray(0);
+#	else
+		glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+		glVertexAttribPointer(_vertex_attribute, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
+		glEnableVertexAttribArray(_vertex_attribute);
+#	endif
+
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glDisable(GL_TEXTURE_2D);
-	glFlush();
+
+#	if Z_OS != Z_OS_IOS
+		glFlush();
+#	endif
 	}
 
 
@@ -191,6 +205,10 @@ void GLFrameBufferRenderer::create_shader_program()
 	glUseProgram  (_shader_program);
 
  	_transform_uniform = glGetUniformLocation(_shader_program, "transform");
+
+#	ifdef OPEN_GL_ES
+		_vertex_attribute = glGetAttribLocation(_shader_program, "vertex");
+#	endif
 	}
 
 

@@ -172,7 +172,16 @@
 			path = "OS X & iOS";
 			sourceTree = "<group>";
 		};
-		6497FB9E1B74D157001B0196 /* shaders */ = {
+		6497FB9E1B74D157001B0196 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				64BFD2511D430F170006FD23 /* GLSL */,
+			);
+			name = Shaders;
+			path = shaders;
+			sourceTree = "<group>";
+		};
+		64BFD2511D430F170006FD23 /* GLSL */ = {
 			isa = PBXGroup;
 			children = (
 				64F5DE7B1A28EB3900D29077 /* SABR.vsh */,
@@ -180,7 +189,7 @@
 				6483DD331D3BD50100807C53 /* Simple.vsh */,
 				6483DD351D3C609800807C53 /* Simple.fsh */,
 			);
-			path = shaders;
+			path = GLSL;
 			sourceTree = "<group>";
 		};
 		64DEF6821B7A449E000F4F01 /* Images */ = {
@@ -337,7 +346,7 @@
 			isa = PBXGroup;
 			children = (
 				64DEF6821B7A449E000F4F01 /* Images */,
-				6497FB9E1B74D157001B0196 /* shaders */,
+				6497FB9E1B74D157001B0196 /* Shaders */,
 				64F5DEB31A28EB6600D29077 /* ROMs */,
 			);
 			name = Common;

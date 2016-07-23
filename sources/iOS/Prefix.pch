@@ -8,6 +8,7 @@
 
 #ifdef __OBJC__
 #	define Z_SUPPORT_CG_GEOMETRY
+//#	define Z_USE_REAL_FLOAT
 #	define STRING(...) [NSString stringWithFormat: __VA_ARGS__]
 #	define _(string) NSLocalizedString(@string, nil)
 #endif

@@ -21,12 +21,25 @@ using namespace Zeta;
 		if ((self = [super initWithNibName: @"MachineView" bundle: nil]))
 			{
 			_smooth = YES;
+			_abi = machineABI;
+
+
+			}
+
+		return self;
+		}
+
+
+	- (void) viewDidLoad
+		{
+		[super viewDidLoad];
+
 
 			/*----------------------------.
 			| Create video output object. |
 			'----------------------------*/
-			_videoOutputView = [[GLVideoView alloc] initWithFrame:
-				CGRectMake(0.0, 0.0, SCREEN_SIZE_X, SCREEN_SIZE_Y)];
+		//	_videoOutputView = [[GLVideoView alloc] initWithFrame:
+		//		CGRectMake(0.0, 0.0, SCREEN_SIZE_X, SCREEN_SIZE_Y)];
 
 			[_videoOutputView
 				setResolution: Value2D<Zeta::Size>(SCREEN_SIZE_X, SCREEN_SIZE_Y)
@@ -45,18 +58,18 @@ using namespace Zeta;
 			_keyboard = (Z64Bit *)_keyboardBuffer->production_buffer();
 			memset(_keyboardBuffer->buffers[0], 0xFF, Z_UINT64_SIZE * 3);
 
-			_machine = new Machine(machineABI, _videoOutputView.buffer, _audioOutputPlayer->buffer(), _keyboardBuffer);
+			_machine = new Machine(_abi, _videoOutputView.buffer, _audioOutputPlayer->buffer(), _keyboardBuffer);
 
 			/*-----------------.
 			| Load needed ROMs |
 			'-----------------*/
-			Zeta::Size index = machineABI->rom_count;
+			Zeta::Size index = _abi->rom_count;
 			NSBundle *bundle = [NSBundle mainBundle];
 			ROM *rom;
 
 			while (index)
 				{
-				rom = &machineABI->roms[--index];
+				rom = &_abi->roms[--index];
 
 				NSData *ROM = [NSData dataWithContentsOfFile: [bundle
 					pathForResource: [NSString stringWithUTF8String: rom->file_name]
@@ -68,14 +81,10 @@ using namespace Zeta;
 
 			_keyboardState.value_uint64 = Type<Zeta::UInt64>::maximum;
 			_attachInputBuffer = NO;
-			}
 
-		return self;
-		}
-
-
-	- (void) viewDidLoad
-		{
+		[_videoOutputView start];
+		//_audioOutputPlayer->start();
+		_machine->power(ON);
 		}
 
 

@@ -15,11 +15,11 @@
 		6496E71F1D3967BB00835482 /* CoreAudioOutputPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6496E71E1D3967BB00835482 /* CoreAudioOutputPlayer.cpp */; };
 		6496E7241D39684A00835482 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6496E7221D39684A00835482 /* AudioToolbox.framework */; };
 		6497FBA01B74D180001B0196 /* ROMs in Resources */ = {isa = PBXBuildFile; fileRef = 6497FB9F1B74D180001B0196 /* ROMs */; };
-		6497FBA31B74D1CD001B0196 /* SimpleVertex.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 6497FBA21B74D1CD001B0196 /* SimpleVertex.glsl */; };
-		6497FBA51B74D3F6001B0196 /* SimplePixel.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 6497FBA41B74D3F6001B0196 /* SimplePixel.glsl */; };
 		649D9A741D3B19C6008720B3 /* GLVideoView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 649D9A731D3B19C6008720B3 /* GLVideoView.mm */; };
 		64B7D8A11D4008CC007175DA /* OpenGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64B7D8A01D4008CC007175DA /* OpenGL.cpp */; };
 		64BFD24C1D41F1D50006FD23 /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64BFD24B1D41F1D50006FD23 /* Matrix.cpp */; };
+		64BFD24F1D42E4DE0006FD23 /* Simple.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 64BFD24D1D42E4DE0006FD23 /* Simple.vsh */; };
+		64BFD2501D42E4DE0006FD23 /* Simple.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 64BFD24E1D42E4DE0006FD23 /* Simple.fsh */; };
 		64DEF67E1B794F4E000F4F01 /* Joystick.png in Resources */ = {isa = PBXBuildFile; fileRef = 64DEF67D1B794F4E000F4F01 /* Joystick.png */; };
 		64EC80581B722D2E00C15EFE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 64EC80571B722D2E00C15EFE /* main.m */; };
 		64EC805B1B722D2E00C15EFE /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64EC805A1B722D2E00C15EFE /* MainController.m */; };
@@ -58,13 +58,13 @@
 		6496E71E1D3967BB00835482 /* CoreAudioOutputPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CoreAudioOutputPlayer.cpp; sourceTree = "<group>"; };
 		6496E7221D39684A00835482 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		6497FB9F1B74D180001B0196 /* ROMs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ROMs; sourceTree = "<group>"; };
-		6497FBA21B74D1CD001B0196 /* SimpleVertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimpleVertex.glsl; sourceTree = "<group>"; };
-		6497FBA41B74D3F6001B0196 /* SimplePixel.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimplePixel.glsl; sourceTree = "<group>"; };
 		649D9A721D3B19C6008720B3 /* GLVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLVideoView.h; sourceTree = "<group>"; };
 		649D9A731D3B19C6008720B3 /* GLVideoView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLVideoView.mm; sourceTree = "<group>"; };
 		64B7D8A01D4008CC007175DA /* OpenGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGL.cpp; sourceTree = "<group>"; };
 		64BFD24A1D41F1D00006FD23 /* Matrix.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Matrix.hpp; sourceTree = "<group>"; };
 		64BFD24B1D41F1D50006FD23 /* Matrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Matrix.cpp; sourceTree = "<group>"; };
+		64BFD24D1D42E4DE0006FD23 /* Simple.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Simple.vsh; sourceTree = "<group>"; };
+		64BFD24E1D42E4DE0006FD23 /* Simple.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Simple.fsh; sourceTree = "<group>"; };
 		64DEF67D1B794F4E000F4F01 /* Joystick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Joystick.png; sourceTree = "<group>"; };
 		64E106241CAAB17A0007743B /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		64EC80521B722D2E00C15EFE /* μZX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "μZX.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -142,13 +142,22 @@
 			path = "OS X & iOS";
 			sourceTree = "<group>";
 		};
-		6497FBA11B74D190001B0196 /* shaders */ = {
+		6497FBA11B74D190001B0196 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
-				6497FBA21B74D1CD001B0196 /* SimpleVertex.glsl */,
-				6497FBA41B74D3F6001B0196 /* SimplePixel.glsl */,
+				64BFD2521D430FE50006FD23 /* GLSL-ES */,
 			);
+			name = Shaders;
 			path = shaders;
+			sourceTree = "<group>";
+		};
+		64BFD2521D430FE50006FD23 /* GLSL-ES */ = {
+			isa = PBXGroup;
+			children = (
+				64BFD24D1D42E4DE0006FD23 /* Simple.vsh */,
+				64BFD24E1D42E4DE0006FD23 /* Simple.fsh */,
+			);
+			path = "GLSL-ES";
 			sourceTree = "<group>";
 		};
 		64EC80491B722D2D00C15EFE = {
@@ -234,7 +243,7 @@
 		64EC807E1B72337000C15EFE /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				6497FBA11B74D190001B0196 /* shaders */,
+				6497FBA11B74D190001B0196 /* Shaders */,
 				6497FB9F1B74D180001B0196 /* ROMs */,
 			);
 			name = Common;
@@ -409,10 +418,10 @@
 				64421D3D1D38320D003CD4A5 /* MachineView.xib in Resources */,
 				64EC80611B722D2E00C15EFE /* Main.storyboard in Resources */,
 				6497FBA01B74D180001B0196 /* ROMs in Resources */,
-				6497FBA31B74D1CD001B0196 /* SimpleVertex.glsl in Resources */,
 				64DEF67E1B794F4E000F4F01 /* Joystick.png in Resources */,
+				64BFD24F1D42E4DE0006FD23 /* Simple.vsh in Resources */,
 				64EC80661B722D2E00C15EFE /* LaunchScreen.xib in Resources */,
-				6497FBA51B74D3F6001B0196 /* SimplePixel.glsl in Resources */,
+				64BFD2501D42E4DE0006FD23 /* Simple.fsh in Resources */,
 				64EC80631B722D2E00C15EFE /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -6,20 +6,32 @@
 
 #import "MainViewController.h"
 #import "MachineViewController.h"
+#import "MachineABI.h"
 
 
 @implementation MainViewController
 
 
-	- (void) viewDidLoad
+	- (void) newMachineWithABI: (MachineABI *) ABI
 		{
-		[super viewDidLoad];
-		// Do any additional setup after loading the view, typically from a nib.
-		MachineViewController *controller = [[MachineViewController alloc] init];
+		MachineViewController *controller = [[MachineViewController alloc] initWithMachineABI: ABI];
 
 		[_machineViewControllers addObject: controller];
 
-		[self.view addSubview: controller.view];
+		UIView *view = controller.view;
+
+		view.frame = CGRectMake(0.0, 0.0, 352.0, 296);
+
+		[self.view addSubview: view];
+		[controller release];
+		}
+
+
+
+	- (void) viewDidLoad
+		{
+		[super viewDidLoad];
+		[self newMachineWithABI: &machine_abi_table[4]];
 		}
 
 

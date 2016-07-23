@@ -55,11 +55,9 @@ using namespace Zeta;
 		)
 			{
 			mutex.lock();
-			zsize index = activeInstances.size();
 
-			while (index)
+			for (auto view : activeInstances)
 				{
-				GLVideoView *view = activeInstances[--index];
 				CGLSetCurrentContext(view->_CGLContext);
 				view->_renderer->draw(true);
 				}
@@ -93,8 +91,14 @@ using namespace Zeta;
 				_CGLContext = _GLContext.CGLContextObj;
 
 				SET_CONTEXT;
-				_renderer = new GLFrameBufferRenderer();
-				_renderer->set_geometry(self.bounds, Z_SCALING_EXPAND);
+
+				glDisable(GL_DEPTH_TEST);
+
+				(_renderer = new GLFrameBufferRenderer())->set_geometry
+					(Rectangle<Real>([self respondsToSelector: @selector(convertSizeToBacking:)]
+						? [self convertSizeToBacking: self.bounds.size]
+						: self.bounds.size),
+					 Z_SCALING_EXPAND);
 
 				NSBundle *bundle = [NSBundle mainBundle];
 				std::string *error;
@@ -160,13 +164,12 @@ using namespace Zeta;
 
 		+ (void) draw: (CADisplayLink *) sender
 			{
-			zsize index = activeInstances.size();
-
-			while (index)
+			for (auto view : activeInstances)
 				{
-				GLVideoView *view = activeInstances[--index];
 				[EAGLContext setCurrentContext: view->_GLContext];
+				glClear(GL_COLOR_BUFFER_BIT);
 				view->_renderer->draw(true);
+				[view->_GLContext presentRenderbuffer: GL_RENDERBUFFER];
 				}
 
 			RESTORE_CONTEXT;
@@ -176,20 +179,14 @@ using namespace Zeta;
 		+ (Class) layerClass {return [CAEAGLLayer class];}
 
 
-		- (void) render
-			{
-			glClearColor(0, 104.0/255.0, 55.0/255.0, 1.0);
-			glClear(GL_COLOR_BUFFER_BIT);
-			[_GLContext presentRenderbuffer: GL_RENDERBUFFER];
-			}
-
-
 		- (id) initWithCoder: (NSCoder *) coder
 			{
 			if ((self = [super initWithCoder: coder]))
 				{
 				(_EAGLLayer = (CAEAGLLayer *) self.layer).opaque = YES;
 
+				/*_EAGLLayer.drawableProperties = @{ kEAGLDrawablePropertyRetainedBacking : [NSNumber numberWithBool: YES],
+                                           kEAGLDrawablePropertyColorFormat     : kEAGLColorFormatRGBA8};*/
 				if (!(_GLContext = [[EAGLContext alloc] initWithAPI: kEAGLRenderingAPIOpenGLES2]))
 					{
 					NSLog(@"Failed to initialize OpenGLES 2.0 context");
@@ -202,6 +199,11 @@ using namespace Zeta;
 					exit(1);
 					}
 
+				SET_CONTEXT;
+
+				glDisable(GL_DEPTH_TEST);
+				glClearColor(0, 104.0/255.0, 55.0/255.0, 1.0);
+
 				glGenRenderbuffers(1, &_renderBuffer);
 				glBindRenderbuffer(GL_RENDERBUFFER, _renderBuffer);
 				[_GLContext renderbufferStorage: GL_RENDERBUFFER fromDrawable: _EAGLLayer];
@@ -211,7 +213,59 @@ using namespace Zeta;
 				glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 				glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _renderBuffer);
 
-				[self render];
+				_renderer = new GLFrameBufferRenderer();
+
+				Rectangle<Real> bounds = self.bounds;
+				UIScreen *screen = UIScreen.mainScreen;
+
+				if ([screen respondsToSelector: @selector(displayLinkWithTarget:selector:)])
+					bounds.size *= screen.scale;
+
+				NSLog(@"%@ x %f", NSStringFromCGRect(bounds), UIScreen.mainScreen.scale);
+				_renderer->set_geometry(bounds, Z_SCALING_EXPAND);
+
+				NSBundle *bundle = [NSBundle mainBundle];
+				std::string *error;
+
+				NSString *sourceCode = [NSString
+					stringWithContentsOfFile: [bundle pathForResource: @"Simple" ofType: @"vsh"]
+					encoding:		  NSUTF8StringEncoding
+					error:			  nullptr];
+
+				if (!_renderer->set_vertex_shader((Character *)sourceCode.UTF8String, &error))
+					{
+					NSLog(@"Can not compile OpenGL vertext shader:\n%s", error->c_str());
+					/*[[NSAlert alertWithError: [NSError errorWithDomain: @"OpenGL" code: 0 userInfo:
+						@{NSLocalizedDescriptionKey:		 @"Can not compile OpenGL vertext shader",
+						  NSLocalizedRecoverySuggestionErrorKey: [NSString stringWithUTF8String: error->c_str()]}]]
+							runModal];*/
+
+					delete error;
+					}
+
+				sourceCode = [NSString
+					stringWithContentsOfFile: [bundle pathForResource: @"Simple" ofType: @"fsh"]
+					encoding:		  NSUTF8StringEncoding
+					error:			  nullptr];
+
+				if (!_renderer->set_fragment_shader((Character *)sourceCode.UTF8String, &error))
+					{
+					NSLog(@"Can not compile OpenGL fragment shader:\n%s", error->c_str());
+					/*[[NSAlert alertWithError: [NSError errorWithDomain: @"OpenGL" code: 0 userInfo:
+						@{NSLocalizedDescriptionKey:		 @"Can not compile OpenGL fragment shader",
+						  NSLocalizedRecoverySuggestionErrorKey: [NSString stringWithUTF8String: error->c_str()]}]]
+							runModal];*/
+
+					delete error;
+					}
+
+				_renderer->create_shader_program();
+
+				//glClearColor(0, 104.0/255.0, 55.0/255.0, 1.0);
+    				//glClear(GL_COLOR_BUFFER_BIT);
+				//[_GLContext presentRenderbuffer: GL_RENDERBUFFER];
+
+				RESTORE_CONTEXT;
 				}
 
 			//NSLog(@"init GL");
@@ -270,6 +324,7 @@ using namespace Zeta;
 				}
 
 			_renderer->draw(false);
+
 			_flags.reshaped = NO;
 			//}
 

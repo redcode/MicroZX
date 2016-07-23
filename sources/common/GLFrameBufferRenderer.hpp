@@ -17,15 +17,18 @@
 class GLFrameBufferRenderer {
 	private:
 	Zeta::Matrix4x4<float> _transform;
-	GLuint	_texture;
-	GLuint  _vbo;
-	GLuint  _vertex_shader;
-	GLuint	_fragment_shader;
-	GLuint	_shader_program;
-	GLuint  _index_buffer_id;
-	//GLuint  _vertex_attribute_id;
-	GLuint  _transform_uniform;
-	//GLuint  _texture_uniform_id;
+	GLuint _texture;
+	GLuint _vbo;
+	GLuint _vertex_shader;
+	GLuint _fragment_shader;
+	GLuint _shader_program;
+	GLuint _index_buffer_id;
+	GLuint _transform_uniform;
+
+#	ifdef OPEN_GL_ES
+		GLuint _vertex_attribute;
+#	endif
+
 	//GLuint  _texture_size_uniform_id;
 
 	public:
